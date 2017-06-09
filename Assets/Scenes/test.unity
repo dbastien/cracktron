@@ -396,6 +396,7 @@ GameObject:
   - component: {fileID: 578477996}
   - component: {fileID: 578477995}
   - component: {fileID: 578477994}
+  - component: {fileID: 578478000}
   m_Layer: 0
   m_Name: Sphere R 1
   m_TagString: Untagged
@@ -415,7 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Start: {r: 1, g: 1, b: 1, a: 1}
-  End: {r: 1, g: 0.23137254, b: 0.23137254, a: 1}
+  End: {r: 0.21568626, g: 0.3833671, b: 1, a: 1}
   Curve:
     serializedVersion: 2
     m_Curve:
@@ -531,6 +532,39 @@ Transform:
   m_Father: {fileID: 364530789}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &578478000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 578477993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e37cbf3b87d1fe840ab0e9ffc409936d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  Start: {x: -0, y: 0, z: 0}
+  End: {x: 0, y: 360, z: 0}
+  LengthScale: 1
+  CurveTargetName: eulerAngles
 --- !u!1 &747591432
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +578,7 @@ GameObject:
   - component: {fileID: 747591434}
   - component: {fileID: 747591433}
   - component: {fileID: 747591438}
+  - component: {fileID: 747591439}
   m_Layer: 0
   m_Name: Sphere L 1
   m_TagString: Untagged
@@ -660,7 +695,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Start: {r: 1, g: 1, b: 1, a: 1}
-  End: {r: 1, g: 0.23137254, b: 0.23137254, a: 1}
+  End: {r: 0.9749023, g: 0.21568626, b: 1, a: 1}
   Curve:
     serializedVersion: 2
     m_Curve:
@@ -679,6 +714,39 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 0
+--- !u!114 &747591439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 747591432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e37cbf3b87d1fe840ab0e9ffc409936d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 1
+    m_RotationOrder: 4
+  Start: {x: -0, y: 0, z: 0}
+  End: {x: 0, y: 360, z: 0}
+  LengthScale: 1
+  CurveTargetName: eulerAngles
 --- !u!1 &968894073
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,8 +796,8 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 0
   Start: {x: -10, y: 1, z: 0}
-  End: {x: -10, y: 3, z: -2}
-  LengthScale: 2
+  End: {x: -8, y: 3, z: -2}
+  LengthScale: 1.8
   CurveTargetName: position
 --- !u!23 &968894075
 MeshRenderer:
@@ -846,10 +914,10 @@ MonoBehaviour:
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 1
   m_fontColorGradient:
-    topLeft: {r: 1, g: 0, b: 0.8068962, a: 1}
-    topRight: {r: 1, g: 0.81000006, b: 0, a: 1}
-    bottomLeft: {r: 1, g: 0.81000006, b: 0, a: 1}
-    bottomRight: {r: 0, g: 0.21379304, b: 1, a: 1}
+    topLeft: {r: 0.9749023, g: 0.21568626, b: 1, a: 1}
+    topRight: {r: 1, g: 0.85098046, b: 0.21568626, a: 1}
+    bottomLeft: {r: 1, g: 0.85098046, b: 0.21568626, a: 1}
+    bottomRight: {r: 0.21568626, g: 0.3833671, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -1085,7 +1153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00976f0e7e88c1b4795c8946bef3a0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {r: 0.503, g: 1, b: 0.65408796, a: 1}
+  Start: {r: 0.21568626, g: 0.3833671, b: 1, a: 1}
   End: {r: 0.503, g: 1, b: 0.916504, a: 1}
   Curve:
     serializedVersion: 2
@@ -1154,8 +1222,8 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 0
   Start: {x: 10, y: 1, z: 0}
-  End: {x: 10, y: 3, z: -2}
-  LengthScale: 2
+  End: {x: 8, y: 3, z: -2}
+  LengthScale: 1.8
   CurveTargetName: position
 --- !u!23 &1305812314
 MeshRenderer:
