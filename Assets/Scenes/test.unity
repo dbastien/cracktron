@@ -563,7 +563,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   Start: {x: -0, y: 0, z: 0}
   End: {x: 0, y: 360, z: 0}
-  LengthScale: 1
+  LengthScale: 1.5
   CurveTargetName: eulerAngles
 --- !u!1 &747591432
 GameObject:
@@ -745,7 +745,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   Start: {x: -0, y: 0, z: 0}
   End: {x: 0, y: 360, z: 0}
-  LengthScale: 1
+  LengthScale: 1.5
   CurveTargetName: eulerAngles
 --- !u!1 &968894073
 GameObject:
@@ -901,7 +901,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: == cracktron ==
+  m_text: ==  cracktron  ==
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
@@ -968,9 +968,9 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1089373777}
-    characterCount: 15
+    characterCount: 17
     spriteCount: 0
-    spaceCount: 2
+    spaceCount: 4
     wordCount: 2
     linkCount: 0
     lineCount: 1
@@ -1419,7 +1419,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: 3
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -1575,7 +1575,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Start: {x: 9, y: 2, z: 0}
   End: {x: -9, y: 2, z: 0}
-  LengthScale: 0.25
+  LengthScale: 0.35
   CurveTargetName: position
 --- !u!4 &1917303272
 Transform:
@@ -1641,7 +1641,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Start: {x: 1, y: 1, z: 1}
   End: {x: 0.5, y: 2, z: 1}
-  LengthScale: 0.66
+  LengthScale: 0.8
   CurveTargetName: localScale
 --- !u!23 &2027547927
 MeshRenderer:
@@ -1744,7 +1744,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Start: {x: -0, y: -0, z: 44.999996}
   End: {x: 0, y: 360, z: 44.999996}
-  LengthScale: 1.5
+  LengthScale: 1.9
   CurveTargetName: eulerAngles
 --- !u!1 &2123820797
 GameObject:
@@ -1820,8 +1820,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: -10, y: 5, z: 0}
-  End: {x: 10, y: 5, z: 0}
+  Start: {x: -10, y: 4.8, z: 0}
+  End: {x: 10, y: 4.8, z: 0}
   LengthScale: 0.5
   CurveTargetName: position
 --- !u!96 &2130195374
@@ -1915,7 +1915,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2130195372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.26, y: 5, z: 2.46}
+  m_LocalPosition: {x: 5.26, y: 4.8, z: 2.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
