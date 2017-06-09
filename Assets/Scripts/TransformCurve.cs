@@ -12,12 +12,23 @@ public class TransformCurve : MonoBehaviour
 
     private float timeElapsed;
 
-    public void Awake()
+    void Reset()
+    {
+        Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
+        Curve.preWrapMode = WrapMode.PingPong;
+        Curve.postWrapMode = WrapMode.PingPong;
+
+        CurveTargetName = "position";
+        Start = transform.position;
+        End = transform.position + Vector3.up;
+    }
+
+    void Awake()
     {
         CurveTarget = typeof(Transform).GetProperty(CurveTargetName);
     }
 
-    public void Update()
+    void Update()
     {
         timeElapsed += Time.deltaTime;
 
