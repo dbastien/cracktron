@@ -1,5 +1,16 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# unity
+/[Ll]ibrary
+/[Tt]emp
+/[Oo]bj
+/[Bb]uild
 
-/Library
+# unity crash report
+sysinfo.txt
+
+# visual studio
+.vs/
+/*.csproj
+/*.sln
+/*.suo
+/*.pdb
+
