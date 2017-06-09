@@ -3,6 +3,8 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 
+//TODO: validate length scale != 0
+
 [CustomEditor(typeof(TransformCurve))]
 public class TransformCurveEditor : Editor
 {
@@ -34,12 +36,29 @@ public class TransformCurveEditor : Editor
         index = Mathf.Max(0, index);
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Target Property", new GUILayoutOption[0]);
-        index = EditorGUILayout.Popup(index, propNames.ToArray(), new GUILayoutOption[0]);
+        {
+            reflectionCurve.Curve = EditorGUILayout.CurveField(reflectionCurve.Curve, GUILayout.Height(100f), GUILayout.Width(100f));
+            EditorGUILayout.BeginVertical();
+            {
+                EditorGUI.BeginChangeCheck();
+                {
+                    index = EditorGUILayout.Popup(index, propNames.ToArray());
+                }
+                if (EditorGUI.EndChangeCheck())
+                {
+                    reflectionCurve.CurveTargetName = propNames[index];
+                    reflectionCurve.ResetStartEnd();
+                }
+                EditorGUIUtility.labelWidth = 90f;
+                reflectionCurve.Start = EditorGUILayout.Vector3Field("start", reflectionCurve.Start);
+                reflectionCurve.End = EditorGUILayout.Vector3Field("end", reflectionCurve.End);
+                reflectionCurve.LengthScale = EditorGUILayout.FloatField("length scale", reflectionCurve.LengthScale);
+            }
+            EditorGUILayout.EndVertical();
+        }
         EditorGUILayout.EndHorizontal();
 
-        reflectionCurve.CurveTargetName = propNames[index];
-
-        base.OnInspectorGUI();
+        //reset to default
+        EditorGUIUtility.labelWidth = 0;
     }
 }
