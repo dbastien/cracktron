@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
-public class ColorCurve : MonoBehaviour
+public class MaterialCurve : MonoBehaviour
 {
     public Color Start;
     public Color End;
