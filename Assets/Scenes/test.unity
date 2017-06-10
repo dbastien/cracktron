@@ -1744,7 +1744,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Start: {x: -0, y: -0, z: 44.999996}
   End: {x: 0, y: 360, z: 44.999996}
-  LengthScale: 1.9
+  LengthScale: 2.8
   CurveTargetName: eulerAngles
 --- !u!1 &2123820797
 GameObject:

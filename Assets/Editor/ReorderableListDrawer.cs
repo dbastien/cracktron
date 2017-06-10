@@ -1,43 +1,69 @@
-﻿using UnityEditor;
+﻿using System.Collections;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
 [CustomPropertyDrawer(typeof(ReorderableListAttribute))]
 public class ReorderableListDrawer : PropertyDrawer
 {
-    private ReorderableList list_;
+    private ReorderableList reorderableListCached;
+    private string propertyPath;
 
-    public void OnEnable()
+    private void Init(SerializedProperty serializedProperty)
     {
+        if (this.reorderableListCached != null)
+        {
+            return;
+        }
+
+        var serializedObject = serializedProperty.serializedObject;
+        propertyPath = serializedProperty.propertyPath;
+
+        //look for array component of property - this is the secret sauce to making it generic
+        propertyPath = propertyPath.Substring(0, serializedProperty.propertyPath.LastIndexOf("Array") - 1);
+
+        SerializedProperty elements = serializedObject.FindProperty(propertyPath);
+        this.reorderableListCached = new ReorderableList(serializedProperty.serializedObject, elements, true, true, true, true);
+        this.reorderableListCached.drawElementCallback = new ReorderableList.ElementCallbackDelegate(this.DrawElement);
+        this.reorderableListCached.drawHeaderCallback = new ReorderableList.HeaderCallbackDelegate(this.DrawHeader);
+        this.reorderableListCached.elementHeight += 16f;
     }
 
-    public override void OnGUI(Rect rect, SerializedProperty serializedProperty, GUIContent label)
+    public override void OnGUI(Rect position, SerializedProperty serializedProperty, GUIContent label)
     {
-        SerializedProperty listProperty = serializedProperty.FindPropertyRelative("list_");
-        ReorderableList list = GetList(listProperty);
-
-        float height = 0f;
-        for (var i = 0; i < listProperty.arraySize; i++)
+        if (!serializedProperty.propertyPath.Contains("0"))
         {
-            height = Mathf.Max(height, EditorGUI.GetPropertyHeight(listProperty.GetArrayElementAtIndex(i)));
+            return;
         }
-        list.elementHeight = height;
-        list.DoList(rect);
+
+        this.Init(serializedProperty);
+        this.reorderableListCached.DoList(position);
+    }
+
+    private void DrawHeader(Rect rect)
+    {
+        GUI.Label(rect, propertyPath);
+    }
+
+    private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+    {
+        SerializedProperty arrayElementAtIndex = this.reorderableListCached.serializedProperty.GetArrayElementAtIndex(index);
+        SerializedProperty property = arrayElementAtIndex;
+        RectOffset rectOffset = new RectOffset(0, 0, -1, -3);
+        rect = rectOffset.Add(rect);
+        rect.height = EditorGUIUtility.singleLineHeight;
+        EditorGUI.PropertyField(rect, property, false);
     }
 
     public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)
     {
-        SerializedProperty listProperty = serializedProperty.FindPropertyRelative("list_");
-        return GetList(listProperty).GetHeight();
-    }
-
-    private ReorderableList GetList(SerializedProperty serializedProperty)
-    {
-        if (list_ == null)
+        //we'll get called for every element, so only size for the first one
+        if (!serializedProperty.propertyPath.Contains("0"))
         {
-            list_ = new ReorderableList(serializedProperty.serializedObject, serializedProperty);
+            return 0f;
         }
 
-        return list_;
+        this.Init(serializedProperty);
+        return this.reorderableListCached.GetHeight();
     }
 }
