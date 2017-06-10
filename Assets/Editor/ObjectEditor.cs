@@ -27,17 +27,17 @@ public class ObjectEditor : Editor
         }
     }
 
-    private Dictionary<string, ReorderableListState> reorderableLists;
+    private Dictionary<string, ReorderableListState> reorderableListStates;
 
     protected virtual void OnEnable()
     {
-        this.reorderableLists = new Dictionary<string, ReorderableListState>();
+        this.reorderableListStates = new Dictionary<string, ReorderableListState>();
     }
 
     ~ObjectEditor()
     {
-        this.reorderableLists.Clear();
-        this.reorderableLists = null;
+        this.reorderableListStates.Clear();
+        this.reorderableListStates = null;
     }
 
     public override void OnInspectorGUI()
@@ -57,48 +57,48 @@ public class ObjectEditor : Editor
 
     protected void HandleProperty(SerializedProperty property)
     {
-        bool isdefaultScriptProperty = property.name.Equals("m_Script") &&
-                                       property.type.Equals("PPtr<MonoScript>") &&
-                                       property.propertyType == SerializedPropertyType.ObjectReference &&
-                                       property.propertyPath.Equals("m_Script");
-
-        bool cachedGUIEnabled = GUI.enabled;
-        if (isdefaultScriptProperty)
-        {
-            GUI.enabled = false;
-        }
-
         if (property.isArray && property.propertyType != SerializedPropertyType.String)
         {
             this.ArrayField(property);
         }
         else
         {
-            EditorGUILayout.PropertyField(property, property.isExpanded);
-        }
+            bool isdefaultScriptProperty = property.name.Equals("m_Script") &&
+                                           property.type.Equals("PPtr<MonoScript>") &&
+                                           property.propertyType == SerializedPropertyType.ObjectReference &&
+                                           property.propertyPath.Equals("m_Script");
 
-        if (isdefaultScriptProperty)
-        {
-            GUI.enabled = cachedGUIEnabled;
+            bool cachedGUIEnabled = GUI.enabled;
+            if (isdefaultScriptProperty)
+            {
+                GUI.enabled = false;
+            }
+
+            EditorGUILayout.PropertyField(property, property.isExpanded);
+
+            if (isdefaultScriptProperty)
+            {
+                GUI.enabled = cachedGUIEnabled;
+            }
         }
     }
 
     private ReorderableListState GetReorderableListState(SerializedProperty property)
     {
-        ReorderableListState ret = null;
-        if (this.reorderableLists.TryGetValue(property.name, out ret))
+        ReorderableListState reorderableList = null;
+        if (this.reorderableListStates.TryGetValue(property.name, out reorderableList))
         {
-            ret.serializedProperty = property;
-            ret.reorderableList.serializedProperty = property;
-            return ret;
+            reorderableList.serializedProperty = property;
+            reorderableList.reorderableList.serializedProperty = property;
+            return reorderableList;
         }
-        ret = new ReorderableListState();
-        ret.serializedProperty = property;
-        ret.reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true);
-        ret.reorderableList.drawElementCallback += ret.DrawElement;
-        ret.reorderableList.drawHeaderCallback += ret.DrawHeader;
-        this.reorderableLists.Add(property.propertyPath, ret);
-        return ret;
+        reorderableList = new ReorderableListState();
+        reorderableList.serializedProperty = property;
+        reorderableList.reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true);
+        reorderableList.reorderableList.drawElementCallback += reorderableList.DrawElement;
+        reorderableList.reorderableList.drawHeaderCallback += reorderableList.DrawHeader;
+        this.reorderableListStates.Add(property.propertyPath, reorderableList);
+        return reorderableList;
     }
 
     protected void ArrayField(SerializedProperty property)

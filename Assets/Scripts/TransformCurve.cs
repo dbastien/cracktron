@@ -40,6 +40,7 @@ public class TransformCurve : MonoBehaviour
 
     public void ResetStartEnd()
     {
+        this.
         UpdateTarget();
         Start = (Vector3)typeof(Transform).GetProperty(CurveTargetName).GetValue(this.transform, null);
 

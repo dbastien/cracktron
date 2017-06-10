@@ -10,6 +10,8 @@ public class TransformCurveEditor : Editor
 {
     private static List<string> propNames = new List<string>();
 
+   // private static Dictionary<Component, string> = new List<Component, string>;
+
     static TransformCurveEditor()
     {
         var members = typeof(Transform).GetMembers(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public);
