@@ -929,8 +929,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -947,7 +947,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_enableKerning: 1
@@ -1074,41 +1074,29 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 0
+      value: -0.5037842
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
       time: 0.25
-      value: 2
+      value: 0.49621582
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     - serializedVersion: 2
       time: 0.5
-      value: 0
+      value: -0.5037842
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
-      time: 0.75
-      value: 2
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 1
+    m_PreInfinity: 0
+    m_PostInfinity: 0
     m_RotationOrder: 0
   AngleMultiplier: 1
-  SpeedMultiplier: 1
-  CurveScale: 0.2
-  AnimationSpeed: 1
+  CurveScale: 1
+  AnimationSpeed: 0.8
+  RotateLetters: 0
 --- !u!1 &1301333548
 GameObject:
   m_ObjectHideFlags: 0
