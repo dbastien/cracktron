@@ -11,7 +11,7 @@ public static class Matrix4x4Extensions
     /// <param name="H">hue shift in degrees</param>
     /// <param name="S">saturation multiplier</param>
     /// <param name="V">value multiplier</param>
-    /// <param name="m">output matrix</param>
+    /// <returns></returns>
     public static Matrix4x4 CreateHSVTransform(float H, float S, float V)
     {
         Matrix4x4 m;

@@ -1,22 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(TMP_Text))]
 public class TextMeshCurve: MonoBehaviour
 {
-    private TMP_Text textComponent;
-
     public AnimationCurve VertexCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.25f, 1.0f), new Keyframe(0.5f, 0), new Keyframe(0.75f, 1.0f), new Keyframe(1, 0f));
-    public float AngleMultiplier = 1.0f;
     public float CurveScale = 1.0f;
 
     public float AnimationSpeed = 1.0f;
     private float timeElapsed;
 
     public bool RotateLetters;
+    [Range(0.01f, 10.0f)] public float RotationScale = 1.0f;
 
+    private TMP_Text textComponent;
     private TMP_MeshInfo[] initialMeshInfo;
 
     void Update()
@@ -39,13 +36,15 @@ public class TextMeshCurve: MonoBehaviour
         var textInfo = textComponent.textInfo;
         int characterCount = textInfo.characterCount;
 
-        float boundsMinX = textComponent.bounds.min.x;  //textInfo.meshInfo[0].mesh.bounds.min.x;
-        float boundsMaxX = textComponent.bounds.max.x;  //textInfo.meshInfo[0].mesh.bounds.max.x;
+        float boundsMinX = textComponent.bounds.min.x;
+        float boundsMaxX = textComponent.bounds.max.x;
 
         for (int i = 0; i < characterCount; ++i)
         {
             if (!textInfo.characterInfo[i].isVisible)
+            {
                 continue;
+            }
 
             int vertexIndex = textInfo.characterInfo[i].vertexIndex;
 
@@ -64,18 +63,17 @@ public class TextMeshCurve: MonoBehaviour
             float y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
             float y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
 
-            Vector3 horizontal = new Vector3(1, 0, 0);
-            Vector3 tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
-
-            float dot = Mathf.Acos(Vector3.Dot(horizontal, tangent.normalized)) * 57.2957795f;
-            Vector3 cross = Vector3.Cross(horizontal, tangent);
-            float angle = cross.z > 0 ? dot : 360 - dot;
-
             if (RotateLetters)
             {
+                var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
+
+                var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * RotationScale;
+                var cross = Vector3.Cross(Vector3.right, tangent);
+                var angle = cross.z > 0 ? dot : 360 - dot;
+
                 matrix = Matrix4x4.Translate(offsetToMidBaseline) *
-                Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one) *
-                Matrix4x4.Translate(-offsetToMidBaseline);
+                         Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one) *
+                         Matrix4x4.Translate(-offsetToMidBaseline);
             }
             else
             {
