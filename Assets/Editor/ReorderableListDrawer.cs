@@ -1,8 +1,12 @@
-﻿using System.Collections;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
+/// <summary>
+/// property drawers do not get called for the collection itself, only children
+//  this draws all children when called for the first, but the standard unity 
+//  collection header will be shown in addition
+/// </summary>
 [CustomPropertyDrawer(typeof(ReorderableListAttribute))]
 public class ReorderableListDrawer : PropertyDrawer
 {

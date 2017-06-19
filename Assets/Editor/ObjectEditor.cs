@@ -1,9 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
 
+/// <summary>
+/// CustomEditor for Object in order to display reorderable list editor for all lists
+/// </summary>
 [CustomEditor(typeof(UnityEngine.Object), true, isFallback = true)]
 public class ObjectEditor : Editor
 {
@@ -49,13 +51,13 @@ public class ObjectEditor : Editor
         {
             do
             {
-                this.HandleProperty(property);
+                this.PropertyField(property);
             } while (property.NextVisible(false));
         }
         serializedObject.ApplyModifiedProperties();
     }
 
-    protected void HandleProperty(SerializedProperty property)
+    protected void PropertyField(SerializedProperty property)
     {
         if (property.isArray && property.propertyType != SerializedPropertyType.String)
         {
@@ -63,20 +65,17 @@ public class ObjectEditor : Editor
         }
         else
         {
-            bool isdefaultScriptProperty = property.name.Equals("m_Script") &&
-                                           property.type.Equals("PPtr<MonoScript>") &&
-                                           property.propertyType == SerializedPropertyType.ObjectReference &&
-                                           property.propertyPath.Equals("m_Script");
+            bool isScriptProperty = ReflectionUtils.IsScriptProperty(property);
 
             bool cachedGUIEnabled = GUI.enabled;
-            if (isdefaultScriptProperty)
+            if (isScriptProperty)
             {
                 GUI.enabled = false;
             }
 
             EditorGUILayout.PropertyField(property, property.isExpanded);
 
-            if (isdefaultScriptProperty)
+            if (isScriptProperty)
             {
                 GUI.enabled = cachedGUIEnabled;
             }
@@ -85,20 +84,23 @@ public class ObjectEditor : Editor
 
     private ReorderableListState GetReorderableListState(SerializedProperty property)
     {
-        ReorderableListState reorderableList = null;
-        if (this.reorderableListStates.TryGetValue(property.name, out reorderableList))
+        ReorderableListState reorderableListState = null;
+
+        if (this.reorderableListStates.TryGetValue(property.name, out reorderableListState))
         {
-            reorderableList.serializedProperty = property;
-            reorderableList.reorderableList.serializedProperty = property;
-            return reorderableList;
+            reorderableListState.serializedProperty = property;
+            reorderableListState.reorderableList.serializedProperty = property;
+            return reorderableListState;
         }
-        reorderableList = new ReorderableListState();
-        reorderableList.serializedProperty = property;
-        reorderableList.reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true);
-        reorderableList.reorderableList.drawElementCallback += reorderableList.DrawElement;
-        reorderableList.reorderableList.drawHeaderCallback += reorderableList.DrawHeader;
-        this.reorderableListStates.Add(property.propertyPath, reorderableList);
-        return reorderableList;
+
+        reorderableListState = new ReorderableListState();
+        reorderableListState.serializedProperty = property;
+        reorderableListState.reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true);
+        reorderableListState.reorderableList.drawElementCallback += reorderableListState.DrawElement;
+        reorderableListState.reorderableList.drawHeaderCallback += reorderableListState.DrawHeader;
+        this.reorderableListStates.Add(property.propertyPath, reorderableListState);
+
+        return reorderableListState;
     }
 
     protected void ArrayField(SerializedProperty property)
