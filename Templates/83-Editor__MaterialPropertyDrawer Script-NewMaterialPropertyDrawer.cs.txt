@@ -1,0 +1,10 @@
+﻿using UnityEngine;
+using UnityEditor;
+
+public class #SCRIPTNAME# : MaterialPropertyDrawer
+{
+    public override void OnGUI(Rect position, MaterialProperty prop, string label, MaterialEditor editor)
+    {
+        #NOTRIM#
+    }
+}
