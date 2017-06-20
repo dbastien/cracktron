@@ -398,7 +398,7 @@ GameObject:
   - component: {fileID: 578477994}
   - component: {fileID: 578478000}
   m_Layer: 0
-  m_Name: Sphere R 1
+  m_Name: Boing R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 747591438}
   - component: {fileID: 747591439}
   m_Layer: 0
-  m_Name: Sphere L 1
+  m_Name: Boing L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -890,7 +890,7 @@ GameObject:
   - component: {fileID: 968894075}
   - component: {fileID: 968894074}
   m_Layer: 0
-  m_Name: Sphere L 2
+  m_Name: Crystal Ball L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -942,7 +942,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4952ed8208183ce4289d4d53f3477e98, type: 2}
+  - {fileID: 2100000, guid: d0bc3bcb19e874e49b315b66e87ac708, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1184,7 +1184,7 @@ GameObject:
   - component: {fileID: 1305812314}
   - component: {fileID: 1305812313}
   m_Layer: 0
-  m_Name: Sphere R 2
+  m_Name: Crystal Ball R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1236,7 +1236,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 4952ed8208183ce4289d4d53f3477e98, type: 2}
+  - {fileID: 2100000, guid: d0bc3bcb19e874e49b315b66e87ac708, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1752,6 +1752,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2123820798}
+  - component: {fileID: 2123820799}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1772,6 +1773,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2123820799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2123820797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703ca1178fb13e74a8b8688cb6e23bc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2130195372
 GameObject:
   m_ObjectHideFlags: 0
