@@ -692,6 +692,10 @@ Prefab:
       propertyPath: m_textInfo.wordCount
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1153922024695244, guid: a5a86f957c795944a917dd168669df42, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5a86f957c795944a917dd168669df42, type: 2}
   m_IsPrefabParent: 0

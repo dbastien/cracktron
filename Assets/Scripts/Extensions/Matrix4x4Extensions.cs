@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Extension methods for Unity's Matrix4x4 class
-/// </summary>
 public static class Matrix4x4Extensions
 {
     /// <summary>
