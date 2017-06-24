@@ -28,7 +28,7 @@ float smootherstep01(float x)
     return x*x*x*(x*(x * 6 - 15) + 10);
 }
 
-float Random(float2 seed)
+float random(float2 seed)
 {
     return frac(sin(dot(seed, float2(12.9898, 78.233))) * 43758.5453);
 }
