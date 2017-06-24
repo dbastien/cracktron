@@ -15,8 +15,7 @@ public class PerfAnalyzerWindow : EditorWindow
     [SerializeField] public GUILayoutOption[] layoutColumnWidth = new GUILayoutOption[] { GUILayout.Width(325f) };
     [SerializeField] public GUILayoutOption[] layoutButtonWidth = new GUILayoutOption[] { GUILayout.Width(325f) };
 
-
-    [MenuItem("UnityTools/Perf Analyzer Window")]
+    [MenuItem("Cracktron/Perf Analyzer Window")]
     static void ShowWindow()
     {
         var window = GetWindow<PerfAnalyzerWindow>();

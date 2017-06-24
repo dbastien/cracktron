@@ -2,7 +2,7 @@
 
 public static class Vector4Extensions
 {
-    public static Vector4 UnclampedLerp(this Vector4 l, Vector4 r, float t)
+    public static Vector4 LerpUnclamped(this Vector4 l, Vector4 r, float t)
     {
         return l + t * (r - l);
     }

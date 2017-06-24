@@ -65,7 +65,7 @@ public class TransformCurve : MonoBehaviour
 
         if (CurveTarget != null)
         {
-            CurveTarget.SetValue(this.transform, Start.UnclampedLerp(End, Curve.Evaluate(timeElapsed)), null);
+            CurveTarget.SetValue(this.transform, Start.LerpUnclamped(End, Curve.Evaluate(timeElapsed)), null);
         }
     }
 }
