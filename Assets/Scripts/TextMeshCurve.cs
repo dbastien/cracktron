@@ -54,8 +54,22 @@ public class TextMeshCurve: MonoBehaviour
             var targetVertices = textInfo.meshInfo[materialIndex].vertices;
             var initialVertices = initialMeshInfo[materialIndex].vertices;
 
+            if (vertexIndex >= initialVertices.Length)
+            {
+                continue;
+            }
+
             // Compute the baseline mid point for each character
-            Vector3 offsetToMidBaseline = new Vector2((initialVertices[vertexIndex + 0].x + initialVertices[vertexIndex + 2].x) / 2, textInfo.characterInfo[i].baseLine);
+            Vector3 offsetToMidBaseline = Vector3.zero;
+
+            if (vertexIndex < initialVertices.Length - 1)
+            {
+                offsetToMidBaseline = new Vector2((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) / 2, textInfo.characterInfo[i].baseLine);
+            }
+            else
+            {
+                offsetToMidBaseline = new Vector2(initialVertices[vertexIndex].x, textInfo.characterInfo[i].baseLine);
+            }
 
             // Compute the angle of rotation for each character based on the animation curve
             float x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
