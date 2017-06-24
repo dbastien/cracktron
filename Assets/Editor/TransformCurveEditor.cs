@@ -60,6 +60,21 @@ public class TransformCurveEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
 
+        //for (int i = 0; i < currentLib.Count(); ++i)
+        //{
+        //    Rect rect = new Rect(45f + 45f * (float)i, num, 40f, 25f);
+        //    this.m_GUIContent.tooltip = currentLib.GetName(i);
+        //    if (GUI.Button(rect, this.m_GUIContent, CurveEditorWindow.ms_Styles.curveSwatch))
+        //    {
+        //        var animationCurve = currentLib.GetPreset(i) as AnimationCurve;
+        //        this.m_Curve.keys = this.GetDenormalizedKeys(animationCurve.keys);
+        //        this.m_Curve.postWrapMode = animationCurve.postWrapMode;
+        //        this.m_Curve.preWrapMode = animationCurve.preWrapMode;
+        //        this.m_CurveEditor.SelectNone();
+        //        this.SendEvent("CurveChanged", true);
+        //    }
+        //}
+
         //reset to default
         EditorGUIUtility.labelWidth = 0;
     }
