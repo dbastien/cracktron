@@ -9,6 +9,7 @@ public class TransformCurve : MonoBehaviour
     public Vector3 Start;
     public Vector3 End;
 
+    //[Range(0.01f, 10.0f)]
     public float LengthScale = 1.0f;
 
     public PropertyInfo CurveTarget;

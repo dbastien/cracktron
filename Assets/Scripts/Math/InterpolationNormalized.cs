@@ -3,7 +3,7 @@
 /// <summary>
 /// All functions return unclamped progress [0,1] based on unclamped time [0,1]
 /// </summary>
-public static class Interpolation
+public static class InterpolationNormalized
 {
     //https://www.wolframalpha.com/input/?i=plot+v%3Dt,+0%3C%3Dt%3C%3D1
     public static float Linear(float t)

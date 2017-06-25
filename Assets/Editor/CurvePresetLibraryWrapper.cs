@@ -4,18 +4,18 @@ using UnityEngine;
 
 public static class CurvePresetLibraryWrapper
 {
-    private static readonly Type CurvePresetLibraryType = Type.GetType("UnityEditor.CurvePresetLibrary, UnityEditor");
-    //PresetLibrary presetLibrary = ScriptableSingleton<PresetLibraryManager>.instance.GetLibrary<T>(this.m_SaveLoadHelper, libraryPath) as PresetLibrary;
+    private static readonly Type type = Type.GetType("UnityEditor.CurvePresetLibrary, UnityEditor");
 
-    private static readonly MethodInfo AddMethod = CurvePresetLibraryType.GetMethod("Add");
-    private static readonly MethodInfo CountMethod = CurvePresetLibraryType.GetMethod("Count");
-    private static readonly MethodInfo GetPresetMethod = CurvePresetLibraryType.GetMethod("GetPreset");
-    private static readonly MethodInfo RemoveMethod = CurvePresetLibraryType.GetMethod("Remove");
-    private static readonly MethodInfo ReplaceMethod = CurvePresetLibraryType.GetMethod("Replace");
+    private static readonly MethodInfo AddMethod = type.GetMethod("Add");
+    private static readonly MethodInfo CountMethod = type.GetMethod("Count");
+    private static readonly MethodInfo DrawMethod = type.GetMethod("Draw", new Type[] { typeof(Rect), typeof(int) });
+    private static readonly MethodInfo GetPresetMethod = type.GetMethod("GetPreset");
+    private static readonly MethodInfo RemoveMethod = type.GetMethod("Remove");
+    private static readonly MethodInfo ReplaceMethod = type.GetMethod("Replace");
 
     public static ScriptableObject CreateLibrary()
     {
-        return ScriptableObject.CreateInstance(CurvePresetLibraryType);
+        return ScriptableObject.CreateInstance(type);
     }
 
     public static void Add(ScriptableObject library, AnimationCurve curve, string name)
@@ -26,6 +26,11 @@ public static class CurvePresetLibraryWrapper
     public static int Count(ScriptableObject library)
     {
         return (int)CountMethod.Invoke(library, new object[] { });
+    }
+
+    public static void Draw(ScriptableObject library, Rect rect, int index)
+    {
+        DrawMethod.Invoke(library, new object[] { rect, index });
     }
 
     public static AnimationCurve GetPreset(ScriptableObject library, int index)

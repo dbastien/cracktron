@@ -8,74 +8,58 @@ public class TextMeshCurve: MonoBehaviour
     public float CurveScale = 1.0f;
 
     public float AnimationSpeed = 1.0f;
-    private float timeElapsed;
 
     public bool RotateLetters;
     [Range(0.01f, 10.0f)] public float RotationScale = 1.0f;
 
+    private float timeElapsed;
     private TMP_Text textComponent;
     private TMP_MeshInfo[] initialMeshInfo;
 
     void Update()
     {
-        timeElapsed += Time.deltaTime;      
-        Matrix4x4 matrix;
-
-        if (textComponent == null)
+        if (!textComponent)
         {
             textComponent = gameObject.GetComponent<TMP_Text>();
-
-            textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
-            textComponent.ForceMeshUpdate(); // Generate the mesh and populate the textInfo with data we can use and manipulate.
+            textComponent.havePropertiesChanged = true;
+            textComponent.ForceMeshUpdate();
             initialMeshInfo = textComponent.textInfo.CopyMeshInfoVertexData();
         }
 
-        textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
-        textComponent.ForceMeshUpdate(); // Generate the mesh and populate the textInfo with data we can use and manipulate.
+        timeElapsed += Time.deltaTime;      
+        Matrix4x4 matrix;
+
+        textComponent.havePropertiesChanged = true;
+        textComponent.ForceMeshUpdate();
 
         var textInfo = textComponent.textInfo;
-        int characterCount = textInfo.characterCount;
+        var characterCount = textInfo.characterCount;
 
-        float boundsMinX = textComponent.bounds.min.x;
-        float boundsMaxX = textComponent.bounds.max.x;
+        var boundsMinX = textComponent.bounds.min.x;
+        var boundsMaxX = textComponent.bounds.max.x;
 
-        for (int i = 0; i < characterCount; ++i)
+        for (var i = 0; i < characterCount; ++i)
         {
             if (!textInfo.characterInfo[i].isVisible)
             {
                 continue;
             }
 
-            int vertexIndex = textInfo.characterInfo[i].vertexIndex;
-
-            // Get the index of the mesh used by this character.
-            int materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
-
+            var vertexIndex = textInfo.characterInfo[i].vertexIndex;
+            var materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
             var targetVertices = textInfo.meshInfo[materialIndex].vertices;
             var initialVertices = initialMeshInfo[materialIndex].vertices;
 
-            if (vertexIndex >= initialVertices.Length)
-            {
-                continue;
-            }
-
             // Compute the baseline mid point for each character
-            Vector3 offsetToMidBaseline = Vector3.zero;
-
-            if (vertexIndex < initialVertices.Length - 1)
-            {
-                offsetToMidBaseline = new Vector2((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) / 2, textInfo.characterInfo[i].baseLine);
-            }
-            else
-            {
-                offsetToMidBaseline = new Vector2(initialVertices[vertexIndex].x, textInfo.characterInfo[i].baseLine);
-            }
+            var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * 0.5f, 
+                                                   textInfo.characterInfo[i].baseLine,
+                                                   0.0f);
 
             // Compute the angle of rotation for each character based on the animation curve
-            float x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
-            float x1 = x0 + 0.0001f;
-            float y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
-            float y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
+            var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
+            var x1 = x0 + 0.0001f;
+            var y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
+            var y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
 
             if (RotateLetters)
             {
@@ -99,6 +83,7 @@ public class TextMeshCurve: MonoBehaviour
             targetVertices[vertexIndex + 2] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 2]);
             targetVertices[vertexIndex + 3] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 3]);
         }
+
         textComponent.UpdateVertexData();
     }
 }
