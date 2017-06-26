@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// All functions return unclamped progress [0,1] based on unclamped time [0,1]
+/// All functions return unclamped progress ~[0,1] based on unclamped time [0,1]
 /// </summary>
 public static class InterpolationNormalized
 {
