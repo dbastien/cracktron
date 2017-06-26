@@ -4,11 +4,11 @@ using UnityEditor;
 public static class CurvePresetGenerator
 {
     public static readonly int StepCount = 100;
-    public static readonly float StepSize = 1 / (float)StepCount;
+    public static readonly float StepSize = StepCount > 1 ? 1f / (StepCount - 1) : 1f;
 
     public delegate float NormalizedCurveFunction(float t);
 
-    [MenuItem("Cracktron/Generate curve presets")] 
+    [MenuItem("Cracktron/Generate curve presets")]  
     public static void GenerateCurvePresets()
     {
         var library = CurvePresetLibraryWrapper.CreateLibrary();
@@ -25,7 +25,7 @@ public static class CurvePresetGenerator
 
         AssetDatabase.CreateAsset(library, "Assets/Editor/CracktronCurves.curvesNormalized");
         AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
+        AssetDatabase.Refresh(); 
     }
 
     public static AnimationCurve CreateCurve(NormalizedCurveFunction f)
@@ -34,8 +34,9 @@ public static class CurvePresetGenerator
         float t = 0.0f;
         for (var i = 0; i < StepCount; ++i)
         {
-            float val = f(t);
-            curve.AddKey(new Keyframe(t, val));
+            float tClamped = Mathf.Clamp01(t);
+            float val = Mathf.Clamp01(f(tClamped));
+            curve.AddKey(new Keyframe(tClamped, val));
             t += StepSize;
         }
 
