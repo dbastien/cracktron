@@ -41,6 +41,15 @@ public class TransformCurveEditor : Editor
         var path = Application.dataPath + "/Editor/CracktronCurves.curvesNormalized";
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
         presets = objs[0] as ScriptableObject;
+
+        var libs = AssetDatabase.FindAssets("t:UnityEditor.CurvePresetLibrary");
+
+        for (int i = 0; i < libs.Length; ++i)  
+        {
+            Debug.Log(libs[i]);
+        }
+
+        Debug.Log("whee");
     }
 
     public override void OnInspectorGUI()
