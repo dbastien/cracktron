@@ -42,14 +42,14 @@ public class TransformCurveEditor : Editor
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
         presets = objs[0] as ScriptableObject;
 
-        var libs = AssetDatabase.FindAssets("t:UnityEditor.CurvePresetLibrary");
+        //var libs = AssetDatabase.FindAssets("t:UnityEditor.CurvePresetLibrary");
 
-        for (int i = 0; i < libs.Length; ++i)  
-        {
-            Debug.Log(libs[i]);
-        }
+        //for (int i = 0; i < libs.Length; ++i)  
+        //{
+        //    Debug.Log(libs[i]);
+        //}
 
-        Debug.Log("whee");
+        //Debug.Log("whee");
     }
 
     public override void OnInspectorGUI()
