@@ -2,6 +2,11 @@
 
 public static class Vector2Extensions
 {
+    public static Vector2 LerpUnclamped(this Vector2 l, Vector2 r, float t)
+    {
+        return l + t * (r - l);
+    }
+
     public static Vector2 Clamp(this Vector2 v, Vector2 min, Vector2 max)
     {
         return new Vector2(Mathf.Clamp(v.x, min.x, max.x),

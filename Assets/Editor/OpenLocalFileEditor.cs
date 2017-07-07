@@ -18,7 +18,7 @@ public class OpenLocalFileEditor : PropertyDrawer
         position.x += position.width;
         position.width = 30.0f;
 
-        if (GUI.Button(position, "..."))
+        if (GUI.Button(position, AssetPreview.GetMiniTypeThumbnail(typeof(DefaultAsset))))
         {
             var path = EditorUtility.OpenFilePanel("Select a file", Application.dataPath, "");
             if (string.IsNullOrEmpty(path))

@@ -143,6 +143,13 @@ public struct Int3 : IEquatable<Int3>, IFormattable
         return new Int3(Mathf.ClosestPowerOfTwo(v.x), Mathf.ClosestPowerOfTwo(v.y), Mathf.ClosestPowerOfTwo(v.z));
     }
 
+    public static Int3 PowerOfTwoGreaterThanOrEqualTo(Int3 v)
+    {
+        return new Int3(v.x.PowerOfTwoGreaterThanOrEqualTo(),
+                        v.y.PowerOfTwoGreaterThanOrEqualTo(),
+                        v.z.PowerOfTwoGreaterThanOrEqualTo());
+    }
+
     public static int CubicToLinearIndex(Int3 v, Int3 size)
     {
         return (v.x) +

@@ -7,7 +7,7 @@ public abstract class ImprovedSingletonBehavior<T> : MonoBehaviour where T : Imp
     private bool initialized;
     private object initializedLock = new object();
 
-    [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Fix later")]
+    [SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "Necessary for pattern")]
     private static T instance;
     public static T Instance
     {
