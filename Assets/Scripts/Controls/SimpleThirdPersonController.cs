@@ -3,7 +3,7 @@
 public class SimpleThirdPersonController : MonoBehaviour 
 {
     public float MovementSpeed = 1.0f;
-    public float TurnSpeed = 35.0f;
+    public float TurnSpeed = 40.0f;
 
     void Awake()
     {
