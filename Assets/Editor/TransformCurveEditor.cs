@@ -38,7 +38,7 @@ public class TransformCurveEditor : Editor
     [DidReloadScripts]
     private static void LoadPresets()
     {
-        var path = Application.dataPath + "/Editor/CracktronCurves.curvesNormalized";
+        var path = Application.dataPath + "/Editor/NormalizedCurves.curvesNormalized";
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
         presets = objs[0] as ScriptableObject;
 
@@ -64,9 +64,17 @@ public class TransformCurveEditor : Editor
         int index = propNames.IndexOf(targetCurve.CurveTargetName);
         index = Mathf.Max(0, index);
 
+        var curveProperty = serializedObject.FindProperty("Curve");
+
+        EditorGUILayout.PropertyField(curveProperty);
+        serializedObject.ApplyModifiedProperties();
+
+        EditorGUILayout.BeginVertical();
+        EditorGUILayout.Space();
+        EditorGUILayout.EndVertical();
+
         EditorGUILayout.BeginHorizontal();
         {
-            targetCurve.Curve = EditorGUILayout.CurveField(targetCurve.Curve, GUILayout.Height(100f), GUILayout.Width(100f));
             EditorGUILayout.BeginVertical();
             {
                 EditorGUI.BeginChangeCheck();
@@ -86,51 +94,7 @@ public class TransformCurveEditor : Editor
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndHorizontal();
-
-        WrapMode CurveWrapMode = WrapMode.Loop;
-
-        Vector2 curveItemSize = new Vector2(40f, 40f);
-        Vector2 curveItemPadding = new Vector2(5f, 5f);
-
-        var presetCount = CurvePresetLibraryWrapper.Count(presets);
-
-        //TODO: find size of layotable width - controls are inset
-        int rowItems = Mathf.FloorToInt(Screen.width / (curveItemSize.x + curveItemPadding.x)) - 1;
-
-        int p = 0;
-        while (p < presetCount)
-        {
-            EditorGUILayout.BeginHorizontal();
-            int itemsThisRow = Mathf.Min(presetCount - p, rowItems);
-            for (int i = 0; i < itemsThisRow; ++i)
-            {
-                var rect = GUILayoutUtility.GetRect(curveItemSize.x,
-                                                    curveItemSize.y,
-                                                    GUILayout.Height(curveItemSize.x),
-                                                    GUILayout.Width(curveItemSize.y));
-
-                if (GUI.Button(rect, ""))
-                {
-                    var animationCurve = CurvePresetLibraryWrapper.GetPreset(presets, p);
-                    animationCurve.postWrapMode = CurveWrapMode;
-                    animationCurve.preWrapMode = CurveWrapMode;
-                    targetCurve.Curve = animationCurve;
-                    this.Repaint();
-                }
-                if (Event.current.type == EventType.repaint)
-                {
-                    CurvePresetLibraryWrapper.Draw(presets, rect, p);
-                }
-                if (i != itemsThisRow - 1)
-                {
-                    GUILayout.Space(curveItemPadding.x);
-                }
-                ++p;
-            }
-            EditorGUILayout.EndHorizontal();
-            GUILayout.Space(curveItemPadding.y);
-        }
-
+        
         //reset to default
         EditorGUIUtility.labelWidth = 0;
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TransformCurve : MonoBehaviour
 {
-    public AnimationCurve Curve;
+    [NormalizedAnimationCurve] public AnimationCurve Curve;
 
     public Vector3 Start;
     public Vector3 End;

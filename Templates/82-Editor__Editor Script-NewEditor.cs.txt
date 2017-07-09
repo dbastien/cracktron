@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(SomeType), false, isFallback = fakse)]
+[CustomEditor(typeof(SomeType), false, isFallback = false)]
 public class #SCRIPTNAME# : Editor 
 {
     public override void OnInspectorGUI()

@@ -4,7 +4,7 @@ using TMPro;
 [RequireComponent(typeof(TMP_Text))]
 public class TextMeshCurve: MonoBehaviour
 {
-    public AnimationCurve VertexCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.25f, 1.0f), new Keyframe(0.5f, 0), new Keyframe(0.75f, 1.0f), new Keyframe(1, 0f));
+    [NormalizedAnimationCurve] public AnimationCurve VertexCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.25f, 1.0f), new Keyframe(0.5f, 0), new Keyframe(0.75f, 1.0f), new Keyframe(1, 0f));
     public float CurveScale = 1.0f;
 
     public float AnimationSpeed = 1.0f;
