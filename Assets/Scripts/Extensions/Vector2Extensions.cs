@@ -17,4 +17,10 @@ public static class Vector2Extensions
     {
         return l.x * r.y - l.y * r.x;
     }
+
+    public static Vector2 RotateTowards(Vector2 current, Vector2 target, float maxRadiansDelta, float maxMagnitudeDelta)
+    {
+        return Vector2.zero;
+    }
+
 }

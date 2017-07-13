@@ -11,19 +11,22 @@ public static class CurvePresetGenerator
     [MenuItem("Cracktron/Preset Libraries/Generate curves")] 
     public static void GenerateCurvePresets()
     {
-        var library = CurvePresetLibraryWrapper.CreateLibrary();
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.Linear), "linear");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.SmoothStep), "smooth step");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.SmootherStep), "smoother step");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.CircularIn), "circular in");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.SineHalf), "sine half");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
-        CurvePresetLibraryWrapper.Add(library, CreateCurve(InterpolationNormalized.CircularOut), "circular out");
+        var libraryNormalized = CurvePresetLibraryWrapper.CreateLibrary();
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.Linear), "linear");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SmoothStep), "smooth step");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SmootherStep), "smoother step");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CircularIn), "circular in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SineHalf), "sine half");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CircularOut), "circular out");
+        AssetDatabase.CreateAsset(libraryNormalized, "Assets" + Constants.NormalizedCurvesPath);
 
-        AssetDatabase.CreateAsset(library, "Assets/Editor/CracktronCurves.curvesNormalized");
+        var libraryUnnormalized = Object.Instantiate(libraryNormalized);
+
+        AssetDatabase.CreateAsset(libraryUnnormalized, "Assets" + Constants.CurvesPath);
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }

@@ -11,26 +11,28 @@ public class TextMeshScroll : MonoBehaviour
 
     void Update()
     {
-        if (textComponent == null)
-        {
-            textComponent = gameObject.GetComponent<TMP_Text>();
+        return;
 
-            textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
-            textComponent.ForceMeshUpdate(); // Generate the mesh and populate the textInfo with data we can use and manipulate.
-        }
+        //if (textComponent == null)
+        //{
+        //    textComponent = gameObject.GetComponent<TMP_Text>();
 
-        if (rectComponent == null)
-        {
-            rectComponent = gameObject.GetComponent<RectTransform>();
-        }
+        //    textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
+        //    //textComponent.ForceMeshUpdate(); // Generate the mesh and populate the textInfo with data we can use and manipulate.
+        //}
 
-        scrollPosition += ScrollSpeed * Time.deltaTime;
-        scrollPosition %= 1.0f;
+        //if (rectComponent == null)
+        //{
+        //    rectComponent = gameObject.GetComponent<RectTransform>();
+        //}
 
-        var xPos = -Mathf.Lerp(-rectComponent.rect.width, textComponent.preferredWidth + rectComponent.rect.width, scrollPosition);
+        //scrollPosition += ScrollSpeed * Time.deltaTime;
+        //scrollPosition %= 1.0f;
 
-        rectComponent.position = new Vector3(xPos,
-                                             rectComponent.position.y,
-                                             rectComponent.position.z);
+        //var xPos = -Mathf.Lerp(-rectComponent.rect.width, textComponent.preferredWidth + rectComponent.rect.width, scrollPosition);
+
+        //rectComponent.position = new Vector3(xPos,
+        //                                     rectComponent.position.y,
+        //                                     rectComponent.position.z);
     }
 }

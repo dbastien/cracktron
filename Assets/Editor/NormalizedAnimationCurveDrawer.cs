@@ -19,7 +19,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
         curveProperty.LogPathWithChildren();
 
         var preWrapProperty = curveProperty.FindPropertyRelative("preWrapMode"); 
-        var wrapMode = (WrapMode)preWrapProperty.enumValueIndex;
+        //var wrapMode = (WrapMode)preWrapProperty.enumValueIndex;
 
         EditorGUILayout.CurveField(property.animationCurveValue, GUILayout.Height(100f), GUILayout.Width(100f));
 

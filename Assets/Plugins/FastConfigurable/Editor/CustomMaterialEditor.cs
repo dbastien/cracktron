@@ -100,8 +100,6 @@ namespace HoloToolkit.Unity
 
         public static void TextureScaleOffsetVector4Property(MaterialEditor matEditor, GUIContent label, MaterialProperty scaleOffsetProp)
         {
-            matEditor.BeginAnimatedCheck(scaleOffsetProp);
-
             EditorGUI.showMixedValue = scaleOffsetProp.hasMixedValue;
             EditorGUI.BeginChangeCheck();
 
@@ -118,8 +116,6 @@ namespace HoloToolkit.Unity
                 scaleOffsetProp.vectorValue = new Vector4(textureScale.x, textureScale.y, textureOffset.x, textureOffset.y);
             }
             EditorGUI.showMixedValue = false;
-
-            matEditor.EndAnimatedCheck();
         }
 
         public static Rect GetControlRectForSingleLine()

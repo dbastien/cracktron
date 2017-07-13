@@ -18,72 +18,74 @@ public class TextMeshCurve: MonoBehaviour
 
     void Update()
     {
-        if (!textComponent)
-        {
-            textComponent = gameObject.GetComponent<TMP_Text>();
-            textComponent.havePropertiesChanged = true;
-            textComponent.ForceMeshUpdate();
-            initialMeshInfo = textComponent.textInfo.CopyMeshInfoVertexData();
-        }
+        return;
 
-        timeElapsed += Time.deltaTime;      
-        Matrix4x4 matrix;
+        //if (!textComponent)
+        //{
+        //    textComponent = gameObject.GetComponent<TMP_Text>();
+        //    textComponent.havePropertiesChanged = true;
+        //    //textComponent.ForceMeshUpdate();
+        //    initialMeshInfo = textComponent.textInfo.CopyMeshInfoVertexData();
+        //}
 
-        textComponent.havePropertiesChanged = true;
-        textComponent.ForceMeshUpdate();
+        //timeElapsed += Time.deltaTime;      
+        //Matrix4x4 matrix;
 
-        var textInfo = textComponent.textInfo;
-        var characterCount = textInfo.characterCount;
+        //textComponent.havePropertiesChanged = true;
+        ////textComponent.ForceMeshUpdate();
 
-        var boundsMinX = textComponent.bounds.min.x;
-        var boundsMaxX = textComponent.bounds.max.x;
+        //var textInfo = textComponent.textInfo;
+        //var characterCount = textInfo.characterCount;
 
-        for (var i = 0; i < characterCount; ++i)
-        {
-            if (!textInfo.characterInfo[i].isVisible)
-            {
-                continue;
-            }
+        //var boundsMinX = textComponent.bounds.min.x;
+        //var boundsMaxX = textComponent.bounds.max.x;
 
-            var vertexIndex = textInfo.characterInfo[i].vertexIndex;
-            var materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
-            var targetVertices = textInfo.meshInfo[materialIndex].vertices;
-            var initialVertices = initialMeshInfo[materialIndex].vertices;
+        //for (var i = 0; i < characterCount; ++i)
+        //{
+        //    if (!textInfo.characterInfo[i].isVisible)
+        //    {
+        //        continue;
+        //    }
 
-            // Compute the baseline mid point for each character
-            var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * 0.5f, 
-                                                   textInfo.characterInfo[i].baseLine,
-                                                   0.0f);
+        //    var vertexIndex = textInfo.characterInfo[i].vertexIndex;
+        //    var materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
+        //    var targetVertices = textInfo.meshInfo[materialIndex].vertices;
+        //    var initialVertices = initialMeshInfo[materialIndex].vertices;
 
-            // Compute the angle of rotation for each character based on the animation curve
-            var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
-            var x1 = x0 + 0.0001f;
-            var y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
-            var y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
+        //    // Compute the baseline mid point for each character
+        //    var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * 0.5f, 
+        //                                           textInfo.characterInfo[i].baseLine,
+        //                                           0.0f);
 
-            if (RotateLetters)
-            {
-                var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
+        //    // Compute the angle of rotation for each character based on the animation curve
+        //    var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
+        //    var x1 = x0 + 0.0001f;
+        //    var y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
+        //    var y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
 
-                var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * RotationScale;
-                var cross = Vector3.Cross(Vector3.right, tangent);
-                var angle = cross.z > 0 ? dot : 360 - dot;
+        //    if (RotateLetters)
+        //    {
+        //        var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
 
-                matrix = Matrix4x4.Translate(offsetToMidBaseline) *
-                         Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one) *
-                         Matrix4x4.Translate(-offsetToMidBaseline);
-            }
-            else
-            {
-                matrix = Matrix4x4.Translate(new Vector3(0, y0, 0));
-            }
+        //        var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * RotationScale;
+        //        var cross = Vector3.Cross(Vector3.right, tangent);
+        //        var angle = cross.z > 0 ? dot : 360 - dot;
 
-            targetVertices[vertexIndex + 0] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 0]);
-            targetVertices[vertexIndex + 1] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 1]);
-            targetVertices[vertexIndex + 2] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 2]);
-            targetVertices[vertexIndex + 3] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 3]);
-        }
+        //        matrix = Matrix4x4.Translate(offsetToMidBaseline) *
+        //                 Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one) *
+        //                 Matrix4x4.Translate(-offsetToMidBaseline);
+        //    }
+        //    else
+        //    {
+        //        matrix = Matrix4x4.Translate(new Vector3(0, y0, 0));
+        //    }
 
-        textComponent.UpdateVertexData();
+        //    targetVertices[vertexIndex + 0] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 0]);
+        //    targetVertices[vertexIndex + 1] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 1]);
+        //    targetVertices[vertexIndex + 2] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 2]);
+        //    targetVertices[vertexIndex + 3] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 3]);
+        //}
+
+        //textComponent.UpdateVertexData();
     }
 }
