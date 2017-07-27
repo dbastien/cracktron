@@ -12,25 +12,23 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
         EditorGUI.BeginProperty(position, label, property);
         property.serializedObject.Update();
 
-        property.LogPathWithChildren();
-        property.serializedObject.LogChildPropertyNames();
-        var curveProperty = property.FindPropertyRelative("m_Curve");
+        var oldCurve = property.animationCurveValue;
 
-        curveProperty.LogPathWithChildren();
+        int wrapMode = (int)oldCurve.preWrapMode;
 
-        var preWrapProperty = curveProperty.FindPropertyRelative("preWrapMode"); 
-        //var wrapMode = (WrapMode)preWrapProperty.enumValueIndex;
-
-        EditorGUILayout.CurveField(property.animationCurveValue, GUILayout.Height(100f), GUILayout.Width(100f));
+        property.animationCurveValue = EditorGUILayout.CurveField(property.animationCurveValue, GUILayout.Height(100f), GUILayout.Width(100f));
 
         EditorGUI.BeginChangeCheck();
-        //wrapMode = (WrapMode)EditorGUILayout.EnumPopup(wrapMode);
+
+        wrapMode = (int)(WrapModeUIFriendly)EditorGUILayout.EnumPopup((WrapModeUIFriendly)wrapMode);
+
         if (EditorGUI.EndChangeCheck())
         {
-            //var postWrapProperty = property.FindPropertyRelative("m_Curve.postWrapMode");
-
-            //preWrapProperty.enumValueIndex = (int)wrapMode;
-          //  postWrapProperty.enumValueIndex = (int)wrapMode;
+            var tempCurve = property.animationCurveValue;
+            tempCurve.preWrapMode = (WrapMode)wrapMode;
+            tempCurve.postWrapMode = (WrapMode)wrapMode;
+            property.animationCurveValue = tempCurve;
+            property.serializedObject.ApplyModifiedProperties();
         }
 
         Vector2 curveItemSize = new Vector2(40f, 40f);

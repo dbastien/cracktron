@@ -3,7 +3,7 @@ using UnityEditor;
 
 public static class CurvePresetGenerator
 {
-    public static readonly int StepCount = 100;
+    public static readonly int StepCount = 3;
     public static readonly float StepSize = StepCount > 1 ? 1f / (StepCount - 1) : 1f;
 
     public delegate float NormalizedCurveFunction(float t);
