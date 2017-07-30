@@ -3,7 +3,7 @@ using UnityEditor;
 
 public static class CurvePresetGenerator
 {
-    public static readonly int StepCount = 3;
+    public static readonly int StepCount = 50;
     public static readonly float StepSize = StepCount > 1 ? 1f / (StepCount - 1) : 1f;
 
     public delegate float NormalizedCurveFunction(float t);
@@ -25,8 +25,8 @@ public static class CurvePresetGenerator
         AssetDatabase.CreateAsset(libraryNormalized, "Assets" + Constants.NormalizedCurvesPath);
 
         var libraryUnnormalized = Object.Instantiate(libraryNormalized);
-
         AssetDatabase.CreateAsset(libraryUnnormalized, "Assets" + Constants.CurvesPath);
+
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
     }
@@ -34,6 +34,9 @@ public static class CurvePresetGenerator
     public static AnimationCurve CreateCurve(NormalizedCurveFunction f)
     {
         var curve = new AnimationCurve();
+        curve.preWrapMode = WrapMode.PingPong;
+        curve.postWrapMode = WrapMode.PingPong;
+
         float t = 0.0f;
         for (var i = 0; i < StepCount; ++i)
         {

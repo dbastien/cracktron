@@ -1,15 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-//public enum WrapMode
-//{
-//    Default = 0,
-//    Once = 1,
-//    Clamp = 1,
-//    PingPong = 4,
-//    ClampForever = 8
-//}
-
 public static class AnimationCurveUtils
 {
     public static void SmoothAllTangents(AnimationCurve curve)

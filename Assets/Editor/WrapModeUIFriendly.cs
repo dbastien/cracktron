@@ -1,8 +1,6 @@
 ﻿public enum WrapModeUIFriendly
 {
-    Default,
-    Once,
-    Loop,
-    ClampForever = 8,
-    PingPong = 4
+    Loop = 2,
+    PingPong = 4,
+    ClampForever = 8
 }

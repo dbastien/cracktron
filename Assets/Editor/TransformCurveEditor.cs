@@ -9,13 +9,7 @@ using UnityEditor.Callbacks;
 [CustomEditor(typeof(TransformCurve))]
 public class TransformCurveEditor : Editor
 {
-    private static ScriptableObject presets;
     private static List<string> propNames = new List<string>();
-
-    public WrapMode CurveWrapMode = WrapMode.Loop;
-
-    Vector2 scrollPos;
-    // private static Dictionary<Component, string> = new List<Component, string>;
 
     static TransformCurveEditor()
     {
@@ -35,30 +29,8 @@ public class TransformCurveEditor : Editor
         }
     }
 
-    [DidReloadScripts]
-    private static void LoadPresets()
-    {
-        var path = Application.dataPath + "/Editor/NormalizedCurves.curvesNormalized";
-        var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
-        presets = objs[0] as ScriptableObject;
-
-        //var libs = AssetDatabase.FindAssets("t:UnityEditor.CurvePresetLibrary");
-
-        //for (int i = 0; i < libs.Length; ++i)  
-        //{
-        //    Debug.Log(libs[i]);
-        //}
-
-        //Debug.Log("whee");
-    }
-
     public override void OnInspectorGUI()
     {
-        if (presets == null)
-        {
-            LoadPresets();
-        }
-
         var targetCurve = target as TransformCurve;
 
         int index = propNames.IndexOf(targetCurve.CurveTargetName);
