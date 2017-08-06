@@ -13,16 +13,16 @@
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 half4 _Color;
-UNITY_DECLARE_TEX2D(_MainTex);
-UNITY_DECLARE_TEX2D(_OcclusionMap);
+UNITY_DECLARE_TEX2D_HALF(_MainTex);
+UNITY_DECLARE_TEX2D_HALF(_OcclusionMap);
 
-UNITY_DECLARE_TEX2D(_BumpMap);
+UNITY_DECLARE_TEX2D_HALF(_BumpMap);
 
 half _Specular;
-UNITY_DECLARE_TEX2D(_SpecularMap);
+UNITY_DECLARE_TEX2D_HALF(_SpecularMap);
 
 half _Gloss;
-UNITY_DECLARE_TEX2D(_GlossMap);
+UNITY_DECLARE_TEX2D_HALF(_GlossMap);
 
 samplerCUBE _CubeMap;
 half _ReflectionScale;
@@ -32,7 +32,7 @@ half _RimPower;
 half4 _RimColor;
 
 half4 _EmissionColor;
-UNITY_DECLARE_TEX2D(_EmissionMap);
+UNITY_DECLARE_TEX2D_HALF(_EmissionMap);
 
 half _Cutoff;
 float4 _TextureScaleOffset;
@@ -274,8 +274,8 @@ half4 frag(v2f IN) : SV_Target
     #endif
 
     #if defined(_USEVERTEXCOLOR_ON)
-        color *= IN.color;
-    //if vertex color is on, we've already scaled it by the main color if needed in the vertex shader
+        //if vertex color is on, we've already scaled it by the main color if needed in the vertex shader
+        color *= IN.color;        
     #elif defined(_USEMAINCOLOR_ON)
         color *= _Color;
     #endif
