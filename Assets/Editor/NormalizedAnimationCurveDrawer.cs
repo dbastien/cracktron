@@ -31,8 +31,8 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
             property.serializedObject.ApplyModifiedProperties();
         }
 
-        Vector2 curveItemSize = new Vector2(40f, 40f);
-        Vector2 curveItemPadding = new Vector2(5f, 5f);
+        var curveItemSize = new Vector2(40f, 40f);
+        var curveItemPadding = new Vector2(5f, 5f);
 
         var presetCount = CurvePresetLibraryWrapper.Count(NormalizedAnimationCurveDrawer.presets);
 

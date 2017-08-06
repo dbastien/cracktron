@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class FindReferencesInAssets
@@ -22,21 +23,13 @@ public class FindReferencesInAssets
             return;
         }
 
-        int countFound = 0;
-
         var gameObjects = AssetDatabaseUtils.FindAndLoadAssets<GameObject>();
         Debug.LogFormat(asset, "Searching <b>{0}</b> AssetDatabase GameObjects for references to: <b>{1}</b>", gameObjects.Count, asset.name);
-        foreach (var go in gameObjects)
-        {
-            countFound += FindReferencesInAssets.FindReferences(asset, go);
-        }
+        int countFound = gameObjects.Sum(go => FindReferencesInAssets.FindReferences(asset, go));
 
         var sceneGameObjects = Resources.FindObjectsOfTypeAll<GameObject>();
         Debug.LogFormat(asset, "Searching <b>{0}</b> Scene GameObjects for references to: <b>{1}</b>", sceneGameObjects.Length, asset.name);
-        foreach (var go in sceneGameObjects)
-        {
-            countFound += FindReferencesInAssets.FindReferences(asset, go);
-        }
+        countFound += sceneGameObjects.Sum(go => FindReferencesInAssets.FindReferences(asset, go));
 
         Debug.LogFormat(asset, "<b>Completed search, {0} references found</b>", countFound);
     }

@@ -63,19 +63,19 @@ public class BuiltInResourceViewerWindow : EditorWindow
             this.drawings = null;
         }
 
-        float top = 36;
+        const float top = 36;
 
         if (this.drawings == null)
         {
-            string lowerSearch = this.search.ToLower();
+            var lowerSearch = this.search.ToLower();
 
             this.drawings = new List<Drawing>();
 
             GUIContent inactiveText = new GUIContent("inactive");
             GUIContent activeText = new GUIContent("active");
 
-            float x = 5.0f;
-            float y = 5.0f;
+            var x = 5.0f;
+            var y = 5.0f;
 
             if (this.showingStyles)
             {
@@ -95,7 +95,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
                                           ss.CalcSize(inactiveText, activeText).x) 
                                           + 16.0f;
 
-                    var height = 60.0f;
+                    const float height = 60.0f;
 
                     if (x + width > this.position.width - 32 && x > 5.0f)
                     {
@@ -153,7 +153,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
                     var width = Mathf.Max(GUI.skin.button.CalcSize(new GUIContent(texture.name)).x, texture.width) + 8.0f;
 
-                    float height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y + 8.0f;
+                    var height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y + 8.0f;
 
                     if (x + width > this.position.width - 32.0f)
                     {

@@ -25,13 +25,13 @@ public class TargetingManager : MonoBehaviour
         GameObject closest = null;
         float distance = Mathf.Infinity;
 
-        foreach (var gameObject in gameObjects)
+        foreach (var go in gameObjects)
         {
-            Vector3 diff = gameObject.transform.position - searchPosition;
+            Vector3 diff = go.transform.position - searchPosition;
             float curDistance = diff.sqrMagnitude;
             if (curDistance < distance)
             {
-                closest = gameObject;
+                closest = go;
                 distance = curDistance;
             }
         }

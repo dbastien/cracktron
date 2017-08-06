@@ -9,7 +9,7 @@ public class Int3Drawer : PropertyDrawer
         label = EditorGUI.BeginProperty(position, label, property);
         var contentPosition = EditorGUI.PrefixLabel(position, label);
 
-        var subLabels = new GUIContent[3] { new GUIContent("x"), new GUIContent("y"), new GUIContent("z") };
+        var subLabels = new GUIContent[] { new GUIContent("x"), new GUIContent("y"), new GUIContent("z") };
 
         EditorGUI.MultiPropertyField(contentPosition, subLabels, property.FindPropertyRelative("x"));
 

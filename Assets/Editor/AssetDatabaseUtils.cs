@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,14 +7,14 @@ public static class AssetDatabaseUtils
 {
     public static List<T> FindAssetsByType<T>() where T : Object
     {
-        var GUIDs = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)), null);
-        var assets = new List<T>(GUIDs.Length);
+        var guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)), null);
+        var assets = new List<T>(guids.Length);
 
-        for (var i = 0; i < GUIDs.Length; ++i)
+        for (var i = 0; i < guids.Length; ++i)
         {
-            Debug.Log(GUIDs[i]);
+            Debug.Log(guids[i]);
 
-            var assetPath = AssetDatabase.GUIDToAssetPath(GUIDs[i]);
+            var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
 
             T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
@@ -60,15 +61,7 @@ public static class AssetDatabaseUtils
     {
         var assets = new List<T>(guids.Length);
 
-        foreach (var guid in guids)
-        {
-            T asset = AssetDatabaseUtils.LoadAssetByGUID<T>(guid);
-
-            if (asset != null)
-            {
-                assets.Add(asset);
-            }
-        }
+        assets.AddRange(guids.Select(guid => AssetDatabaseUtils.LoadAssetByGUID<T>(guid)).Where(asset => asset != null));
 
         return assets;
     }

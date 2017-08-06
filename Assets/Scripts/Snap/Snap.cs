@@ -25,11 +25,6 @@ public class Snap : MonoBehaviour
     {
         //TODO: requirecomponent? cache?
         var boxCollider = this.GetComponent<BoxCollider>();
-        if (boxCollider != null)
-        {
-            return new Vector3[] { boxCollider.bounds.min - this.transform.position, boxCollider.bounds.max - this.transform.position };
-        }
-
-        return new Vector3[] { Vector3.zero };
+        return boxCollider != null ? new Vector3[] { boxCollider.bounds.min - this.transform.position, boxCollider.bounds.max - this.transform.position } : new Vector3[] { Vector3.zero };
     }
 }

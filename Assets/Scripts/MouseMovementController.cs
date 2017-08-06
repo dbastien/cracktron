@@ -43,8 +43,8 @@ public class MouseMovementController : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             this.TargetTransform.eulerAngles += new Vector3(-axisDelta.y * this.RotateSpeed.y * finalScale,
-                                                        axisDelta.x * this.RotateSpeed.x * finalScale,
-                                                        0.0f);
+                                                             axisDelta.x * this.RotateSpeed.x * finalScale,
+                                                             0.0f);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -8,7 +9,7 @@ using Object = UnityEngine.Object;
 public class CopyCatWindow : EditorWindow
 {
     private static Type t;
-    private static UnityEngine.Object copySourceObject;
+    private static Object copySourceObject;
 
     private static List<PropertyInfo> properties;
     private static object[] propertiesValue;
@@ -21,7 +22,7 @@ public class CopyCatWindow : EditorWindow
     private static bool isInPasteMultiMode;
 
     //for paste multi
-    private static UnityEngine.Object[] possiblePasteTargets;
+    private static Object[] possiblePasteTargets;
     private static bool[] possiblePasteTargetsSelected;
 
     //show context menu for all objects that inherit from component
@@ -40,14 +41,7 @@ public class CopyCatWindow : EditorWindow
         CopyCatWindow.fields = new List<FieldInfo>();
         CopyCatWindow.fields.AddRange(CopyCatWindow.t.GetFields(BindingFlags.Public | BindingFlags.Instance));
 
-        var propertiesToRemove = new List<PropertyInfo>();
-        foreach (var property in CopyCatWindow.properties)
-        {
-            if (!property.CanRead || !property.CanWrite)
-            {
-                propertiesToRemove.Add(property);
-            }
-        }
+        var propertiesToRemove = CopyCatWindow.properties.Where(property => !property.CanRead || !property.CanWrite).ToList();
 
         foreach (var property in propertiesToRemove)
         {

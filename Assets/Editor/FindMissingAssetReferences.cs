@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,21 +7,13 @@ public class FindMissingAssetReferences
     [MenuItem("Assets/Find Missing References")]
     public static void FindMissingReferencesMenu()
     {
-        int missingCount = 0;
-
         var gameObjects = AssetDatabaseUtils.FindAndLoadAssets<GameObject>();
         Debug.LogFormat("Searching <b>{0}</b> AssetDatabase GameObjects for missing references", gameObjects.Count);
-        foreach (var go in gameObjects)
-        {
-            missingCount += FindMissingAssetReferences.FindMissingReferences(go);
-        }
+        int missingCount = gameObjects.Sum(go => FindMissingAssetReferences.FindMissingReferences(go));
 
         var sceneGameObjects = Resources.FindObjectsOfTypeAll<GameObject>();
         Debug.LogFormat("Searching <b>{0}</b> Scene GameObjects for missing references", sceneGameObjects.Length);
-        foreach (var go in sceneGameObjects)
-        {
-            missingCount += FindMissingAssetReferences.FindMissingReferences(go);
-        }
+        missingCount += sceneGameObjects.Sum(go => FindMissingAssetReferences.FindMissingReferences(go));
 
         var logString = string.Format("<b>Completed search, {0} missing references</b>", missingCount);
 

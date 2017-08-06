@@ -9,7 +9,7 @@ public class OpenLocalFolderEditor : PropertyDrawer
     {
         if (property.propertyType != SerializedPropertyType.String)
         {
-            throw new ArgumentException() { };
+            throw new ArgumentException();
         }
 
         position.width -= 30;

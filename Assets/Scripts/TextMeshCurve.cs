@@ -27,7 +27,6 @@ public class TextMeshCurve : MonoBehaviour
         }
 
         this.timeElapsed += Time.deltaTime;
-        Matrix4x4 matrix;
 
         this.textComponent.havePropertiesChanged = true;
         this.textComponent.ForceMeshUpdate();
@@ -61,6 +60,7 @@ public class TextMeshCurve : MonoBehaviour
             var y0 = this.VertexCurve.Evaluate(x0 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
             var y1 = this.VertexCurve.Evaluate(x1 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
 
+            Matrix4x4 matrix;
             if (this.RotateLetters)
             {
                 var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);

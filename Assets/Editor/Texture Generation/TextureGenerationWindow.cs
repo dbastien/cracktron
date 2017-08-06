@@ -36,8 +36,7 @@ public class TextureGenerationWindow : EditorWindow
 
         //https://docs.unity3d.com/ScriptReference/EditorGUI.DrawPreviewTexture.html
         EditorGUILayout.BeginHorizontal();
-        Rect previewRect;
-        previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
+        var previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
         EditorGUI.DrawPreviewTexture(previewRect, this.Texture);
 
         previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
