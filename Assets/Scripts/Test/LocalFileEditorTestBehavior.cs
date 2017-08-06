@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TestBehavior : MonoBehaviour 
+public class LocalFileEditorTestBehavior : MonoBehaviour 
 {
     [OpenLocalFile] public string OpenLocalFileEditorTest;
 }

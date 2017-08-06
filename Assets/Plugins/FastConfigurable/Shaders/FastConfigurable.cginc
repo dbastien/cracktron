@@ -152,17 +152,15 @@ half3 Shade4PointLightsHalf(float3 pos, half3 normal)
     half4 toLightY = unity_4LightPosY0 - pos.y;
     half4 toLightZ = unity_4LightPosZ0 - pos.z;
 
-    // NdotL
     half4 ndotl = toLightX * normal.x + toLightY * normal.y + toLightZ * normal.z;
-
     half4 lengthSq = toLightX * toLightX + toLightY * toLightY + toLightZ * toLightZ;
+
     // don't produce NaNs if some vertex position overlaps with the light
-    // TODO: likely can be optimized away
+    // TODO: likely can be optimized away with saturate magic
     lengthSq = max(lengthSq, 0.00001);
 
     // correct NdotL
-    half4 corr = rsqrt(lengthSq);
-    ndotl = saturate(ndotl * corr);
+    ndotl = saturate(ndotl * rsqrt(lengthSq));
 
     // attenuation
     half4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1));
@@ -321,8 +319,7 @@ half4 frag(v2f IN) : SV_Target
                     gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
                 #endif
                 half specular = _Specular;
-                //todo: should check spec map define?
-                #if defined(_USESPECULAR_ON)
+                #if defined(_USESPECULARMAP_ON)
                     specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
                 #endif
                 lightColorShadowAttenuated += FastConfigurableLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
