@@ -4,9 +4,9 @@ public class Brain : MonoBehaviour
 {
     public BrainData BrainData;
 
-    private Rigidbody ownerRigidbody;
-
     public float MovementSpeed = 6f;
+
+    private Rigidbody ownerRigidbody;
 
     public void Start()
     {

@@ -5,14 +5,14 @@ using UnityEngine;
 [Serializable]
 public class PerfAnalyzerWindow : EditorWindow
 {
-    private bool analyzeMaterialsRan;
-    private string[] materialInfo;
-
     [SerializeField] public GUIStyle settingSuggestedLabel;
     [SerializeField] public GUIStyle settingNotSuggestedLabel;
 
-    [SerializeField] public GUILayoutOption[] layoutColumnWidth = new GUILayoutOption[] { GUILayout.Width(325f) };
-    [SerializeField] public GUILayoutOption[] layoutButtonWidth = new GUILayoutOption[] { GUILayout.Width(325f) };
+    [SerializeField] public GUILayoutOption[] layoutColumnWidth = { GUILayout.Width(325f) };
+    [SerializeField] public GUILayoutOption[] layoutButtonWidth = { GUILayout.Width(325f) };
+
+    private bool analyzeMaterialsRan;
+    private string[] materialInfo;
 
     [MenuItem("Cracktron/Perf Analyzer Window")]
     public static void ShowWindow()

@@ -23,26 +23,6 @@ public class TextureGenerationWindow : EditorWindow
         window.Show();
     }
 
-    private void FillTexture()
-    {
-        for (var y = 0; y < this.Texture.height; ++y)
-        {
-            for (var x = 0; x < this.Texture.width; ++x)
-            {
-                float xNormalized = x / (float)this.Texture.width;
-                float yNormalized = y / (float)this.Texture.height;
-
-                float a = 1.0f;
-                float r = Mathf.PerlinNoise(xNormalized, yNormalized);
-                float g = Mathf.PerlinNoise(xNormalized, yNormalized);
-                float b = Mathf.PerlinNoise(xNormalized, yNormalized);
-                this.Texture.SetPixel(x, y, new Color(r, g, b, a));
-            }
-        }
-
-        this.Texture.Apply();
-    }
-
     public void OnGUI()
     {
         GUILayout.Label(" ", EditorStyles.boldLabel);
@@ -70,6 +50,26 @@ public class TextureGenerationWindow : EditorWindow
         if (GUILayout.Button("Export", TextureGenerationWindow.GUILayoutOptionEmptyArray))
         {
         }
+    }
+
+    private void FillTexture()
+    {
+        for (var y = 0; y < this.Texture.height; ++y)
+        {
+            for (var x = 0; x < this.Texture.width; ++x)
+            {
+                float xNormalized = x / (float)this.Texture.width;
+                float yNormalized = y / (float)this.Texture.height;
+
+                float a = 1.0f;
+                float r = Mathf.PerlinNoise(xNormalized, yNormalized);
+                float g = Mathf.PerlinNoise(xNormalized, yNormalized);
+                float b = Mathf.PerlinNoise(xNormalized, yNormalized);
+                this.Texture.SetPixel(x, y, new Color(r, g, b, a));
+            }
+        }
+
+        this.Texture.Apply();
     }
 
     protected static class Styles

@@ -9,6 +9,8 @@ using UnityEngine;
 [CustomEditor(typeof(Object), true, isFallback = true)]
 public class ObjectEditor : Editor
 {
+    private Dictionary<string, ReorderableListState> reorderableListStates;
+
     protected class ReorderableListState
     {
         public ReorderableList reorderableList;
@@ -27,13 +29,6 @@ public class ObjectEditor : Editor
         {
             GUI.Label(rect, this.serializedProperty.propertyPath);
         }
-    }
-
-    private Dictionary<string, ReorderableListState> reorderableListStates;
-
-    protected virtual void OnEnable()
-    {
-        this.reorderableListStates = new Dictionary<string, ReorderableListState>();
     }
 
     ~ObjectEditor()
@@ -83,6 +78,16 @@ public class ObjectEditor : Editor
         }
     }
 
+    protected virtual void OnEnable()
+    {
+        this.reorderableListStates = new Dictionary<string, ReorderableListState>();
+    }
+    protected void ArrayField(SerializedProperty property)
+    {
+        var reorderableList = this.GetReorderableListState(property).reorderableList;
+        reorderableList.DoLayoutList();
+    }
+
     private ReorderableListState GetReorderableListState(SerializedProperty property)
     {
         ReorderableListState reorderableListState = null;
@@ -104,11 +109,5 @@ public class ObjectEditor : Editor
         this.reorderableListStates.Add(property.propertyPath, reorderableListState);
 
         return reorderableListState;
-    }
-
-    protected void ArrayField(SerializedProperty property)
-    {
-        var reorderableList = this.GetReorderableListState(property).reorderableList;
-        reorderableList.DoLayoutList();
     }
 }

@@ -195,38 +195,6 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
-        {
-            EditorGUI.showMixedValue = this.blendMode.hasMixedValue;
-            var mode = (BlendMode)this.blendMode.floatValue;
-
-            EditorGUI.BeginChangeCheck();
-            mode = (BlendMode)EditorGUILayout.Popup(Styles.renderingMode, (int)mode, Styles.blendNames);
-            if (EditorGUI.EndChangeCheck())
-            {
-                matEditor.RegisterPropertyChangeUndo("Rendering Mode");
-                this.blendMode.floatValue = (float)mode;
-            }
-
-            EditorGUI.showMixedValue = false;
-        }
-
-        protected virtual void ShowOutputConfigurationGUI(MaterialEditor matEditor)
-        {
-            var mode = (BlendMode)this.blendMode.floatValue;
-            if (mode == BlendMode.Advanced)
-            {
-                ShaderGUIUtils.BeginHeader("Output Configuration");
-                {
-                    matEditor.ShaderProperty(this.cullMode, Styles.cullMode);
-                    matEditor.ShaderProperty(this.zTest, Styles.zTest);
-                    matEditor.ShaderProperty(this.zWrite, Styles.zWrite);
-                    matEditor.ShaderProperty(this.colorWriteMask, Styles.colorWriteMask);
-                }
-                ShaderGUIUtils.EndHeader();
-            }
-        }
-
         public override void AssignNewShaderToMaterial(Material mat, Shader oldShader, Shader newShader)
         {
             // _Emission property is lost after assigning, transfer it before assigning the new shader
@@ -283,6 +251,38 @@ namespace HoloToolkit.Unity
 
             this.SetMaterialBlendMode(mat, blendMode);
             this.SetMaterialAutoPropertiesAndKeywords(mat);
+        }
+
+        protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
+        {
+            EditorGUI.showMixedValue = this.blendMode.hasMixedValue;
+            var mode = (BlendMode)this.blendMode.floatValue;
+
+            EditorGUI.BeginChangeCheck();
+            mode = (BlendMode)EditorGUILayout.Popup(Styles.renderingMode, (int)mode, Styles.blendNames);
+            if (EditorGUI.EndChangeCheck())
+            {
+                matEditor.RegisterPropertyChangeUndo("Rendering Mode");
+                this.blendMode.floatValue = (float)mode;
+            }
+
+            EditorGUI.showMixedValue = false;
+        }
+
+        protected virtual void ShowOutputConfigurationGUI(MaterialEditor matEditor)
+        {
+            var mode = (BlendMode)this.blendMode.floatValue;
+            if (mode == BlendMode.Advanced)
+            {
+                ShaderGUIUtils.BeginHeader("Output Configuration");
+                {
+                    matEditor.ShaderProperty(this.cullMode, Styles.cullMode);
+                    matEditor.ShaderProperty(this.zTest, Styles.zTest);
+                    matEditor.ShaderProperty(this.zWrite, Styles.zWrite);
+                    matEditor.ShaderProperty(this.colorWriteMask, Styles.colorWriteMask);
+                }
+                ShaderGUIUtils.EndHeader();
+            }
         }
 
         protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
@@ -425,8 +425,9 @@ namespace HoloToolkit.Unity
 
         protected static class Styles
         {
-            public static string renderingMode = "Rendering Mode";
             public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
+
+            public static string renderingMode = "Rendering Mode";
 
             public static GUIContent vertexColorEnabled = new GUIContent("Vertex Color", "Utilize vertex color from the model?");
             public static GUIContent main = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(BrainData))]
 public class BrainDataEditor : Editor
@@ -10,6 +11,15 @@ public class BrainDataEditor : Editor
     private ReorderableList list;
 
     private List<Type> types = new List<Type>();
+
+    public override void OnInspectorGUI()
+    {
+        this.serializedObject.Update();
+
+        this.list.DoLayoutList();
+
+        this.serializedObject.ApplyModifiedProperties();
+    }
 
     private void OnEnable()
     {
@@ -103,14 +113,5 @@ public class BrainDataEditor : Editor
             var editor = Editor.CreateEditor(item, typeof(NeuronEditor));
             editor.OnInspectorGUI();
         }
-    }
-
-    public override void OnInspectorGUI()
-    {
-        this.serializedObject.Update();
-
-        this.list.DoLayoutList();
-
-        this.serializedObject.ApplyModifiedProperties();
     }
 }

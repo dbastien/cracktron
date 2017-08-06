@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class CopyCatWindow : EditorWindow
 {
@@ -122,6 +123,18 @@ public class CopyCatWindow : EditorWindow
         //SceneView.RepaintAll();
     }
 
+    public void OnGUI()
+    {
+        if (!CopyCatWindow.isInPasteMultiMode)
+        {
+            this.OnGUICopy();
+        }
+        else
+        {
+            this.OnGUIPasteMulti();
+        }
+    }
+
     private void OnGUICopy()
     {
         EditorGUILayout.Separator();
@@ -182,18 +195,6 @@ public class CopyCatWindow : EditorWindow
             }
 
             this.Close();
-        }
-    }
-
-    public void OnGUI()
-    {
-        if (!CopyCatWindow.isInPasteMultiMode)
-        {
-            this.OnGUICopy();
-        }
-        else
-        {
-            this.OnGUIPasteMulti();
         }
     }
 }

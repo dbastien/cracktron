@@ -7,16 +7,6 @@
 public class GameCameraFromSceneCamera : MonoBehaviour
 {
 #if UNITY_EDITOR
-    public void OnEnable()
-    {
-        UnityEditor.EditorApplication.update += GameCameraFromSceneCamera.UpdateCameras;
-    }
-
-    public void OnDisable()
-    {
-        UnityEditor.EditorApplication.update -= GameCameraFromSceneCamera.UpdateCameras;
-    }
-
     public static void UpdateCameras()
     {
         if (UnityEditor.SceneView.sceneViews.Count == 0)
@@ -31,6 +21,16 @@ public class GameCameraFromSceneCamera : MonoBehaviour
             Camera.main.transform.rotation = sceneView.camera.transform.rotation;
             Camera.main.transform.position = sceneView.camera.transform.position;
         }
+    }
+
+    public void OnEnable()
+    {
+        UnityEditor.EditorApplication.update += GameCameraFromSceneCamera.UpdateCameras;
+    }
+
+    public void OnDisable()
+    {
+        UnityEditor.EditorApplication.update -= GameCameraFromSceneCamera.UpdateCameras;
     }
 #endif
 }

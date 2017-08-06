@@ -13,7 +13,7 @@ public class ReorderableListDrawer : PropertyDrawer
     private ReorderableList reorderableListCached;
     private string propertyPath;
 
-    private void Init(SerializedProperty serializedProperty)
+    public void Init(SerializedProperty serializedProperty)
     {
         if (this.reorderableListCached != null)
         {
@@ -26,11 +26,11 @@ public class ReorderableListDrawer : PropertyDrawer
         //look for array component of property - this is the secret sauce to making it generic
         this.propertyPath = this.propertyPath.Substring(0, serializedProperty.propertyPath.LastIndexOf("Array") - 1);
 
-        SerializedProperty elements = serializedObject.FindProperty(this.propertyPath);
+        var elements = serializedObject.FindProperty(this.propertyPath);
         this.reorderableListCached = new ReorderableList(serializedProperty.serializedObject, elements, true, true, true, true)
         {
-            drawElementCallback = new ReorderableList.ElementCallbackDelegate(this.DrawElement),
-            drawHeaderCallback = new ReorderableList.HeaderCallbackDelegate(this.DrawHeader)
+            drawElementCallback = this.DrawElement,
+            drawHeaderCallback = this.DrawHeader
         };
         this.reorderableListCached.elementHeight += 16f;
     }
@@ -46,21 +46,6 @@ public class ReorderableListDrawer : PropertyDrawer
         this.reorderableListCached.DoList(position);
     }
 
-    private void DrawHeader(Rect rect)
-    {
-        GUI.Label(rect, this.propertyPath);
-    }
-
-    private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
-    {
-        SerializedProperty arrayElementAtIndex = this.reorderableListCached.serializedProperty.GetArrayElementAtIndex(index);
-        SerializedProperty property = arrayElementAtIndex;
-        RectOffset rectOffset = new RectOffset(0, 0, -1, -3);
-        rect = rectOffset.Add(rect);
-        rect.height = EditorGUIUtility.singleLineHeight;
-        EditorGUI.PropertyField(rect, property, false);
-    }
-
     public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)
     {
         //we'll get called for every element, so only size for the first one
@@ -71,5 +56,20 @@ public class ReorderableListDrawer : PropertyDrawer
 
         this.Init(serializedProperty);
         return this.reorderableListCached.GetHeight();
+    }
+    
+    private void DrawHeader(Rect rect)
+    {
+        GUI.Label(rect, this.propertyPath);
+    }
+
+    private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+    {
+        var arrayElementAtIndex = this.reorderableListCached.serializedProperty.GetArrayElementAtIndex(index);
+        var property = arrayElementAtIndex;
+        var rectOffset = new RectOffset(0, 0, -1, -3);
+        rect = rectOffset.Add(rect);
+        rect.height = EditorGUIUtility.singleLineHeight;
+        EditorGUI.PropertyField(rect, property, false);
     }
 }

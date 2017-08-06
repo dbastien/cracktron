@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class TransformCurve : MonoBehaviour
 {
+    public static readonly Dictionary<string, Vector3> DefaultEndOffsets = new Dictionary<string, Vector3>()
+    {
+        { "eulerAngles", new Vector3(0.0f, 360.0f, 0.0f) },
+        { "localEulerAngles", new Vector3(0.0f, 360.0f, 0.0f) },
+    };
+
     [NormalizedAnimationCurve] public AnimationCurve Curve;
 
     public Vector3 Start;
@@ -16,12 +22,6 @@ public class TransformCurve : MonoBehaviour
     public string CurveTargetName;
 
     private float timeElapsed;
-
-    public static readonly Dictionary<string, Vector3> DefaultEndOffsets = new Dictionary<string, Vector3>()
-    {
-        { "eulerAngles", new Vector3(0.0f, 360.0f, 0.0f) },
-        { "localEulerAngles", new Vector3(0.0f, 360.0f, 0.0f) },
-    };
 
     public void Reset()
     {
