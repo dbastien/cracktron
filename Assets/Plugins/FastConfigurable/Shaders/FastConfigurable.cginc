@@ -38,7 +38,6 @@ float4 _TextureScaleOffset;
 struct a2v
 {
     float4 vertex : POSITION;
-
     half3 normal : NORMAL;
 
     #if defined(_USEVERTEXCOLOR_ON)

@@ -33,10 +33,11 @@ public static class CurvePresetGenerator
 
     public static AnimationCurve CreateCurve(NormalizedCurveFunction f)
     {
-        var curve = new AnimationCurve();
-        curve.preWrapMode = WrapMode.PingPong;
-        curve.postWrapMode = WrapMode.PingPong;
-
+        var curve = new AnimationCurve()
+        {
+            preWrapMode = WrapMode.PingPong,
+            postWrapMode = WrapMode.PingPong
+        };
         float t = 0.0f;
         for (var i = 0; i < StepCount; ++i)
         {

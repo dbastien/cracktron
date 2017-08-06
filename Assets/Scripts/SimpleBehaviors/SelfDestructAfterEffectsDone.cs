@@ -7,23 +7,23 @@ public class SelfDestructAfterEffectsDone : MonoBehaviour
 
     void Awake()
     {
-        particleSystems = GetComponents<ParticleSystem>();
-        audioSources = GetComponents<AudioSource>();
+        this.particleSystems = GetComponents<ParticleSystem>();
+        this.audioSources = GetComponents<AudioSource>();
     }
 
     void Update()
     {
-        for (int i = 0; i < particleSystems.Length; ++i)
+        for (var i = 0; i < particleSystems.Length; ++i)
         {
-            if (particleSystems[i].IsAlive())
+            if (this.particleSystems[i].IsAlive())
             {
                 return;
             }
         }
 
-        for (int j = 0; j < audioSources.Length; ++j)
+        for (var j = 0; j < audioSources.Length; ++j)
         {
-            if (audioSources[j].isPlaying)
+            if (this.audioSources[j].isPlaying)
             {
                 return;
             }

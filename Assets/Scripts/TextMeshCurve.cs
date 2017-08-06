@@ -18,12 +18,12 @@ public class TextMeshCurve: MonoBehaviour
 
     void Update()
     {
-        if (!textComponent)
+        if (!this.textComponent)
         {
-            textComponent = gameObject.GetComponent<TMP_Text>();
-            textComponent.havePropertiesChanged = true;
-            textComponent.ForceMeshUpdate();
-            initialMeshInfo = textComponent.textInfo.CopyMeshInfoVertexData();
+            this.textComponent = gameObject.GetComponent<TMP_Text>();
+            this.textComponent.havePropertiesChanged = true;
+            this.textComponent.ForceMeshUpdate();
+            this.initialMeshInfo = this.textComponent.textInfo.CopyMeshInfoVertexData();
         }
 
         timeElapsed += Time.deltaTime;

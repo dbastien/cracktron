@@ -33,10 +33,10 @@ public struct Int4 : IEquatable<Int4>, IFormattable
 
     public override int GetHashCode()
     {
-        var hashCode = x.GetHashCode();
-        hashCode = (hashCode * 397) ^ y.GetHashCode();
-        hashCode = (hashCode * 397) ^ z.GetHashCode();
-        hashCode = (hashCode * 397) ^ w.GetHashCode();
+        var hashCode = this.x.GetHashCode();
+        hashCode = (hashCode * 397) ^ this.y.GetHashCode();
+        hashCode = (hashCode * 397) ^ this.z.GetHashCode();
+        hashCode = (hashCode * 397) ^ this.w.GetHashCode();
         return hashCode;
     }
 
@@ -44,18 +44,18 @@ public struct Int4 : IEquatable<Int4>, IFormattable
     {
         get
         {
-            if (index == 0) return x;
-            if (index == 1) return y;
-            if (index == 2) return z;
-            if (index == 2) return w;
+            if (index == 0) return this.x;
+            if (index == 1) return this.y;
+            if (index == 2) return this.z;
+            if (index == 2) return this.w;
             throw new ArgumentOutOfRangeException("Invalid Int4 index!");
         }
         set
         {
-            if (index == 0) x = value;
-            if (index == 1) y = value;
-            if (index == 2) z = value;
-            if (index == 3) w = value;
+            if (index == 0) this.x = value;
+            if (index == 1) this.y = value;
+            if (index == 2) this.z = value;
+            if (index == 3) this.w = value;
             throw new ArgumentOutOfRangeException("Invalid Int4 index!");
         }
     }
@@ -75,12 +75,12 @@ public struct Int4 : IEquatable<Int4>, IFormattable
     #region math operations
     public float magnitude
     {
-        get { return Magnitude(this); }
+        get { return this.Magnitude(this); }
     }
 
     public int sqrMagnitude
     {
-        get { return SqrMagnitude(this); }
+        get { return this.SqrMagnitude(this); }
     }
 
     public int dotOne
@@ -175,7 +175,7 @@ public struct Int4 : IEquatable<Int4>, IFormattable
     #region comparison
     public bool Equals(Int4 other)
     {
-        return x.Equals(other.x) && y.Equals(other.y) && z.Equals(other.z) && w.Equals(other.w);
+        return this.x.Equals(other.x) && this.y.Equals(other.y) && this.z.Equals(other.z) && this.w.Equals(other.w);
     }
 
     public static bool operator ==(Int4 l, Int4 r)
@@ -202,7 +202,7 @@ public struct Int4 : IEquatable<Int4>, IFormattable
 
     public string ToString(IFormatProvider formatProvider)
     {
-        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", x, y, z, w);
+        return string.Format(formatProvider, "X:{0} Y:{1} Z:{2} W:{3}", this.x, this.y, this.z, this.w);
     }
 
     public string ToString(string format, IFormatProvider formatProvider)
@@ -214,10 +214,10 @@ public struct Int4 : IEquatable<Int4>, IFormattable
 
         return string.Format(formatProvider,
                              "X:{0} Y:{1} Z:{2}, W:{3}",
-                             x.ToString(format, formatProvider),
-                             y.ToString(format, formatProvider),
-                             z.ToString(format, formatProvider),
-                             w.ToString(format, formatProvider));
+                             this.x.ToString(format, formatProvider),
+                             this.y.ToString(format, formatProvider),
+                             this.z.ToString(format, formatProvider),
+                             this.w.ToString(format, formatProvider));
     }
     #endregion
 }

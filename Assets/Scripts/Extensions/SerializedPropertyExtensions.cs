@@ -21,6 +21,7 @@ public static class SerializedPropertyExtensions
                 Debug.Log(names);
                 names = "";
             }
+
             if (propCopy.propertyPath.Length > rootLen)
             {
                 names += propCopy.propertyPath.Substring(rootLen, propCopy.propertyPath.Length - rootLen) + " ";

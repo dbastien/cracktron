@@ -26,8 +26,8 @@ public struct Int2 : IEquatable<Int2>, IFormattable
 
     public override int GetHashCode()
     {
-        var hashCode = x.GetHashCode();
-        hashCode = (hashCode * 397) ^ y.GetHashCode();
+        var hashCode = this.x.GetHashCode();
+        hashCode = (hashCode * 397) ^ this.y.GetHashCode();
         return hashCode;
     }
 
@@ -35,14 +35,14 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     {
         get
         {
-            if (index == 0) return x;
-            if (index == 1) return y;
+            if (index == 0) return this.x;
+            if (index == 1) return this.y;
             throw new ArgumentOutOfRangeException("Invalid Int2 index!");
         }
         set
         {
-            if (index == 0) x = value;
-            if (index == 1) y = value;
+            if (index == 0) this.x = value;
+            if (index == 1) this.y = value;
             throw new ArgumentOutOfRangeException("Invalid Int2 index!");
         }
     }
@@ -57,12 +57,12 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     #region math operations
     public float magnitude
     {
-        get { return Magnitude(this); }
+        get { return this.Magnitude(this); }
     }
 
     public int sqrMagnitude
     {
-        get { return SqrMagnitude(this); }
+        get { return this.SqrMagnitude(this); }
     }
 
     public int dotOne
@@ -157,7 +157,7 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     #region comparison
     public bool Equals(Int2 other)
     {
-        return x.Equals(other.x) && y.Equals(other.y);
+        return this.x.Equals(other.x) && this.y.Equals(other.y);
     }
 
     public static bool operator ==(Int2 l, Int2 r)
@@ -184,7 +184,7 @@ public struct Int2 : IEquatable<Int2>, IFormattable
 
     public string ToString(IFormatProvider formatProvider)
     {
-        return string.Format(formatProvider, "X:{0} Y:{1}", x, y);
+        return string.Format(formatProvider, "X:{0} Y:{1}", this.x, this.y);
     }
 
     public string ToString(string format, IFormatProvider formatProvider)
@@ -196,8 +196,8 @@ public struct Int2 : IEquatable<Int2>, IFormattable
 
         return string.Format(formatProvider,
                              "X:{0} Y:{1}",
-                             x.ToString(format, formatProvider),
-                             y.ToString(format, formatProvider));
+                             this.x.ToString(format, formatProvider),
+                             this.y.ToString(format, formatProvider));
     }
     #endregion
 }

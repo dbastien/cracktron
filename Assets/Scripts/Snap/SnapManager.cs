@@ -35,19 +35,19 @@ public class SnapManager : MonoBehaviour
     {
         var snapPoints = snap.GetSnapPoints();
 
-        if (SnapTargets == null || snapPoints.Length <= 0 || SnapTargets.Count <= 0)
+        if (this.SnapTargets == null || snapPoints.Length <= 0 || this.SnapTargets.Count <= 0)
         {
             return snap.Position;
         }
 
-        Vector3 bestDistance = new Vector3(SnapDistance, SnapDistance, SnapDistance);
+        Vector3 bestDistance = new Vector3(this.SnapDistance, this.SnapDistance, this.SnapDistance);
         Vector3 snappedPosition = snap.Position;
 
         for (int snapPointIndex = 0; snapPointIndex < snapPoints.Length; ++snapPointIndex)
         {
             var snapPoint = snapPoints[snapPointIndex];
 
-            foreach (var snapTarget in SnapTargets)
+            foreach (var snapTarget in this.SnapTargets)
             {
                 if (snapTarget.gameObject == snap.gameObject)
                 {

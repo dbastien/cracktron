@@ -5,9 +5,9 @@ public class SnapTarget : MonoBehaviour
 {
     private List<GameObject> lineObjects;
 
-    void Awake()
+    public void Awake()
     {
-        var snapPoints = GetSnapPoints();
+        var snapPoints = this.GetSnapPoints();
 
         lineObjects = new List<GameObject>(snapPoints.Length);
 

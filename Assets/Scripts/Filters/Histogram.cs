@@ -16,86 +16,86 @@ public class Histogram
             throw new ArgumentOutOfRangeException();
         }
 
-        BinMin = min;
-        BinMax = max;
+        this.BinMin = min;
+        this.BinMax = max;
 
-        Bins = new int[numBins];
-        BinTotals = new double[numBins];
+        this.Bins = new int[numBins];
+        this.BinTotals = new double[numBins];
 
-        BinWidth = (BinMax - BinMin) / numBins;
+        this.BinWidth = (this.BinMax - this.BinMin) / numBins;
     }
 
     public void Clear()
     {
-        Array.Clear(Bins, 0, Bins.Length);
-        Array.Clear(BinTotals, 0, BinTotals.Length);
+        Array.Clear(this.Bins, 0, this.Bins.Length);
+        Array.Clear(this.BinTotals, 0, this.BinTotals.Length);
     }
 
     public bool AddSample(float value)
     {
-        int binTarget = (int)((value - BinMin) / BinWidth);
+        int binTarget = (int)((value - this.BinMin) / this.BinWidth);
 
-        if (binTarget < 0 || binTarget >= Bins.Length)
+        if (binTarget < 0 || binTarget >= this.Bins.Length)
         {
             return false;
         }
 
-        Bins[binTarget]++;
-        BinTotals[binTarget] += value;
+        this.Bins[binTarget]++;
+        this.BinTotals[binTarget] += value;
 
         return true;
     }
 
     public float GetBinAverage(int bin)
     {
-        if ((bin < 0) || (bin > Bins.Length - 1))
+        if ((bin < 0) || (bin > this.Bins.Length - 1))
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        if (Bins[bin] == 0)
+        if (this.Bins[bin] == 0)
         {
             return 0.0f;
         }
 
-        return (float)(BinTotals[bin] / Bins[bin]);
+        return (float)(this.BinTotals[bin] / this.Bins[bin]);
     }
 
     public float GetBinCenter(int bin)
     {
-        if ((bin < 0) || (bin > Bins.Length - 1))
+        if ((bin < 0) || (bin > this.Bins.Length - 1))
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        return BinMin + (bin + 0.5f) * BinWidth;
+        return this.BinMin + (bin + 0.5f) * this.BinWidth;
     }
 
     public float GetBinTop(int bin)
     {
-        if ((bin < 0) || (bin > Bins.Length - 1))
+        if ((bin < 0) || (bin > this.Bins.Length - 1))
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        return BinMin + (bin + 1.0f) * BinWidth;
+        return this.BinMin + (bin + 1.0f) * this.BinWidth;
     }
 
     public float GetBinBottom(int bin)
     {
-        if ((bin < 0) || (bin > Bins.Length - 1))
+        if ((bin < 0) || (bin > this.Bins.Length - 1))
         {
             throw new ArgumentOutOfRangeException();
         }
 
-        return BinMin + bin * BinWidth;
+        return this.BinMin + bin * this.BinWidth;
     }
 
     public int GetFirstBinWithMinCount(int minCount)
     {
-        for (int i = 0; i < Bins.Length; ++i)
+        for (var i = 0; i < this.Bins.Length; ++i)
         {
-            if (Bins[i] > minCount)
+            if (this.Bins[i] > minCount)
             {
                 return i;
             }
@@ -106,9 +106,9 @@ public class Histogram
 
     public int GetLastBinWithMinCount(int minCount)
     {
-        for (int i = Bins.Length - 1; i >= 0; --i)
+        for (var i = this.Bins.Length - 1; i >= 0; --i)
         {
-            if (Bins[i] > minCount)
+            if (this.Bins[i] > minCount)
             {
                 return i;
             }
@@ -122,11 +122,11 @@ public class Histogram
         int maxValue = 0;
         int maxBin = 0;
 
-        for (int i = 0; i < Bins.Length; ++i)
+        for (int i = 0; i < this.Bins.Length; ++i)
         {
-            if (Bins[i] > maxValue)
+            if (this.Bins[i] > maxValue)
             {
-                maxValue = Bins[i];
+                maxValue = this.Bins[i];
                 maxBin = i;
             }
         }

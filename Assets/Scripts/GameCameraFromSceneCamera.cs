@@ -7,7 +7,7 @@
 public class GameCameraFromSceneCamera : MonoBehaviour
 {
 #if UNITY_EDITOR
-    void OnEnable ()
+    void OnEnable()
     {
         UnityEditor.EditorApplication.update += UpdateCameras;
     }

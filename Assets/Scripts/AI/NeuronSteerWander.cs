@@ -15,31 +15,33 @@ public class NeuronSteerWander : NeuronSteer
     public override void Update()
     {
         if (null == owner)
+        {
             return;
+        }
 
-        updateFrequencyRemainderSeconds += Time.deltaTime;
+        this.updateFrequencyRemainderSeconds += Time.deltaTime;
 
-        if (updateFrequencyRemainderSeconds >= UpdateFrequencySeconds)
+        if (this.updateFrequencyRemainderSeconds >= this.UpdateFrequencySeconds)
         {
             var randomPos = UnityEngine.Random.onUnitSphere;
-            randomPos.Scale(DirectionWeight);
-            
-            targetDirection = owner.transform.forward + randomPos * Jitter * UpdateFrequencySeconds;
-            targetDirection.Normalize();
+            randomPos.Scale(this.DirectionWeight);
 
-            updateFrequencyRemainderSeconds -= UpdateFrequencySeconds;
+            this.targetDirection = owner.transform.forward + randomPos * Jitter * this.UpdateFrequencySeconds;
+            this.targetDirection.Normalize();
+
+            this.updateFrequencyRemainderSeconds -= this.UpdateFrequencySeconds;
         }
 
         if (Smoothing)
         {
-            //TODO: forward is adjusting as we're doing this so it's not a linear ease really, and should slerp anyhow...
-            Direction = Vector3.Lerp(owner.transform.forward, targetDirection, updateFrequencyRemainderSeconds / UpdateFrequencySeconds);
+            // TODO: forward is adjusting as we're doing this so it's not a linear ease really, and should slerp anyhow...
+            this.Direction = Vector3.Lerp(owner.transform.forward, this.targetDirection, this.updateFrequencyRemainderSeconds / this.UpdateFrequencySeconds);
         }
         else
         {
-            Direction = targetDirection;
+            this.Direction = targetDirection;
         }
 
-        Direction.Normalize();
+        this.Direction.Normalize();
     }
 }
