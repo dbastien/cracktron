@@ -19,7 +19,7 @@ public static class SerializedPropertyExtensions
             if (level != levelOld && !string.IsNullOrEmpty(names))
             {
                 Debug.Log(names);
-                names = "";
+                names = string.Empty;
             }
 
             if (propCopy.propertyPath.Length > rootLen)

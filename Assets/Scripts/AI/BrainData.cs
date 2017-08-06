@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu()]
+[CreateAssetMenu]
 public class BrainData : ScriptableObject
 {
     public List<NeuronSteer> SteerNeurons = new List<NeuronSteer>();

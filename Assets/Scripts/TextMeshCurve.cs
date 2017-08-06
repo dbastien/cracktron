@@ -2,7 +2,7 @@
 using TMPro;
 
 [RequireComponent(typeof(TMP_Text))]
-public class TextMeshCurve: MonoBehaviour
+public class TextMeshCurve : MonoBehaviour
 {
     [NormalizedAnimationCurve] public AnimationCurve VertexCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.25f, 1.0f), new Keyframe(0.5f, 0), new Keyframe(0.75f, 1.0f), new Keyframe(1, 0f));
     public float CurveScale = 1.0f;
@@ -16,7 +16,7 @@ public class TextMeshCurve: MonoBehaviour
     private TMP_Text textComponent;
     private TMP_MeshInfo[] initialMeshInfo;
 
-    void Update()
+    public void Update()
     {
         if (!this.textComponent)
         {
@@ -29,14 +29,14 @@ public class TextMeshCurve: MonoBehaviour
         timeElapsed += Time.deltaTime;
         Matrix4x4 matrix;
 
-        textComponent.havePropertiesChanged = true;
-        textComponent.ForceMeshUpdate();
+        this.textComponent.havePropertiesChanged = true;
+        this.textComponent.ForceMeshUpdate();
 
         var textInfo = textComponent.textInfo;
         var characterCount = textInfo.characterCount;
 
-        var boundsMinX = textComponent.bounds.min.x;
-        var boundsMaxX = textComponent.bounds.max.x;
+        var boundsMinX = this.textComponent.bounds.min.x;
+        var boundsMaxX = this.textComponent.bounds.max.x;
 
         for (var i = 0; i < characterCount; ++i)
         {
@@ -58,8 +58,8 @@ public class TextMeshCurve: MonoBehaviour
             // Compute the angle of rotation for each character based on the animation curve
             var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
             var x1 = x0 + 0.0001f;
-            var y0 = VertexCurve.Evaluate(x0 + timeElapsed * AnimationSpeed) * CurveScale;
-            var y1 = VertexCurve.Evaluate(x1 + timeElapsed * AnimationSpeed) * CurveScale;
+            var y0 = VertexCurve.Evaluate(x0 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
+            var y1 = VertexCurve.Evaluate(x1 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
 
             if (RotateLetters)
             {
@@ -84,6 +84,6 @@ public class TextMeshCurve: MonoBehaviour
             targetVertices[vertexIndex + 3] = matrix.MultiplyPoint3x4(initialVertices[vertexIndex + 3]);
         }
 
-        textComponent.UpdateVertexData();
+        this.textComponent.UpdateVertexData();
     }
 }

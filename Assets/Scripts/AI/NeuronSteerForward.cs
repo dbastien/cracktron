@@ -1,14 +1,11 @@
-﻿using System;
-using UnityEngine;
-
-public class NeuronSteerForward : NeuronSteer
+﻿public class NeuronSteerForward : NeuronSteer
 {
     public override void Update()
     {
         if (owner)
         {
-            Direction = owner.transform.forward;
-            Direction.Normalize();
+            this.Direction = owner.transform.forward;
+            this.Direction.Normalize();
         }
     }
 }

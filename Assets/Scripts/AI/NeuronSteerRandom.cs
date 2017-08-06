@@ -12,7 +12,7 @@ public class NeuronSteerRandom : NeuronSteer
 
     public override void Update()
     {
-        if (null == owner)
+        if (!owner)
         {
             return;
         }
@@ -30,7 +30,7 @@ public class NeuronSteerRandom : NeuronSteer
             this.updateFrequencyRemainderSeconds -= this.UpdateFrequencySeconds;
         }
 
-        if (Smoothing)
+        if (this.Smoothing)
         {
             //TODO: forward is adjusting as we're doing this so it's not a linear ease really, and should slerp anyhow...
             this.Direction = Vector3.Lerp(owner.transform.forward, this.targetDirection, this.updateFrequencyRemainderSeconds / this.UpdateFrequencySeconds);

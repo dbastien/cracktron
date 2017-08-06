@@ -5,13 +5,13 @@ public class SelfDestructAfterEffectsDone : MonoBehaviour
     private ParticleSystem[] particleSystems;
     private AudioSource[] audioSources;
 
-    void Awake()
+    public void Awake()
     {
         this.particleSystems = GetComponents<ParticleSystem>();
         this.audioSources = GetComponents<AudioSource>();
     }
 
-    void Update()
+    public void Update()
     {
         for (var i = 0; i < particleSystems.Length; ++i)
         {

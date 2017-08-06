@@ -47,16 +47,17 @@ public struct Int3 : IEquatable<Int3>, IFormattable
     {
         get
         {
-            if (index == 0) return this.x;
-            if (index == 1) return this.y;
-            if (index == 2) return this.z;
+            if (index == 0) { return this.x; }
+            if (index == 1) { return this.y; }
+            if (index == 2) { return this.z; }
             throw new ArgumentOutOfRangeException("Invalid Int3 index!");
         }
+
         set
         {
-            if (index == 0) this.x = value;
-            if (index == 1) this.y = value;
-            if (index == 2) this.z = value;
+            if (index == 0) { this.x = value; }
+            if (index == 1) { this.y = value; }
+            if (index == 2) { this.z = value; }
             throw new ArgumentOutOfRangeException("Invalid Int3 index!");
         }
     }
@@ -91,7 +92,7 @@ public struct Int3 : IEquatable<Int3>, IFormattable
 
     public float Magnitude(Int3 v)
     {
-        return Mathf.Sqrt(SqrMagnitude(v));
+        return Mathf.Sqrt(this.SqrMagnitude(v));
     }
 
     public int SqrMagnitude(Int3 v)
@@ -116,9 +117,9 @@ public struct Int3 : IEquatable<Int3>, IFormattable
 
     public static Int3 Cross(Int3 l, Int3 r)
     {
-        return new Int3(l.y * r.z - l.z * r.y, 
-                        l.z * r.x - l.x * r.z,
-                        l.x * r.y - l.y * r.x);
+        return new Int3((l.y * r.z) - (l.z * r.y), 
+                        (l.z * r.x) - (l.x * r.z),
+                        (l.x * r.y) - (l.y * r.x));
     }
 
     public static Int3 Min(Int3 l, Int3 r)
@@ -215,14 +216,14 @@ public struct Int3 : IEquatable<Int3>, IFormattable
 
     public override bool Equals(object value)
     {
-        return (value is Int3) ? Equals((Int3)value) : false;
+        return (value is Int3) ? this.Equals((Int3)value) : false;
     }
     #endregion
 
     #region IFormattable
     public override string ToString()
     {
-        return ToString(CultureInfo.CurrentCulture);
+        return this.ToString(CultureInfo.CurrentCulture);
     }
 
     public string ToString(IFormatProvider formatProvider)
@@ -234,7 +235,7 @@ public struct Int3 : IEquatable<Int3>, IFormattable
     {
         if (format == null)
         {
-            return ToString(formatProvider);
+            return this.ToString(formatProvider);
         }
 
         return string.Format(formatProvider,

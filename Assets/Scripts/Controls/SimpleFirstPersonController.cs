@@ -4,7 +4,7 @@ public class SimpleFirstPersonController : MonoBehaviour
 {
     public Vector2 Speed = Vector2.one;
 
-    void Update() 
+    public void Update()
     {
         var h = Input.GetAxis("Horizontal");
         var v = Input.GetAxis("Vertical");

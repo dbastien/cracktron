@@ -4,18 +4,14 @@ public class Snap : MonoBehaviour
 {
     public Vector3 Position;
 
-    void Start()
+    public void Start()
     {
         Position = transform.position;
     }
 
-    void Update()
+    public void OnMouseDrag()
     {
-    }
-
-    void OnMouseDrag()
-    {
-        float screenZ = Camera.main.WorldToScreenPoint(Position).z;
+        var screenZ = Camera.main.WorldToScreenPoint(this.Position).z;
 
         screenZ += Input.mouseScrollDelta.y * 0.15f;
 

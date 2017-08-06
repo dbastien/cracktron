@@ -67,7 +67,7 @@ public class BrainDataEditor : Editor
 
         //add to the asset database so that the object saves
         AssetDatabase.AddObjectToAsset(newScriptableObject, this.target);
-        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(base.target));
+        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this.target));
     }
 
     private void ListRemove(ReorderableList list)
@@ -80,7 +80,7 @@ public class BrainDataEditor : Editor
 
         //destroy the asset in the databse as well
         UnityEngine.Object.DestroyImmediate(neuron, true);
-        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(base.target));
+        AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this.target));
     }
 
     private void ListDrawElement(Rect rect, int index, bool isActive, bool isFocused)
@@ -90,7 +90,9 @@ public class BrainDataEditor : Editor
         var item = serializedPropertyForIndex.objectReferenceValue as NeuronSteer;
 
         if (item == null)
+        {
             return;
+        }
 
         //show the name of the neuron at the same y as the list item
         EditorGUI.LabelField(rect, serializedPropertyForIndex.objectReferenceValue.name);

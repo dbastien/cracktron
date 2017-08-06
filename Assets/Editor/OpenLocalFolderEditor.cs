@@ -20,7 +20,7 @@ public class OpenLocalFolderEditor : PropertyDrawer
 
         if (GUI.Button(position, "..."))
         {
-            var path = EditorUtility.OpenFolderPanel("Select a folder", Application.dataPath, "");
+            var path = EditorUtility.OpenFolderPanel("Select a folder", Application.dataPath, string.Empty);
             if (string.IsNullOrEmpty(path))
             {
                 return;

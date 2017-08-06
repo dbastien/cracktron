@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Brain : MonoBehaviour
 {
@@ -9,24 +8,24 @@ public class Brain : MonoBehaviour
 
     public float MovementSpeed = 6f;
 
-    void Start()
+    public void Start()
     {
         ownerRigidbody = GetComponent<Rigidbody>();
 
-        BrainData = Object.Instantiate(BrainData);
-        BrainData.CloneNeurons();
+        this.BrainData = Object.Instantiate(this.BrainData);
+        this.BrainData.CloneNeurons();
 
-        foreach (var neuron in BrainData.SteerNeurons)
+        foreach (var neuron in this.BrainData.SteerNeurons)
         {
             neuron.Attach(gameObject);
         }
     }
 
-    void Update()
+    public void Update()
     {
-        Vector3 direction = Vector3.zero;
+        var direction = Vector3.zero;
 
-        foreach (var neuron in BrainData.SteerNeurons)
+        foreach (var neuron in this.BrainData.SteerNeurons)
         {
             neuron.Update();
 
@@ -37,6 +36,6 @@ public class Brain : MonoBehaviour
 
         gameObject.transform.forward = direction;
 
-        ownerRigidbody.MovePosition(gameObject.transform.position + direction * MovementSpeed * Time.deltaTime);
+        ownerRigidbody.MovePosition(gameObject.transform.position + direction * this.MovementSpeed * Time.deltaTime);
     }
 }

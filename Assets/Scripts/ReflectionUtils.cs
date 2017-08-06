@@ -48,7 +48,7 @@ public static class ReflectionUtils
 
         if (id <= 0)
         {
-            var  go = unityObject as GameObject;
+            var go = unityObject as GameObject;
             if (go != null)
             {
                 id = go.transform.GetSiblingIndex();

@@ -1,6 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 [CustomPropertyDrawer(typeof(SaveLocalFileAttribute))]
 public class SaveLocalFileEditor : PropertyDrawer
@@ -20,7 +20,7 @@ public class SaveLocalFileEditor : PropertyDrawer
 
         if (GUI.Button(position, "..."))
         {
-            var path = EditorUtility.SaveFilePanel("Select a file", Application.dataPath, "", "");
+            var path = EditorUtility.SaveFilePanel("Select a file", Application.dataPath, string.Empty, string.Empty);
             if (string.IsNullOrEmpty(path))
             {
                 return;

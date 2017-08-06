@@ -40,8 +40,7 @@ public class FindReferencesInAssets
 
         Debug.LogFormat(asset, "<b>Completed search, {0} references found</b>", countFound);
     }
-
-
+    
     private static int FindReferences(Object asset, GameObject go)
     {
         int countFound = 0;

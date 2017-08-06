@@ -1,3 +1,5 @@
 ﻿using UnityEngine;
 
-public class SaveLocalFileAttribute : PropertyAttribute { }
+public class SaveLocalFileAttribute : PropertyAttribute
+{
+}

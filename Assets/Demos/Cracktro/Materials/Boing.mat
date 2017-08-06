@@ -8,10 +8,12 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Boing
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _ALPHATEST_ON _MainTex_SCALE_ON _SPECULARHIGHLIGHTS_ON
-    _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON _USEMAINTEX_ON
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _ALPHATEST_ON _CALIBRATIONSPACEREFLECTIONS_ON
+    _FORCEPERPIXEL_ON _MainTex_SCALE_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON
+    _USEDIFFUSE_ON _USEMAINCOLOR_ON _USEMAINTEX_ON _USERIMLIGHTING_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
@@ -71,13 +73,13 @@ Material:
     - _AlphaTest: 0
     - _BlendOp: 0
     - _BumpScale: 1
-    - _CalibrationSpaceReflections: 0
+    - _CalibrationSpaceReflections: 1
     - _ColorWriteMask: 15
     - _Cull: 0
     - _Cutoff: 0.805
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
-    - _ForcePerPixel: 0
+    - _ForcePerPixel: 1
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.25
@@ -87,8 +89,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ReflectionScale: 2
-    - _RimPower: 0.7
-    - _Shade4: 0
+    - _RimPower: 1
+    - _Shade4: 1
     - _SmoothnessTextureChannel: 0
     - _Specular: 2.9
     - _SpecularHighlights: 1
@@ -104,7 +106,7 @@ Material:
     - _UseMainTex: 0
     - _UseOcclusionMap: 0
     - _UseReflections: 0
-    - _UseRimLighting: 0
+    - _UseRimLighting: 1
     - _UseSpecularMap: 0
     - _UseVertexColor: 0
     - _ZTest: 4
@@ -112,6 +114,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _TextureScaleOffset: {r: 5, g: 5, b: 0, a: 0}

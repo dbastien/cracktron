@@ -1,3 +1,5 @@
 ﻿using UnityEngine;
 
-public class OpenLocalFileAttribute : PropertyAttribute { }
+public class OpenLocalFileAttribute : PropertyAttribute
+{
+}

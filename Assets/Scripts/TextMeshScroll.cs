@@ -9,7 +9,7 @@ public class TextMeshScroll : MonoBehaviour
     private RectTransform rectComponent;
     private float scrollPosition;
 
-    void Update()
+    public void Update()
     {
         if (textComponent == null)
         {
@@ -29,8 +29,8 @@ public class TextMeshScroll : MonoBehaviour
 
         var xPos = -Mathf.Lerp(-rectComponent.rect.width, textComponent.preferredWidth + rectComponent.rect.width, scrollPosition);
 
-        rectComponent.position = new Vector3(xPos,
-                                             rectComponent.position.y,
-                                             rectComponent.position.z);
+        this.rectComponent.position = new Vector3(xPos,
+                                                  this.rectComponent.position.y,
+                                                  this.rectComponent.position.z);
     }
 }

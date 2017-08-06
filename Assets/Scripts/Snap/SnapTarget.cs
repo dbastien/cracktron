@@ -20,6 +20,7 @@ public class SnapTarget : MonoBehaviour
                 go.AddComponent<LineRenderer>();
 
                 var lr = go.GetComponent<LineRenderer>();
+
                 //todo: pull material from snapmanager
                 //todo: custom shader that fades lines further away from you
                 lr.material = new Material(Shader.Find("Unlit/Color"));
@@ -39,20 +40,12 @@ public class SnapTarget : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-    }
-
-    void OnEnable()
+    public void OnEnable()
     {
         SnapManager.Instance.SnapTargets.Add(this);
     }
 
-    void OnDisable()
+    public void OnDisable()
     {
         SnapManager.Instance.SnapTargets.Remove(this);
     }

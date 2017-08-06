@@ -1,3 +1,5 @@
 ﻿using UnityEngine;
 
-public class ReorderableListAttribute : PropertyAttribute { }
+public class ReorderableListAttribute : PropertyAttribute
+{
+}

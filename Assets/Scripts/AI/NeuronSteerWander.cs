@@ -14,7 +14,7 @@ public class NeuronSteerWander : NeuronSteer
 
     public override void Update()
     {
-        if (null == owner)
+        if (!owner)
         {
             return;
         }
@@ -39,7 +39,7 @@ public class NeuronSteerWander : NeuronSteer
         }
         else
         {
-            this.Direction = targetDirection;
+            this.Direction = this.targetDirection;
         }
 
         this.Direction.Normalize();

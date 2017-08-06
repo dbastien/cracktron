@@ -7,12 +7,12 @@ public class NeuronSteerSeek : NeuronSteer
 
     public override void Update()
     {
-        Targeting.Update();
+        this.Targeting.Update();
 
-        if (Targeting.Target != null)
+        if (this.Targeting.Target != null)
         {
-            Direction = Targeting.Target.transform.position - owner.transform.position;
-            Direction.Normalize();
+            this.Direction = Targeting.Target.transform.position - owner.transform.position;
+            this.Direction.Normalize();
         }
     }
 }

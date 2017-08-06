@@ -8,7 +8,7 @@ public class PaletteWindow : EditorWindow
     [SaveLocalFile] public string outputFile;
 
     [MenuItem("Cracktron/Palette Window")]
-    static void ShowWindow()
+    public static void ShowWindow()
     {
         var window = GetWindow<PaletteWindow>();
         window.name = "Palette";
@@ -16,7 +16,7 @@ public class PaletteWindow : EditorWindow
         window.Show();
     }
 
-    void OnGUI()
+    public void OnGUI()
     {
         //Editor.CreateEditor(inputFile);
     }

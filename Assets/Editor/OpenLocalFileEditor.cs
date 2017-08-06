@@ -20,7 +20,7 @@ public class OpenLocalFileEditor : PropertyDrawer
 
         if (GUI.Button(position, "..."))
         {
-            var path = EditorUtility.OpenFilePanel("Select a file", Application.dataPath, "");
+            var path = EditorUtility.OpenFilePanel("Select a file", Application.dataPath, string.Empty);
             if (string.IsNullOrEmpty(path))
             {
                 return;

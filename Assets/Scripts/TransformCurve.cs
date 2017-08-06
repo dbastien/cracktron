@@ -23,50 +23,49 @@ public class TransformCurve : MonoBehaviour
         { "localEulerAngles", new Vector3(0.0f, 360.0f, 0.0f) },
     };
 
-    void Reset()
+    public void Reset()
     {
-        Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
-        Curve.preWrapMode = WrapMode.PingPong;
-        Curve.postWrapMode = WrapMode.PingPong;
+        this.Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
+        this.Curve.preWrapMode = WrapMode.PingPong;
+        this.Curve.postWrapMode = WrapMode.PingPong;
 
-        CurveTargetName = "position";
+        this.CurveTargetName = "position";
 
-        ResetStartEnd();
+        this.ResetStartEnd();
     }
 
     public void UpdateTarget()
     {
-        CurveTarget = typeof(Transform).GetProperty(CurveTargetName);
+        this.CurveTarget = typeof(Transform).GetProperty(this.CurveTargetName);
     }
 
     public void ResetStartEnd()
     {
-        this.
-        UpdateTarget();
-        Start = (Vector3)typeof(Transform).GetProperty(CurveTargetName).GetValue(this.transform, null);
+        this.UpdateTarget();
+        this.Start = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
 
-        if (DefaultEndOffsets.TryGetValue(CurveTargetName, out End))
+        if (DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.End))
         {
-            End += Start;
+            this.End += Start;
         }
         else
         {
-            End = Start + Vector3.up;
+            this.End = Start + Vector3.up;
         }
     }
 
-    void Awake()
+    public void Awake()
     {
         UpdateTarget();
     }
 
-    void Update()
+    public void Update()
     {
-        timeElapsed += Time.deltaTime / LengthScale;
+        this.timeElapsed += Time.deltaTime / LengthScale;
 
-        if (CurveTarget != null)
+        if (this.CurveTarget != null)
         {
-            CurveTarget.SetValue(this.transform, Start.LerpUnclamped(End, Curve.Evaluate(timeElapsed)), null);
+            this.CurveTarget.SetValue(this.transform, Start.LerpUnclamped(this.End, this.Curve.Evaluate(this.timeElapsed)), null);
         }
     }
 }

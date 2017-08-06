@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class SnapManager : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class SnapManager : MonoBehaviour
 
     public float SnapDistance = 0.1f;
 
-    void Awake()
+    public void Awake()
     {
         if (Instance != null)
         {
@@ -20,15 +20,6 @@ public class SnapManager : MonoBehaviour
         }
 
         Instance = this;
-    }
-
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
     }
 
     public Vector3 GetSnapPoint(Snap snap)

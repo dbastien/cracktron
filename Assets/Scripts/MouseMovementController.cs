@@ -11,8 +11,8 @@ public class MouseMovementController : MonoBehaviour
 #if INPUT_RDP_WORKAROUND
     private Vector2 mousePositionLast;
 #endif
-    
-    void Update()
+
+    public void Update()
     {
         float sensitivityScale = Input.GetKey(KeyCode.LeftShift) ? 0.1f : 1.0f;
         float finalScale = Time.deltaTime * sensitivityScale;
@@ -33,13 +33,13 @@ public class MouseMovementController : MonoBehaviour
 
         TargetTransform.Translate(0.0f, 0.0f, Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * finalScale);
 
-        //mouse middle button - pan
+        // mouse middle button - pan
         if (Input.GetMouseButton(2))
         {
             TargetTransform.Translate(-axisDelta.x * PanSpeed.x * finalScale, -axisDelta.y * PanSpeed.y * finalScale, 0.0f);
         }
 
-        //mouse right button - rotate
+        // mouse right button - rotate
         if (Input.GetMouseButton(1))
         {
             TargetTransform.eulerAngles += new Vector3(-axisDelta.y * RotateSpeed.y * finalScale,

@@ -16,7 +16,7 @@ public class ObjectEditor : Editor
 
         public void DrawElement(Rect rect, int index, bool active, bool focused)
         {
-            var property = serializedProperty.GetArrayElementAtIndex(index);
+            var property = this.serializedProperty.GetArrayElementAtIndex(index);
             var rectOffset = new RectOffset(0, 0, -1, -3);
             rect = rectOffset.Add(rect);
             rect.height = EditorGUIUtility.singleLineHeight;
@@ -25,7 +25,7 @@ public class ObjectEditor : Editor
 
         public void DrawHeader(Rect rect)
         {
-            GUI.Label(rect, serializedProperty.propertyPath);
+            GUI.Label(rect, this.serializedProperty.propertyPath);
         }
     }
 
@@ -93,9 +93,11 @@ public class ObjectEditor : Editor
             return reorderableListState;
         }
 
-        reorderableListState = new ReorderableListState();
-        reorderableListState.serializedProperty = property;
-        reorderableListState.reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true);
+        reorderableListState = new ReorderableListState()
+        {
+            serializedProperty = property,
+            reorderableList = new ReorderableList(property.serializedObject, property, true, true, true, true)
+        };
         reorderableListState.reorderableList.drawElementCallback += reorderableListState.DrawElement;
         reorderableListState.reorderableList.drawHeaderCallback += reorderableListState.DrawHeader;
         this.reorderableListStates.Add(property.propertyPath, reorderableListState);

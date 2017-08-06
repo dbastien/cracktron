@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class BuiltInResourceViewerWindow : EditorWindow
 {
@@ -20,22 +20,22 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
     private List<Drawing> drawings;
 
-    private List<UnityEngine.Object> _objects;
-    private float _scrollPos;
-    private float _maxY;
-    private Rect _oldPosition;
+    private List<UnityEngine.Object> objects;
+    private float scrollPos;
+    private float maxY;
+    private Rect oldPosition;
 
     private bool showingStyles = true;
     private bool showingIcons = false;
 
-    private string _search = "";
+    private string search = string.Empty;
 
-    void OnGUI()
+    public void OnGUI()
     {
-        if (position.width != _oldPosition.width && Event.current.type == EventType.Layout)
+        if (position.width != oldPosition.width && Event.current.type == EventType.Layout)
         {
             drawings = null;
-            _oldPosition = position;
+            oldPosition = position;
         }
 
         GUILayout.BeginHorizontal();
@@ -56,10 +56,10 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
         GUILayout.EndHorizontal();
 
-        string newSearch = GUILayout.TextField(_search);
-        if (newSearch != _search)
+        string newSearch = GUILayout.TextField(search);
+        if (newSearch != search)
         {
-            _search = newSearch;
+            search = newSearch;
             drawings = null;
         }
 
@@ -67,7 +67,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
         if (drawings == null)
         {
-            string lowerSearch = _search.ToLower();
+            string lowerSearch = search.ToLower();
 
             drawings = new List<Drawing>();
 
@@ -81,8 +81,10 @@ public class BuiltInResourceViewerWindow : EditorWindow
             {
                 foreach (var ss in GUI.skin.customStyles)
                 {
-                    if (lowerSearch != "" && !ss.name.ToLower().Contains(lowerSearch))
+                    if (lowerSearch != string.Empty && !ss.name.ToLower().Contains(lowerSearch))
+                    {
                         continue;
+                    }
 
                     var thisStyle = ss;
 
@@ -108,7 +110,9 @@ public class BuiltInResourceViewerWindow : EditorWindow
                     draw.Draw = () =>
                     {
                         if (GUILayout.Button(thisStyle.name, GUILayout.Width(width)))
+                        {
                             CopyText("(GUIStyle)\"" + thisStyle.name + "\"");
+                        }
 
                         GUILayout.BeginHorizontal();
                         GUILayout.Toggle(false, inactiveText, thisStyle, GUILayout.Width(width / 2));
@@ -123,30 +127,31 @@ public class BuiltInResourceViewerWindow : EditorWindow
             }
             else if (showingIcons)
             {
-                if (_objects == null)
+                if (objects == null)
                 {
-                    _objects = new List<UnityEngine.Object>(Resources.FindObjectsOfTypeAll(typeof(Texture2D)));
-                    _objects.Sort((pA, pB) => String.Compare(pA.name, pB.name, StringComparison.OrdinalIgnoreCase));
+                    objects = new List<UnityEngine.Object>(Resources.FindObjectsOfTypeAll(typeof(Texture2D)));
+                    objects.Sort((pA, pB) => String.Compare(pA.name, pB.name, StringComparison.OrdinalIgnoreCase));
                 }
 
                 var rowHeight = 0.0f;
 
-                foreach (var oo in _objects)
+                foreach (var oo in objects)
                 {
                     var texture = (Texture)oo;
 
-                    if (texture.name == "")
+                    if (texture.name == string.Empty)
+                    {
                         continue;
+                    }
 
-                    if (lowerSearch != "" && !texture.name.ToLower().Contains(lowerSearch))
+                    if (lowerSearch != string.Empty && !texture.name.ToLower().Contains(lowerSearch))
+                    {
                         continue;
+                    }
 
                     var draw = new Drawing();
 
-                    var width = Mathf.Max(
-                        GUI.skin.button.CalcSize(new GUIContent(texture.name)).x,
-                        texture.width
-                    ) + 8.0f;
+                    var width = Mathf.Max(GUI.skin.button.CalcSize(new GUIContent(texture.name)).x, texture.width) + 8.0f;
 
                     float height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y + 8.0f;
 
@@ -166,7 +171,9 @@ public class BuiltInResourceViewerWindow : EditorWindow
                     draw.Draw = () =>
                     {
                         if (GUILayout.Button(texture.name, GUILayout.Width(width)))
+                        {
                             CopyText("EditorGUIUtility.FindTexture( \"" + texture.name + "\" )");
+                        }
 
                         var textureRect = GUILayoutUtility.GetRect(texture.width, texture.width, texture.height, texture.height, GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(false));
                         EditorGUI.DrawTextureTransparent(textureRect, texture);
@@ -178,7 +185,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
                 }
             }
 
-            _maxY = y;
+            maxY = y;
         }
 
         Rect r = position;
@@ -188,7 +195,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
         r.width = 16;
 
         var areaHeight = position.height - top;
-        _scrollPos = GUI.VerticalScrollbar(r, _scrollPos, areaHeight, 0.0f, _maxY);
+        scrollPos = GUI.VerticalScrollbar(r, scrollPos, areaHeight, 0.0f, maxY);
 
         var area = new Rect(0, top, position.width - 16.0f, areaHeight);
         GUILayout.BeginArea(area);
@@ -197,7 +204,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
         foreach (var draw in drawings)
         {
             Rect newRect = draw.Rect;
-            newRect.y -= _scrollPos;
+            newRect.y -= scrollPos;
 
             if (newRect.y + newRect.height > 0 && newRect.y < areaHeight)
             {
@@ -212,11 +219,12 @@ public class BuiltInResourceViewerWindow : EditorWindow
         GUILayout.EndArea();
     }
 
-    void CopyText(string pText)
+    private void CopyText(string text)
     {
-        var editor = new TextEditor();
-
-        editor.text = pText;
+        var editor = new TextEditor()
+        {
+            text = text
+        };
 
         editor.SelectAll();
         editor.Copy();

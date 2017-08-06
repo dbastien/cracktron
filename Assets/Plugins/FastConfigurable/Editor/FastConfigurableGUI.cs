@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System;
-using UnityEditor;
-using UnityEngine;
-
 namespace HoloToolkit.Unity
 {
+    using System;
+    using UnityEditor;
+    using UnityEngine;
+
     /// <summary>
     /// Editor for FastConfigurable shader
     /// </summary>
@@ -85,7 +85,7 @@ namespace HoloToolkit.Unity
                 ShowMainGUI(matEditor);
                 ShowOutputConfigurationGUI(matEditor);
 
-                var mode = (BlendMode)blendMode.floatValue;
+                var mode = (BlendMode)this.blendMode.floatValue;
                 if (mode == BlendMode.Advanced)
                 {
                     matEditor.RenderQueueField();
@@ -93,10 +93,10 @@ namespace HoloToolkit.Unity
             }
             if (EditorGUI.EndChangeCheck())
             {
-                foreach (var obj in blendMode.targets)
+                foreach (var obj in this.blendMode.targets)
                 {
                     var mat = obj as Material;
-                    SetMaterialBlendMode(mat, (BlendMode)blendMode.floatValue);
+                    SetMaterialBlendMode(mat, (BlendMode)this.blendMode.floatValue);
                     SetMaterialAutoPropertiesAndKeywords(mat);
                 }
             }
@@ -106,7 +106,7 @@ namespace HoloToolkit.Unity
         {
             ShowBlendModeGUI(matEditor);
 
-            var mode = (BlendMode)blendMode.floatValue;
+            var mode = (BlendMode)this.blendMode.floatValue;
             var mat = matEditor.target as Material;
 
             ShaderGUIUtils.BeginHeader("Base Texture and Color");
@@ -201,14 +201,14 @@ namespace HoloToolkit.Unity
         protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
         {
             EditorGUI.showMixedValue = blendMode.hasMixedValue;
-            var mode = (BlendMode)blendMode.floatValue;
+            var mode = (BlendMode)this.blendMode.floatValue;
 
             EditorGUI.BeginChangeCheck();
             mode = (BlendMode)EditorGUILayout.Popup(Styles.renderingMode, (int)mode, Styles.blendNames);
             if (EditorGUI.EndChangeCheck())
             {
                 matEditor.RegisterPropertyChangeUndo("Rendering Mode");
-                blendMode.floatValue = (float)mode;
+                this.blendMode.floatValue = (float)mode;
             }
 
             EditorGUI.showMixedValue = false;
@@ -216,7 +216,7 @@ namespace HoloToolkit.Unity
 
         protected virtual void ShowOutputConfigurationGUI(MaterialEditor matEditor)
         {
-            var mode = (BlendMode)blendMode.floatValue;
+            var mode = (BlendMode)this.blendMode.floatValue;
             if (mode == BlendMode.Advanced)
             {
                 ShaderGUIUtils.BeginHeader("Output Configuration");
@@ -303,7 +303,7 @@ namespace HoloToolkit.Unity
             switch (blendMode)
             {
                 case BlendMode.Opaque:
-                    mat.SetOverrideTag("RenderType", "");
+                    mat.SetOverrideTag("RenderType", string.Empty);
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
@@ -373,7 +373,7 @@ namespace HoloToolkit.Unity
 
         protected virtual void CacheMainProperties(MaterialProperty[] props)
         {
-            blendMode = FindProperty("_Mode", props);
+            this.blendMode = FindProperty("_Mode", props);
 
             vertexColorEnabled = FindProperty("_UseVertexColor", props);
             mainColorEnabled = FindProperty("_UseMainColor", props);

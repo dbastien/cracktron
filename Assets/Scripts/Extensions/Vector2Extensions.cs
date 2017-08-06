@@ -22,5 +22,4 @@ public static class Vector2Extensions
     {
         return Vector2.zero;
     }
-
 }

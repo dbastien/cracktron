@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using UnityEditor;
-using System;
-using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class PerfAnalyzerWindow : EditorWindow
@@ -16,7 +15,7 @@ public class PerfAnalyzerWindow : EditorWindow
     [SerializeField] public GUILayoutOption[] layoutButtonWidth = new GUILayoutOption[] { GUILayout.Width(325f) };
 
     [MenuItem("Cracktron/Perf Analyzer Window")]
-    static void ShowWindow()
+    public static void ShowWindow()
     {
         var window = GetWindow<PerfAnalyzerWindow>();
         window.name = "Perf Analyzer";
@@ -35,7 +34,7 @@ public class PerfAnalyzerWindow : EditorWindow
         hideFlags = HideFlags.HideAndDontSave;
     }
 
-    void OnGUI()
+    public void OnGUI()
     {
         EditorGUILayout.SelectableLabel("PlayerSettings", EditorStyles.boldLabel);
         PlayerSettings.graphicsJobs = DrawSuggestedSettingBool("graphicsJobs", PlayerSettings.graphicsJobs, true);
@@ -71,7 +70,7 @@ public class PerfAnalyzerWindow : EditorWindow
         }
     }
 
-    string[] AnalyzeMaterials()
+    private string[] AnalyzeMaterials()
     {
         var assets = AssetDatabaseUtils.FindAssetsByType<Material>();
         var matInfo = new string[assets.Count];
@@ -84,7 +83,7 @@ public class PerfAnalyzerWindow : EditorWindow
         return matInfo;
     }
 
-    Enum DrawSuggestedSettingEnum(string friendlyName, Enum curValue, Enum suggestedValue)
+    private Enum DrawSuggestedSettingEnum(string friendlyName, Enum curValue, Enum suggestedValue)
     {
         EditorGUILayout.BeginHorizontal();
         var setValue = EditorGUILayout.EnumPopup(friendlyName, curValue, layoutColumnWidth);
@@ -104,7 +103,7 @@ public class PerfAnalyzerWindow : EditorWindow
         return setValue;
     }
 
-    int DrawSuggestedSettingInt(string friendlyName, int curValue, int suggestedValue, int min, int max)
+    private int DrawSuggestedSettingInt(string friendlyName, int curValue, int suggestedValue, int min, int max)
     {
         EditorGUILayout.BeginHorizontal();
         var setValue = EditorGUILayout.IntSlider(friendlyName, curValue, min, max, layoutColumnWidth);
@@ -124,8 +123,7 @@ public class PerfAnalyzerWindow : EditorWindow
         return setValue;
     }
 
-
-    bool DrawSuggestedSettingBool(string friendlyName, bool curValue, bool suggestedValue)
+    private bool DrawSuggestedSettingBool(string friendlyName, bool curValue, bool suggestedValue)
     {
         EditorGUILayout.BeginHorizontal();
         var setValue = EditorGUILayout.Toggle(friendlyName, curValue, layoutColumnWidth);
@@ -145,4 +143,3 @@ public class PerfAnalyzerWindow : EditorWindow
         return setValue;
     }
 }
-

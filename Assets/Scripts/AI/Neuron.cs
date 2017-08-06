@@ -5,7 +5,9 @@ public abstract class Neuron : ScriptableObject
 {
     protected GameObject owner;
 
-    public virtual void Update() { }
+    public virtual void Update()
+    {
+    }
 
     public virtual void OnEnable()
     {

@@ -30,11 +30,11 @@ public abstract class ImprovedSingletonBehavior<T> : MonoBehaviour where T : Imp
 
     protected void Initialize()
     {
-        lock (initializedLock)
+        lock (this.initializedLock)
         {
-            if (!initialized)
+            if (!this.initialized)
             {
-                initialized = true;
+                this.initialized = true;
                 InitializeInternal();
             }
         }

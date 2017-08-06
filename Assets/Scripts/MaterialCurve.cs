@@ -11,25 +11,25 @@ public class MaterialCurve : MonoBehaviour
 
     private Renderer render;
 
-    void Reset()
+    public void Reset()
     {
-        Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
-        Curve.preWrapMode = WrapMode.PingPong;
-        Curve.postWrapMode = WrapMode.PingPong;
+        this.Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
+        this.Curve.preWrapMode = WrapMode.PingPong;
+        this.Curve.postWrapMode = WrapMode.PingPong;
 
-        Start = Color.white;
-        End = Color.cyan;
+        this.Start = Color.white;
+        this.End = Color.cyan;
     }
 
-    void OnEnable()
+    public void OnEnable()
     {
         this.render = GetComponent<Renderer>();
     }
 
-    void Update()
+    public void Update()
     {
-        timeElapsed += Time.deltaTime;
+        this.timeElapsed += Time.deltaTime;
 
-        render.material.color = Start.LerpUnclamped(End, Curve.Evaluate(timeElapsed));
+        this.render.material.color = this.Start.LerpUnclamped(this.End, this.Curve.Evaluate(timeElapsed));
     }
 }

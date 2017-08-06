@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class TargetingManager : MonoBehaviour
 {
     public static TargetingManager Instance { get; private set; }
 
-    void Awake()
+    public void Awake()
     {
         if (Instance != null)
         {
@@ -37,13 +36,5 @@ public class TargetingManager : MonoBehaviour
             }
         }
         return closest;
-    }
-
-    void Start()
-    {
-    }
-
-    void Update()
-    {
     }
 }

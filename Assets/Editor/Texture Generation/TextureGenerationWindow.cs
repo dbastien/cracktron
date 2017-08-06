@@ -11,7 +11,7 @@ public class TextureGenerationWindow : EditorWindow
     private static readonly GUILayoutOption[] GUILayoutOptionEmptyArray = new GUILayoutOption[0];
 
     [MenuItem("Window/Texture Generation")]
-    static void Init()
+    public static void Init()
     {
         //get existing or spin up new window
         var window = GetWindow<TextureGenerationWindow>();
@@ -23,7 +23,7 @@ public class TextureGenerationWindow : EditorWindow
         window.Show();
     }
 
-    void FillTexture()
+    private void FillTexture()
     {
         for (var y = 0; y < Texture.height; ++y)
         {
@@ -43,7 +43,7 @@ public class TextureGenerationWindow : EditorWindow
         Texture.Apply();
     }
 
-    void OnGUI()
+    public void OnGUI()
     {
         GUILayout.Label(" ", EditorStyles.boldLabel);
 
@@ -69,7 +69,6 @@ public class TextureGenerationWindow : EditorWindow
 
         if (GUILayout.Button("Export", GUILayoutOptionEmptyArray))
         {
-
         }
     }
 

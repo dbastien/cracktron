@@ -3,7 +3,7 @@ using UnityEditorInternal;
 using UnityEngine;
 
 /// <summary>
-/// property drawers do not get called for the collection itself, only children
+/// Property drawers do not get called for the collection itself, only children
 //  this draws all children when called for the first, but the standard unity 
 //  collection header will be shown in addition
 /// </summary>
@@ -27,9 +27,11 @@ public class ReorderableListDrawer : PropertyDrawer
         propertyPath = propertyPath.Substring(0, serializedProperty.propertyPath.LastIndexOf("Array") - 1);
 
         SerializedProperty elements = serializedObject.FindProperty(propertyPath);
-        this.reorderableListCached = new ReorderableList(serializedProperty.serializedObject, elements, true, true, true, true);
-        this.reorderableListCached.drawElementCallback = new ReorderableList.ElementCallbackDelegate(this.DrawElement);
-        this.reorderableListCached.drawHeaderCallback = new ReorderableList.HeaderCallbackDelegate(this.DrawHeader);
+        this.reorderableListCached = new ReorderableList(serializedProperty.serializedObject, elements, true, true, true, true)
+        {
+            drawElementCallback = new ReorderableList.ElementCallbackDelegate(this.DrawElement),
+            drawHeaderCallback = new ReorderableList.HeaderCallbackDelegate(this.DrawHeader)
+        };
         this.reorderableListCached.elementHeight += 16f;
     }
 

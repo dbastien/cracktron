@@ -35,14 +35,15 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     {
         get
         {
-            if (index == 0) return this.x;
-            if (index == 1) return this.y;
+            if (index == 0) { return this.x; }
+            if (index == 1) { return this.y; }
             throw new ArgumentOutOfRangeException("Invalid Int2 index!");
         }
+
         set
         {
-            if (index == 0) this.x = value;
-            if (index == 1) this.y = value;
+            if (index == 0) { this.x = value; }
+            if (index == 1) { this.y = value; }
             throw new ArgumentOutOfRangeException("Invalid Int2 index!");
         }
     }
@@ -72,7 +73,7 @@ public struct Int2 : IEquatable<Int2>, IFormattable
 
     public float Magnitude(Int2 v)
     {
-        return Mathf.Sqrt(SqrMagnitude(v));
+        return Mathf.Sqrt(this.SqrMagnitude(v));
     }
 
     public int SqrMagnitude(Int2 v)
@@ -172,14 +173,14 @@ public struct Int2 : IEquatable<Int2>, IFormattable
 
     public override bool Equals(object value)
     {
-        return (value is Int2) ? Equals((Int2)value) : false;
+        return (value is Int2) ? this.Equals((Int2)value) : false;
     }
     #endregion
 
     #region IFormattable
     public override string ToString()
     {
-        return ToString(CultureInfo.CurrentCulture);
+        return this.ToString(CultureInfo.CurrentCulture);
     }
 
     public string ToString(IFormatProvider formatProvider)
@@ -191,7 +192,7 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     {
         if (format == null)
         {
-            return ToString(formatProvider);
+            return this.ToString(formatProvider);
         }
 
         return string.Format(formatProvider,

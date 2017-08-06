@@ -1,3 +1,5 @@
 ﻿using UnityEngine;
 
-public class OpenLocalFolderAttribute : PropertyAttribute { }
+public class OpenLocalFolderAttribute : PropertyAttribute
+{
+}

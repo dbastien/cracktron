@@ -5,29 +5,29 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-class CopyCatWindow : EditorWindow
+public class CopyCatWindow : EditorWindow
 {
-    static Type t;
-    static UnityEngine.Object copySourceObject;
+    private static Type t;
+    private static UnityEngine.Object copySourceObject;
 
-    static List<PropertyInfo> properties;
-    static object[] propertiesValue;
-    static bool[] propertiesSelected;
+    private static List<PropertyInfo> properties;
+    private static object[] propertiesValue;
+    private static bool[] propertiesSelected;
 
-    static List<FieldInfo> fields;
-    static object[] fieldsValue;
-    static bool[] fieldsSelected;
+    private static List<FieldInfo> fields;
+    private static object[] fieldsValue;
+    private static bool[] fieldsSelected;
 
-    static bool isInPasteMultiMode;
+    private static bool isInPasteMultiMode;
 
     //for paste multi
-    static UnityEngine.Object[] possiblePasteTargets;
-    static bool[] possiblePasteTargetsSelected;
+    private static UnityEngine.Object[] possiblePasteTargets;
+    private static bool[] possiblePasteTargetsSelected;
 
     //show context menu for all objects that inherit from component
     //for example - right on the header for Button (Script) that's on a game object
     [MenuItem("CONTEXT/Component/CopyCat")]
-    static void CopyMenuSelected(MenuCommand command)
+    public static void CopyMenuSelected(MenuCommand command)
     {
         isInPasteMultiMode = false;
 
@@ -65,7 +65,7 @@ class CopyCatWindow : EditorWindow
     }
 
     [MenuItem("Edit/PasteCatMulti")]
-    static void PasteMultiMenuSelected()
+    public static void PasteMultiMenuSelected()
     {
         isInPasteMultiMode = true;
 
@@ -85,14 +85,14 @@ class CopyCatWindow : EditorWindow
     }
 
     [MenuItem("CONTEXT/Component/PasteCat")]
-    static void PasteMenuSelected(MenuCommand command)
+    public static void PasteMenuSelected(MenuCommand command)
     {
         var pasteTargetObject = command.context;
 
         Paste(pasteTargetObject);
     }
 
-    static void Paste(UnityEngine.Object pasteTargetObject)
+    public static void Paste(UnityEngine.Object pasteTargetObject)
     {
         //TODO: undo support
 
@@ -186,7 +186,7 @@ class CopyCatWindow : EditorWindow
         }
     }
 
-    void OnGUI()
+    public void OnGUI()
     {
         if (!isInPasteMultiMode)
         {

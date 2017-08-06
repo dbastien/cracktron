@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEditor;
-using UnityEngine;
-
 namespace HoloToolkit.Unity
 {
+    using UnityEditor;
+    using UnityEngine;
+
     /// <summary>
     /// Helper class for custom material editors
     /// </summary>
@@ -29,9 +29,11 @@ namespace HoloToolkit.Unity
             controlRect.x += EditorGUIUtility.labelWidth;
             controlRect.width = EditorGUIUtility.fieldWidth;
 
-            GUIContent toggleTooltip = new GUIContent();
-            toggleTooltip.text = string.Empty;
-            toggleTooltip.tooltip = "Enable/Disable color";
+            GUIContent toggleTooltip = new GUIContent()
+            {
+                text = string.Empty,
+                tooltip = "Enable/Disable color"
+            };
 
             //label indent of -1 is the secret sauce to make it aligned with right aligned toggles that come after labels
             //ShaderProperty handles begin and end animation checks
@@ -45,10 +47,11 @@ namespace HoloToolkit.Unity
                 //size it to take up the remainder of the space
                 controlRect.width = lineRect.width - controlRect.x;
 
-                GUIContent tooltipOnly = new GUIContent();
-                tooltipOnly.text = string.Empty;
-                tooltipOnly.tooltip = label.tooltip;
-
+                GUIContent tooltipOnly = new GUIContent()
+                {
+                    text = string.Empty,
+                    tooltip = label.tooltip
+                };
                 EditorGUI.showMixedValue = colorProp.hasMixedValue;
                 EditorGUI.BeginChangeCheck();
                 var color = EditorGUI.ColorField(controlRect, tooltipOnly, colorProp.colorValue);

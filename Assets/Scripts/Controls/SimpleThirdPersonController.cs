@@ -4,8 +4,8 @@ public class SimpleThirdPersonController : MonoBehaviour
 {
     public float MovementSpeed = 1.0f;
     public float TurnSpeed = 40.0f;
-    
-    void Update() 
+
+    public void Update() 
     {
         var h = Input.GetAxis("Horizontal");
         var v = Input.GetAxis("Vertical");
