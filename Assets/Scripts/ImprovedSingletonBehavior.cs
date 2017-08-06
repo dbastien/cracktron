@@ -16,7 +16,7 @@ public abstract class ImprovedSingletonBehavior<T> : MonoBehaviour where T : Imp
             if (instance == null)
             {
                 // first time init
-                var sceneInstance = GameObject.FindObjectOfType<T>();
+                var sceneInstance = FindObjectOfType<T>();
                 if (sceneInstance)
                 {
                     sceneInstance.Initialize();
@@ -35,7 +35,7 @@ public abstract class ImprovedSingletonBehavior<T> : MonoBehaviour where T : Imp
             if (!this.initialized)
             {
                 this.initialized = true;
-                InitializeInternal();
+                this.InitializeInternal();
             }
         }
     }

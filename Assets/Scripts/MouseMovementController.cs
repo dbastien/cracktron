@@ -19,31 +19,31 @@ public class MouseMovementController : MonoBehaviour
 
 #if INPUT_RDP_WORKAROUND
         var mousePosition = Input.mousePosition;
-        var axisDelta = new Vector3(mousePosition.x - mousePositionLast.x,
-                                    mousePosition.y - mousePositionLast.y, 
+        var axisDelta = new Vector3(mousePosition.x - this.mousePositionLast.x,
+                                    mousePosition.y - this.mousePositionLast.y, 
                                     Input.GetAxis("Mouse ScrollWheel"));
 
         axisDelta *= 0.1f; //default Unity mouse sensitivity
-        mousePositionLast = mousePosition;
+        this.mousePositionLast = mousePosition;
 #else
         var axisDelta = new Vector3(Input.GetAxis("Mouse X"),
                                     Input.GetAxis("Mouse Y"),
                                     Input.GetAxis("Mouse ScrollWheel"));
 #endif
 
-        TargetTransform.Translate(0.0f, 0.0f, Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed * finalScale);
+        this.TargetTransform.Translate(0.0f, 0.0f, Input.GetAxis("Mouse ScrollWheel") * this.ZoomSpeed * finalScale);
 
         // mouse middle button - pan
         if (Input.GetMouseButton(2))
         {
-            TargetTransform.Translate(-axisDelta.x * PanSpeed.x * finalScale, -axisDelta.y * PanSpeed.y * finalScale, 0.0f);
+            this.TargetTransform.Translate(-axisDelta.x * this.PanSpeed.x * finalScale, -axisDelta.y * this.PanSpeed.y * finalScale, 0.0f);
         }
 
         // mouse right button - rotate
         if (Input.GetMouseButton(1))
         {
-            TargetTransform.eulerAngles += new Vector3(-axisDelta.y * RotateSpeed.y * finalScale,
-                                                        axisDelta.x * RotateSpeed.x * finalScale,
+            this.TargetTransform.eulerAngles += new Vector3(-axisDelta.y * this.RotateSpeed.y * finalScale,
+                                                        axisDelta.x * this.RotateSpeed.x * finalScale,
                                                         0.0f);
         }
     }

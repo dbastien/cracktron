@@ -13,7 +13,7 @@ public class NeuronSteerWander : NeuronSteer
 
     public override void Update()
     {
-        if (!owner)
+        if (!this.owner)
         {
             return;
         }
@@ -22,19 +22,19 @@ public class NeuronSteerWander : NeuronSteer
 
         if (this.updateFrequencyRemainderSeconds >= this.UpdateFrequencySeconds)
         {
-            var randomPos = UnityEngine.Random.onUnitSphere;
+            var randomPos = Random.onUnitSphere;
             randomPos.Scale(this.DirectionWeight);
 
-            this.targetDirection = owner.transform.forward + randomPos * Jitter * this.UpdateFrequencySeconds;
+            this.targetDirection = this.owner.transform.forward + randomPos * this.Jitter * this.UpdateFrequencySeconds;
             this.targetDirection.Normalize();
 
             this.updateFrequencyRemainderSeconds -= this.UpdateFrequencySeconds;
         }
 
-        if (Smoothing)
+        if (this.Smoothing)
         {
             // TODO: forward is adjusting as we're doing this so it's not a linear ease really, and should slerp anyhow...
-            this.Direction = Vector3.Lerp(owner.transform.forward, this.targetDirection, this.updateFrequencyRemainderSeconds / this.UpdateFrequencySeconds);
+            this.Direction = Vector3.Lerp(this.owner.transform.forward, this.targetDirection, this.updateFrequencyRemainderSeconds / this.UpdateFrequencySeconds);
         }
         else
         {

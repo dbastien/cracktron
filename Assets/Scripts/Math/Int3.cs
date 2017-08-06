@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 [StructLayout(LayoutKind.Sequential, Pack = 4)]
 public struct Int3 : IEquatable<Int3>, IFormattable
 {

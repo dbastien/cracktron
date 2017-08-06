@@ -28,25 +28,25 @@ public class BrainDataEditor : Editor
             {
                 if (typeof(NeuronSteer).IsAssignableFrom(t) && !t.IsAbstract && t.IsPublic)
                 {
-                    types.Add(t);
+                    this.types.Add(t);
                 }
             }
         }
 
         this.list.drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "SteerNeurons"); };
 
-        this.list.drawElementCallback = ListDrawElement;
-        this.list.onAddDropdownCallback = ListAddDropDown;
-        this.list.onRemoveCallback = ListRemove;
+        this.list.drawElementCallback = this.ListDrawElement;
+        this.list.onAddDropdownCallback = this.ListAddDropDown;
+        this.list.onRemoveCallback = this.ListRemove;
     }
 
     private void ListAddDropDown(Rect buttonRect, ReorderableList list)
     {
         var menu = new GenericMenu();
 
-        foreach (var type in types)
+        foreach (var type in this.types)
         {
-            menu.AddItem(new GUIContent(type.ToString()), false, ListAddItemClicked, type);
+            menu.AddItem(new GUIContent(type.ToString()), false, this.ListAddItemClicked, type);
         }
 
         menu.ShowAsContext();
@@ -57,7 +57,7 @@ public class BrainDataEditor : Editor
         var brainData = this.target as BrainData;
         var targetType = targetItem as Type;
 
-        var newScriptableObject = ScriptableObject.CreateInstance(targetType);
+        var newScriptableObject = CreateInstance(targetType);
 
         //we'll name the object based on the type - it'd be nice to be able to edit this later
         //but it's a property not a field...
@@ -79,7 +79,7 @@ public class BrainDataEditor : Editor
         brainData.SteerNeurons.Remove(neuron);
 
         //destroy the asset in the databse as well
-        UnityEngine.Object.DestroyImmediate(neuron, true);
+        DestroyImmediate(neuron, true);
         AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this.target));
     }
 
@@ -100,7 +100,7 @@ public class BrainDataEditor : Editor
         //we want to show the inspector for the selected object 
         if (isActive)
         {
-            var editor = Editor.CreateEditor(item, typeof(NeuronEditor));
+            var editor = CreateEditor(item, typeof(NeuronEditor));
             editor.OnInspectorGUI();
         }
     }

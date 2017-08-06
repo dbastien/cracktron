@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// CustomEditor for Object in order to display reorderable list editor for all lists
 /// </summary>
-[CustomEditor(typeof(UnityEngine.Object), true, isFallback = true)]
+[CustomEditor(typeof(Object), true, isFallback = true)]
 public class ObjectEditor : Editor
 {
     protected class ReorderableListState
@@ -44,8 +44,8 @@ public class ObjectEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        serializedObject.Update();
-        var property = serializedObject.GetIterator();
+        this.serializedObject.Update();
+        var property = this.serializedObject.GetIterator();
         var next = property.NextVisible(true);
         if (next)
         {
@@ -54,7 +54,7 @@ public class ObjectEditor : Editor
                 this.PropertyField(property);
             } while (property.NextVisible(false));
         }
-        serializedObject.ApplyModifiedProperties();
+        this.serializedObject.ApplyModifiedProperties();
     }
 
     protected void PropertyField(SerializedProperty property)
@@ -107,7 +107,7 @@ public class ObjectEditor : Editor
 
     protected void ArrayField(SerializedProperty property)
     {
-        var reorderableList = GetReorderableListState(property).reorderableList;
+        var reorderableList = this.GetReorderableListState(property).reorderableList;
         reorderableList.DoLayoutList();
     }
 }

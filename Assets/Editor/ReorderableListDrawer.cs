@@ -21,12 +21,12 @@ public class ReorderableListDrawer : PropertyDrawer
         }
 
         var serializedObject = serializedProperty.serializedObject;
-        propertyPath = serializedProperty.propertyPath;
+        this.propertyPath = serializedProperty.propertyPath;
 
         //look for array component of property - this is the secret sauce to making it generic
-        propertyPath = propertyPath.Substring(0, serializedProperty.propertyPath.LastIndexOf("Array") - 1);
+        this.propertyPath = this.propertyPath.Substring(0, serializedProperty.propertyPath.LastIndexOf("Array") - 1);
 
-        SerializedProperty elements = serializedObject.FindProperty(propertyPath);
+        SerializedProperty elements = serializedObject.FindProperty(this.propertyPath);
         this.reorderableListCached = new ReorderableList(serializedProperty.serializedObject, elements, true, true, true, true)
         {
             drawElementCallback = new ReorderableList.ElementCallbackDelegate(this.DrawElement),
@@ -48,7 +48,7 @@ public class ReorderableListDrawer : PropertyDrawer
 
     private void DrawHeader(Rect rect)
     {
-        GUI.Label(rect, propertyPath);
+        GUI.Label(rect, this.propertyPath);
     }
 
     private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)

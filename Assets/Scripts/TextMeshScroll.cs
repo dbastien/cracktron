@@ -11,23 +11,23 @@ public class TextMeshScroll : MonoBehaviour
 
     public void Update()
     {
-        if (textComponent == null)
+        if (this.textComponent == null)
         {
-            textComponent = gameObject.GetComponent<TMP_Text>();
+            this.textComponent = this.gameObject.GetComponent<TMP_Text>();
 
-            textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
+            this.textComponent.havePropertiesChanged = true; // Need to force the TextMeshPro Object to be updated.
             //textComponent.ForceMeshUpdate(); // Generate the mesh and populate the textInfo with data we can use and manipulate.
         }
 
-        if (rectComponent == null)
+        if (this.rectComponent == null)
         {
-            rectComponent = gameObject.GetComponent<RectTransform>();
+            this.rectComponent = this.gameObject.GetComponent<RectTransform>();
         }
 
-        scrollPosition += ScrollSpeed * Time.deltaTime;
-        scrollPosition %= 1.0f;
+        this.scrollPosition += this.ScrollSpeed * Time.deltaTime;
+        this.scrollPosition %= 1.0f;
 
-        var xPos = -Mathf.Lerp(-rectComponent.rect.width, textComponent.preferredWidth + rectComponent.rect.width, scrollPosition);
+        var xPos = -Mathf.Lerp(-this.rectComponent.rect.width, this.textComponent.preferredWidth + this.rectComponent.rect.width, this.scrollPosition);
 
         this.rectComponent.position = new Vector3(xPos,
                                                   this.rectComponent.position.y,

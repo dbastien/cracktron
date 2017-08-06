@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class AssetDatabaseUtils
 {
-    public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
+    public static List<T> FindAssetsByType<T>() where T : Object
     {
         var GUIDs = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)), null);
         var assets = new List<T>(GUIDs.Length);
@@ -27,14 +27,14 @@ public static class AssetDatabaseUtils
         return assets;
     }
 
-    public static List<T> FindAndLoadAssets<T>() where T : UnityEngine.Object
+    public static List<T> FindAndLoadAssets<T>() where T : Object
     {
         var guids = FindAssetGUIDs<T>();
 
         return LoadAssetsByGUIDs<T>(guids);
     }
 
-    public static string[] FindAssetGUIDs<T>() where T : UnityEngine.Object
+    public static string[] FindAssetGUIDs<T>() where T : Object
     {
         var typeName = typeof(T).ToString();
 
@@ -50,13 +50,13 @@ public static class AssetDatabaseUtils
         return AssetDatabase.FindAssets(search);
     }
 
-    public static T LoadAssetByGUID<T>(string guid) where T : UnityEngine.Object
+    public static T LoadAssetByGUID<T>(string guid) where T : Object
     {
         var assetPath = AssetDatabase.GUIDToAssetPath(guid);
         return AssetDatabase.LoadAssetAtPath<T>(assetPath);     
     }
     
-    public static List<T> LoadAssetsByGUIDs<T>(string[] guids) where T : UnityEngine.Object
+    public static List<T> LoadAssetsByGUIDs<T>(string[] guids) where T : Object
     {
         var assets = new List<T>(guids.Length);
 

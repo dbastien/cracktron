@@ -23,13 +23,13 @@ public class MaterialCurve : MonoBehaviour
 
     public void OnEnable()
     {
-        this.render = GetComponent<Renderer>();
+        this.render = this.GetComponent<Renderer>();
     }
 
     public void Update()
     {
         this.timeElapsed += Time.deltaTime;
 
-        this.render.material.color = this.Start.LerpUnclamped(this.End, this.Curve.Evaluate(timeElapsed));
+        this.render.material.color = this.Start.LerpUnclamped(this.End, this.Curve.Evaluate(this.timeElapsed));
     }
 }

@@ -12,8 +12,8 @@ namespace HoloToolkit.Unity
     {
         private void Update()
         {
-            Shader.SetGlobalMatrix("CalibrationSpaceWorldToLocal", transform.worldToLocalMatrix);
-            Shader.SetGlobalMatrix("CalibrationSpaceLocalToWorld", transform.localToWorldMatrix);
+            Shader.SetGlobalMatrix("CalibrationSpaceWorldToLocal", this.transform.worldToLocalMatrix);
+            Shader.SetGlobalMatrix("CalibrationSpaceLocalToWorld", this.transform.localToWorldMatrix);
         }
     }
 }

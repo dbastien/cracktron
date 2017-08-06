@@ -25,22 +25,22 @@ public class TextureGenerationWindow : EditorWindow
 
     private void FillTexture()
     {
-        for (var y = 0; y < Texture.height; ++y)
+        for (var y = 0; y < this.Texture.height; ++y)
         {
-            for (var x = 0; x < Texture.width; ++x)
+            for (var x = 0; x < this.Texture.width; ++x)
             {
-                float xNormalized = x / (float)Texture.width;
-                float yNormalized = y / (float)Texture.height;
+                float xNormalized = x / (float) this.Texture.width;
+                float yNormalized = y / (float) this.Texture.height;
 
                 float a = 1.0f;
                 float r = Mathf.PerlinNoise(xNormalized, yNormalized);
                 float g = Mathf.PerlinNoise(xNormalized, yNormalized);
                 float b = Mathf.PerlinNoise(xNormalized, yNormalized);
-                Texture.SetPixel(x, y, new Color(r, g, b, a));
+                this.Texture.SetPixel(x, y, new Color(r, g, b, a));
             }
         }
 
-        Texture.Apply();
+        this.Texture.Apply();
     }
 
     public void OnGUI()
@@ -50,21 +50,21 @@ public class TextureGenerationWindow : EditorWindow
         var previewLayout = new GUILayoutOption[] { GUILayout.MaxWidth(100f), GUILayout.MaxHeight(100f) };
 
         EditorGUILayout.BeginHorizontal();
-        ExportWidth = EditorGUILayout.IntField(Styles.resolutionX, ExportWidth, GUILayoutOptionEmptyArray);
-        ExportHeight = EditorGUILayout.IntField(Styles.resolutionY, ExportHeight, GUILayoutOptionEmptyArray);
+        this.ExportWidth = EditorGUILayout.IntField(Styles.resolutionX, this.ExportWidth, GUILayoutOptionEmptyArray);
+        this.ExportHeight = EditorGUILayout.IntField(Styles.resolutionY, this.ExportHeight, GUILayoutOptionEmptyArray);
         EditorGUILayout.EndHorizontal();
 
         //https://docs.unity3d.com/ScriptReference/EditorGUI.DrawPreviewTexture.html
         EditorGUILayout.BeginHorizontal();
         Rect previewRect;
         previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
-        EditorGUI.DrawPreviewTexture(previewRect, Texture);
+        EditorGUI.DrawPreviewTexture(previewRect, this.Texture);
 
         previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
-        EditorGUI.DrawTextureTransparent(previewRect, Texture);
+        EditorGUI.DrawTextureTransparent(previewRect, this.Texture);
 
         previewRect = GUILayoutUtility.GetRect(100f, 100f, previewLayout);
-        EditorGUI.DrawTextureAlpha(previewRect, Texture);
+        EditorGUI.DrawTextureAlpha(previewRect, this.Texture);
         EditorGUILayout.EndHorizontal();        
 
         if (GUILayout.Button("Export", GUILayoutOptionEmptyArray))

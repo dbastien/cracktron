@@ -9,7 +9,7 @@ public class SnapTarget : MonoBehaviour
     {
         var snapPoints = this.GetSnapPoints();
 
-        lineObjects = new List<GameObject>(snapPoints.Length);
+        this.lineObjects = new List<GameObject>(snapPoints.Length);
 
         foreach (var snapPoint in snapPoints)
         {

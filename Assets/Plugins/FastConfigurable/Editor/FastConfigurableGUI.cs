@@ -67,23 +67,23 @@ namespace HoloToolkit.Unity
         public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
         {
             // MaterialProperties can be animated so we do not cache them but fetch them every event to ensure animated values are updated correctly
-            CacheMainProperties(props);
-            CacheOutputConfigurationProperties(props);
+            this.CacheMainProperties(props);
+            this.CacheOutputConfigurationProperties(props);
 
             // Make sure that needed setup (ie keywords/renderqueue) are set up if we're switching from an existing material.
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
-            if (firstTimeApply)
+            if (this.firstTimeApply)
             {
-                SetMaterialAutoPropertiesAndKeywords(matEditor.target as Material);
-                firstTimeApply = false;
+                this.SetMaterialAutoPropertiesAndKeywords(matEditor.target as Material);
+                this.firstTimeApply = false;
             }
 
             EditorGUIUtility.labelWidth = 0f;
 
             EditorGUI.BeginChangeCheck();
             {
-                ShowMainGUI(matEditor);
-                ShowOutputConfigurationGUI(matEditor);
+                this.ShowMainGUI(matEditor);
+                this.ShowOutputConfigurationGUI(matEditor);
 
                 var mode = (BlendMode)this.blendMode.floatValue;
                 if (mode == BlendMode.Advanced)
@@ -96,33 +96,30 @@ namespace HoloToolkit.Unity
                 foreach (var obj in this.blendMode.targets)
                 {
                     var mat = obj as Material;
-                    SetMaterialBlendMode(mat, (BlendMode)this.blendMode.floatValue);
-                    SetMaterialAutoPropertiesAndKeywords(mat);
+                    this.SetMaterialBlendMode(mat, (BlendMode)this.blendMode.floatValue);
+                    this.SetMaterialAutoPropertiesAndKeywords(mat);
                 }
             }
         }
 
         protected virtual void ShowMainGUI(MaterialEditor matEditor)
         {
-            ShowBlendModeGUI(matEditor);
+            this.ShowBlendModeGUI(matEditor);
 
             var mode = (BlendMode)this.blendMode.floatValue;
             var mat = matEditor.target as Material;
 
             ShaderGUIUtils.BeginHeader("Base Texture and Color");
             {
-                matEditor.ShaderProperty(vertexColorEnabled, Styles.vertexColorEnabled);
+                matEditor.ShaderProperty(this.vertexColorEnabled, Styles.vertexColorEnabled);
 
-                CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main,
-                                                                                         mainTexture,
-                                                                                         mainColorEnabled, mainColor,
-                                                                                         textureScaleAndOffset);
+                CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
 
-                matEditor.TexturePropertySingleLine(Styles.occlusionMap, occlusionMap);
+                matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
 
                 if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
                 {
-                    matEditor.ShaderProperty(alphaCutoff, Styles.alphaCutoffText.text);
+                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoffText.text);
                 }
             }
             ShaderGUIUtils.EndHeader();
@@ -130,57 +127,57 @@ namespace HoloToolkit.Unity
 
             ShaderGUIUtils.BeginHeader("Lighting");
             {
-                matEditor.ShaderProperty(ambientLightingEnabled, Styles.ambientLightingEnabled);
-                matEditor.ShaderProperty(diffuseLightingEnabled, Styles.diffuseLightingEnabled);
-                matEditor.ShaderProperty(useAdditionalLightingData, Styles.useAdditionalLighingData);
-                EditorGUI.BeginDisabledGroup(MaterialNeedsPerPixel(mat));
-                matEditor.ShaderProperty(perPixelLighting, Styles.perPixelLighting);
+                matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
+                matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
+                matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
+                EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
+                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
                 EditorGUI.EndDisabledGroup();
 
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, specularLightingEnabled);
+                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
                 {
-                    if (specularLightingEnabled.floatValue != 0.0f)
+                    if (this.specularLightingEnabled.floatValue != 0.0f)
                     {
-                        matEditor.ShaderProperty(specularColor, Styles.specularColor);
+                        matEditor.ShaderProperty(this.specularColor, Styles.specularColor);
 
                         //consider a special slider + tex control
-                        matEditor.TexturePropertySingleLine(Styles.specular, specularMap, specular);
-                        matEditor.TexturePropertySingleLine(Styles.gloss, glossMap, gloss);
+                        matEditor.TexturePropertySingleLine(Styles.specular, this.specularMap, this.specular);
+                        matEditor.TexturePropertySingleLine(Styles.gloss, this.glossMap, this.gloss);
                     }
                 }
                 ShaderGUIUtils.EndHeader();
 
-                matEditor.TexturePropertySingleLine(Styles.normalMap, normalMap);
+                matEditor.TexturePropertySingleLine(Styles.normalMap, this.normalMap);
 
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, rimLightingEnabled);
+                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled);
                 {
-                    if (rimLightingEnabled.floatValue != 0.0f)
+                    if (this.rimLightingEnabled.floatValue != 0.0f)
                     {
-                        matEditor.ShaderProperty(rimPower, Styles.rimPower);
-                        matEditor.ShaderProperty(rimColor, Styles.rimColor);
+                        matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
+                        matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
                     }
                 }
                 ShaderGUIUtils.EndHeader();
 
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, reflectionsEnabled);
+                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled);
                 {
-                    if (reflectionsEnabled.floatValue != 0.0f)
+                    if (this.reflectionsEnabled.floatValue != 0.0f)
                     {
-                        matEditor.TexturePropertySingleLine(Styles.cubeMap, cubeMap);
-                        matEditor.ShaderProperty(reflectionScale, Styles.reflectionScale);
-                        matEditor.ShaderProperty(calibrationSpaceReflections, Styles.calibrationSpaceReflections);
+                        matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
+                        matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
+                        matEditor.ShaderProperty(this.calibrationSpaceReflections, Styles.calibrationSpaceReflections);
                     }
                 }
                 ShaderGUIUtils.EndHeader();
 
-                CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, Styles.emission, emissionMap, emissionColorEnabled, emissionColor);
+                CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
 
             ShaderGUIUtils.BeginHeader("Global");
             {
-                CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, textureScaleAndOffset);
+                CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
@@ -189,9 +186,9 @@ namespace HoloToolkit.Unity
             {
                 ShaderGUIUtils.BeginHeader("Alpha Blending");
                 {
-                    matEditor.ShaderProperty(srcBlend, Styles.srcBlend);
-                    matEditor.ShaderProperty(dstBlend, Styles.dstBlend);
-                    matEditor.ShaderProperty(blendOp, Styles.blendOp);
+                    matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
+                    matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
+                    matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
                 }
                 ShaderGUIUtils.EndHeader();
                 ShaderGUIUtils.HeaderSeparator();
@@ -200,7 +197,7 @@ namespace HoloToolkit.Unity
 
         protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
         {
-            EditorGUI.showMixedValue = blendMode.hasMixedValue;
+            EditorGUI.showMixedValue = this.blendMode.hasMixedValue;
             var mode = (BlendMode)this.blendMode.floatValue;
 
             EditorGUI.BeginChangeCheck();
@@ -221,10 +218,10 @@ namespace HoloToolkit.Unity
             {
                 ShaderGUIUtils.BeginHeader("Output Configuration");
                 {
-                    matEditor.ShaderProperty(cullMode, Styles.cullMode);
-                    matEditor.ShaderProperty(zTest, Styles.zTest);
-                    matEditor.ShaderProperty(zWrite, Styles.zWrite);
-                    matEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
+                    matEditor.ShaderProperty(this.cullMode, Styles.cullMode);
+                    matEditor.ShaderProperty(this.zTest, Styles.zTest);
+                    matEditor.ShaderProperty(this.zWrite, Styles.zWrite);
+                    matEditor.ShaderProperty(this.colorWriteMask, Styles.colorWriteMask);
                 }
                 ShaderGUIUtils.EndHeader();
             }
@@ -260,7 +257,7 @@ namespace HoloToolkit.Unity
 
             if (standard)
             {
-                SetMaterialLighting(mat, true, true, ShaderGUIUtils.TryGetToggle(mat, "_SpecularHighlights", true), true, true);
+                this.SetMaterialLighting(mat, true, true, ShaderGUIUtils.TryGetToggle(mat, "_SpecularHighlights", true), true, true);
             }
             else if (mobile || legacy)
             {
@@ -275,17 +272,17 @@ namespace HoloToolkit.Unity
 
                 if (unlit)
                 {
-                    SetMaterialLighting(mat, false, false, false, false, false);
+                    this.SetMaterialLighting(mat, false, false, false, false, false);
                 }
                 else
                 {
                     //TODO: need to handle way more cases
-                    SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, vertexLit);
+                    this.SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, vertexLit);
                 }
             }
 
-            SetMaterialBlendMode(mat, blendMode);
-            SetMaterialAutoPropertiesAndKeywords(mat);
+            this.SetMaterialBlendMode(mat, blendMode);
+            this.SetMaterialAutoPropertiesAndKeywords(mat);
         }
 
         protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
@@ -375,55 +372,55 @@ namespace HoloToolkit.Unity
         {
             this.blendMode = FindProperty("_Mode", props);
 
-            vertexColorEnabled = FindProperty("_UseVertexColor", props);
-            mainColorEnabled = FindProperty("_UseMainColor", props);
-            mainColor = FindProperty("_Color", props);
-            mainTexture = FindProperty("_MainTex", props);
-            alphaCutoff = FindProperty("_Cutoff", props);
+            this.vertexColorEnabled = FindProperty("_UseVertexColor", props);
+            this.mainColorEnabled = FindProperty("_UseMainColor", props);
+            this.mainColor = FindProperty("_Color", props);
+            this.mainTexture = FindProperty("_MainTex", props);
+            this.alphaCutoff = FindProperty("_Cutoff", props);
 
-            occlusionMap = FindProperty("_OcclusionMap", props);
+            this.occlusionMap = FindProperty("_OcclusionMap", props);
 
-            ambientLightingEnabled = FindProperty("_UseAmbient", props);
-            diffuseLightingEnabled = FindProperty("_UseDiffuse", props);
-            useAdditionalLightingData = FindProperty("_Shade4", props);
-            perPixelLighting = FindProperty("_ForcePerPixel", props);
+            this.ambientLightingEnabled = FindProperty("_UseAmbient", props);
+            this.diffuseLightingEnabled = FindProperty("_UseDiffuse", props);
+            this.useAdditionalLightingData = FindProperty("_Shade4", props);
+            this.perPixelLighting = FindProperty("_ForcePerPixel", props);
 
-            specularLightingEnabled = FindProperty("_SpecularHighlights", props);
-            specularColor = FindProperty("_SpecColor", props);
-            specular = FindProperty("_Specular", props);
-            specularMap = FindProperty("_SpecularMap", props);
+            this.specularLightingEnabled = FindProperty("_SpecularHighlights", props);
+            this.specularColor = FindProperty("_SpecColor", props);
+            this.specular = FindProperty("_Specular", props);
+            this.specularMap = FindProperty("_SpecularMap", props);
 
-            gloss = FindProperty("_Gloss", props);
-            glossMap = FindProperty("_GlossMap", props);
+            this.gloss = FindProperty("_Gloss", props);
+            this.glossMap = FindProperty("_GlossMap", props);
 
-            normalMap = FindProperty("_BumpMap", props);
+            this.normalMap = FindProperty("_BumpMap", props);
 
-            reflectionsEnabled = FindProperty("_UseReflections", props);
-            cubeMap = FindProperty("_CubeMap", props);
-            reflectionScale = FindProperty("_ReflectionScale", props);
-            calibrationSpaceReflections = FindProperty("_CalibrationSpaceReflections", props);
+            this.reflectionsEnabled = FindProperty("_UseReflections", props);
+            this.cubeMap = FindProperty("_CubeMap", props);
+            this.reflectionScale = FindProperty("_ReflectionScale", props);
+            this.calibrationSpaceReflections = FindProperty("_CalibrationSpaceReflections", props);
 
-            rimLightingEnabled = FindProperty("_UseRimLighting", props);
-            rimPower = FindProperty("_RimPower", props);
-            rimColor = FindProperty("_RimColor", props);
+            this.rimLightingEnabled = FindProperty("_UseRimLighting", props);
+            this.rimPower = FindProperty("_RimPower", props);
+            this.rimColor = FindProperty("_RimColor", props);
 
-            emissionColorEnabled = FindProperty("_UseEmissionColor", props);
-            emissionColor = FindProperty("_EmissionColor", props);
-            emissionMap = FindProperty("_EmissionMap", props);
+            this.emissionColorEnabled = FindProperty("_UseEmissionColor", props);
+            this.emissionColor = FindProperty("_EmissionColor", props);
+            this.emissionMap = FindProperty("_EmissionMap", props);
 
-            textureScaleAndOffset = FindProperty("_TextureScaleOffset", props);
+            this.textureScaleAndOffset = FindProperty("_TextureScaleOffset", props);
 
-            srcBlend = FindProperty("_SrcBlend", props);
-            dstBlend = FindProperty("_DstBlend", props);
-            blendOp = FindProperty("_BlendOp", props);
+            this.srcBlend = FindProperty("_SrcBlend", props);
+            this.dstBlend = FindProperty("_DstBlend", props);
+            this.blendOp = FindProperty("_BlendOp", props);
         }
 
         protected virtual void CacheOutputConfigurationProperties(MaterialProperty[] props)
         {
-            cullMode = FindProperty("_Cull", props);
-            zTest = FindProperty("_ZTest", props);
-            zWrite = FindProperty("_ZWrite", props);
-            colorWriteMask = FindProperty("_ColorWriteMask", props);
+            this.cullMode = FindProperty("_Cull", props);
+            this.zTest = FindProperty("_ZTest", props);
+            this.zWrite = FindProperty("_ZWrite", props);
+            this.colorWriteMask = FindProperty("_ColorWriteMask", props);
         }
 
         protected static class Styles

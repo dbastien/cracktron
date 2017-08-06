@@ -20,19 +20,19 @@ public class TextMeshCurve : MonoBehaviour
     {
         if (!this.textComponent)
         {
-            this.textComponent = gameObject.GetComponent<TMP_Text>();
+            this.textComponent = this.gameObject.GetComponent<TMP_Text>();
             this.textComponent.havePropertiesChanged = true;
             this.textComponent.ForceMeshUpdate();
             this.initialMeshInfo = this.textComponent.textInfo.CopyMeshInfoVertexData();
         }
 
-        timeElapsed += Time.deltaTime;
+        this.timeElapsed += Time.deltaTime;
         Matrix4x4 matrix;
 
         this.textComponent.havePropertiesChanged = true;
         this.textComponent.ForceMeshUpdate();
 
-        var textInfo = textComponent.textInfo;
+        var textInfo = this.textComponent.textInfo;
         var characterCount = textInfo.characterCount;
 
         var boundsMinX = this.textComponent.bounds.min.x;
@@ -48,7 +48,7 @@ public class TextMeshCurve : MonoBehaviour
             var vertexIndex = textInfo.characterInfo[i].vertexIndex;
             var materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
             var targetVertices = textInfo.meshInfo[materialIndex].vertices;
-            var initialVertices = initialMeshInfo[materialIndex].vertices;
+            var initialVertices = this.initialMeshInfo[materialIndex].vertices;
 
             // Compute the baseline mid point for each character
             var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * 0.5f,
@@ -58,14 +58,14 @@ public class TextMeshCurve : MonoBehaviour
             // Compute the angle of rotation for each character based on the animation curve
             var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
             var x1 = x0 + 0.0001f;
-            var y0 = VertexCurve.Evaluate(x0 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
-            var y1 = VertexCurve.Evaluate(x1 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
+            var y0 = this.VertexCurve.Evaluate(x0 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
+            var y1 = this.VertexCurve.Evaluate(x1 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
 
-            if (RotateLetters)
+            if (this.RotateLetters)
             {
                 var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
 
-                var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * RotationScale;
+                var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * this.RotationScale;
                 var cross = Vector3.Cross(Vector3.right, tangent);
                 var angle = cross.z > 0 ? dot : 360 - dot;
 

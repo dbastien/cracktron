@@ -14,9 +14,9 @@ namespace HoloToolkit.Unity
         {
             ShaderGUIUtils.BeginHeader("Output Configuration");
             {
-                matEditor.ShaderProperty(zTest, Styles.zTest);
-                matEditor.ShaderProperty(zWrite, Styles.zWrite);
-                matEditor.ShaderProperty(colorWriteMask, Styles.colorWriteMask);
+                matEditor.ShaderProperty(this.zTest, Styles.zTest);
+                matEditor.ShaderProperty(this.zWrite, Styles.zWrite);
+                matEditor.ShaderProperty(this.colorWriteMask, Styles.colorWriteMask);
                 matEditor.RenderQueueField();
             }
             ShaderGUIUtils.EndHeader();
@@ -24,9 +24,9 @@ namespace HoloToolkit.Unity
 
         protected override void CacheOutputConfigurationProperties(MaterialProperty[] props)
         {
-            zTest = FindProperty("_ZTest", props);
-            zWrite = FindProperty("_ZWrite", props);
-            colorWriteMask = FindProperty("_ColorWriteMask", props);
+            this.zTest = FindProperty("_ZTest", props);
+            this.zWrite = FindProperty("_ZWrite", props);
+            this.colorWriteMask = FindProperty("_ColorWriteMask", props);
         }
     }
 }

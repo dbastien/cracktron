@@ -30,15 +30,15 @@ public class TransformCurveEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        var targetCurve = target as TransformCurve;
+        var targetCurve = this.target as TransformCurve;
 
         int index = propNames.IndexOf(targetCurve.CurveTargetName);
         index = Mathf.Max(0, index);
 
-        var curveProperty = serializedObject.FindProperty("Curve");
+        var curveProperty = this.serializedObject.FindProperty("Curve");
 
         EditorGUILayout.PropertyField(curveProperty);
-        serializedObject.ApplyModifiedProperties();
+        this.serializedObject.ApplyModifiedProperties();
 
         EditorGUILayout.BeginVertical();
         EditorGUILayout.Space();

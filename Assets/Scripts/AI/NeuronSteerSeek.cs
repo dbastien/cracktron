@@ -8,7 +8,7 @@
 
         if (this.Targeting.Target != null)
         {
-            this.Direction = Targeting.Target.transform.position - owner.transform.position;
+            this.Direction = this.Targeting.Target.transform.position - this.owner.transform.position;
             this.Direction.Normalize();
         }
     }

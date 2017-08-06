@@ -10,14 +10,14 @@ public class Brain : MonoBehaviour
 
     public void Start()
     {
-        ownerRigidbody = GetComponent<Rigidbody>();
+        this.ownerRigidbody = this.GetComponent<Rigidbody>();
 
-        this.BrainData = Object.Instantiate(this.BrainData);
+        this.BrainData = Instantiate(this.BrainData);
         this.BrainData.CloneNeurons();
 
         foreach (var neuron in this.BrainData.SteerNeurons)
         {
-            neuron.Attach(gameObject);
+            neuron.Attach(this.gameObject);
         }
     }
 
@@ -34,8 +34,8 @@ public class Brain : MonoBehaviour
 
         direction.Normalize();
 
-        gameObject.transform.forward = direction;
+        this.gameObject.transform.forward = direction;
 
-        ownerRigidbody.MovePosition(gameObject.transform.position + direction * this.MovementSpeed * Time.deltaTime);
+        this.ownerRigidbody.MovePosition(this.gameObject.transform.position + direction * this.MovementSpeed * Time.deltaTime);
     }
 }

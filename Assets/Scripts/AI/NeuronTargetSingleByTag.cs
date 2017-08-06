@@ -4,6 +4,6 @@
 
     public override void Update()
     {
-        this.Target = TargetingManager.Instance.FindByTag(Tag);
+        this.Target = TargetingManager.Instance.FindByTag(this.Tag);
     }
 }

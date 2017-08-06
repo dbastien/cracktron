@@ -6,7 +6,7 @@ public class Snap : MonoBehaviour
 
     public void Start()
     {
-        Position = transform.position;
+        this.Position = this.transform.position;
     }
 
     public void OnMouseDrag()
@@ -15,9 +15,9 @@ public class Snap : MonoBehaviour
 
         screenZ += Input.mouseScrollDelta.y * 0.15f;
 
-        Position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenZ));
+        this.Position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenZ));
 
-        transform.position = SnapManager.Instance.GetSnapPoint(this);
+        this.transform.position = SnapManager.Instance.GetSnapPoint(this);
     }
 
     //relative to transform position

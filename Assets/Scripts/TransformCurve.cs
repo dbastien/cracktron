@@ -46,26 +46,26 @@ public class TransformCurve : MonoBehaviour
 
         if (DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.End))
         {
-            this.End += Start;
+            this.End += this.Start;
         }
         else
         {
-            this.End = Start + Vector3.up;
+            this.End = this.Start + Vector3.up;
         }
     }
 
     public void Awake()
     {
-        UpdateTarget();
+        this.UpdateTarget();
     }
 
     public void Update()
     {
-        this.timeElapsed += Time.deltaTime / LengthScale;
+        this.timeElapsed += Time.deltaTime / this.LengthScale;
 
         if (this.CurveTarget != null)
         {
-            this.CurveTarget.SetValue(this.transform, Start.LerpUnclamped(this.End, this.Curve.Evaluate(this.timeElapsed)), null);
+            this.CurveTarget.SetValue(this.transform, this.Start.LerpUnclamped(this.End, this.Curve.Evaluate(this.timeElapsed)), null);
         }
     }
 }

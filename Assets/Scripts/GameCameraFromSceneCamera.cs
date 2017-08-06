@@ -28,8 +28,8 @@ public class GameCameraFromSceneCamera : MonoBehaviour
 
         if (sceneView != null)
         {
-            UnityEngine.Camera.main.transform.rotation = sceneView.camera.transform.rotation;
-            UnityEngine.Camera.main.transform.position = sceneView.camera.transform.position;
+            Camera.main.transform.rotation = sceneView.camera.transform.rotation;
+            Camera.main.transform.position = sceneView.camera.transform.position;
         }
     }
 #endif

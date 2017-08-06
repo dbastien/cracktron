@@ -94,9 +94,9 @@ namespace HoloToolkit.Unity
             MaterialProperty scaleOffsetProp
         )
         {
-            var rect = CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
+            var rect = TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
 
-            CustomMaterialEditor.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+            SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
 
             return rect;
         }

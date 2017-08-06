@@ -8,7 +8,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
     [MenuItem("Window/Built-in styles and icons")]
     public static void ShowWindow()
     {
-        var w = EditorWindow.GetWindow<BuiltInResourceViewerWindow>();
+        var w = GetWindow<BuiltInResourceViewerWindow>();
         w.Show();
     }
 
@@ -32,44 +32,44 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
     public void OnGUI()
     {
-        if (position.width != oldPosition.width && Event.current.type == EventType.Layout)
+        if (this.position.width != this.oldPosition.width && Event.current.type == EventType.Layout)
         {
-            drawings = null;
-            oldPosition = position;
+            this.drawings = null;
+            this.oldPosition = this.position;
         }
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Toggle(showingStyles, "Styles", EditorStyles.toolbarButton) != showingStyles)
+        if (GUILayout.Toggle(this.showingStyles, "Styles", EditorStyles.toolbarButton) != this.showingStyles)
         {
-            showingStyles = !showingStyles;
-            showingIcons = !showingStyles;
-            drawings = null;
+            this.showingStyles = !this.showingStyles;
+            this.showingIcons = !this.showingStyles;
+            this.drawings = null;
         }
 
-        if (GUILayout.Toggle(showingIcons, "Icons", EditorStyles.toolbarButton) != showingIcons)
+        if (GUILayout.Toggle(this.showingIcons, "Icons", EditorStyles.toolbarButton) != this.showingIcons)
         {
-            showingIcons = !showingIcons;
-            showingStyles = !showingIcons;
-            drawings = null;
+            this.showingIcons = !this.showingIcons;
+            this.showingStyles = !this.showingIcons;
+            this.drawings = null;
         }
 
         GUILayout.EndHorizontal();
 
-        string newSearch = GUILayout.TextField(search);
-        if (newSearch != search)
+        string newSearch = GUILayout.TextField(this.search);
+        if (newSearch != this.search)
         {
-            search = newSearch;
-            drawings = null;
+            this.search = newSearch;
+            this.drawings = null;
         }
 
         float top = 36;
 
-        if (drawings == null)
+        if (this.drawings == null)
         {
-            string lowerSearch = search.ToLower();
+            string lowerSearch = this.search.ToLower();
 
-            drawings = new List<Drawing>();
+            this.drawings = new List<Drawing>();
 
             GUIContent inactiveText = new GUIContent("inactive");
             GUIContent activeText = new GUIContent("active");
@@ -77,7 +77,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
             float x = 5.0f;
             float y = 5.0f;
 
-            if (showingStyles)
+            if (this.showingStyles)
             {
                 foreach (var ss in GUI.skin.customStyles)
                 {
@@ -97,7 +97,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
                     var height = 60.0f;
 
-                    if (x + width > position.width - 32 && x > 5.0f)
+                    if (x + width > this.position.width - 32 && x > 5.0f)
                     {
                         x = 5.0f;
                         y += height + 10.0f;
@@ -111,7 +111,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
                     {
                         if (GUILayout.Button(thisStyle.name, GUILayout.Width(width)))
                         {
-                            CopyText("(GUIStyle)\"" + thisStyle.name + "\"");
+                            this.CopyText("(GUIStyle)\"" + thisStyle.name + "\"");
                         }
 
                         GUILayout.BeginHorizontal();
@@ -122,20 +122,20 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
                     x += width + 18.0f;
 
-                    drawings.Add(draw);
+                    this.drawings.Add(draw);
                 }
             }
-            else if (showingIcons)
+            else if (this.showingIcons)
             {
-                if (objects == null)
+                if (this.objects == null)
                 {
-                    objects = new List<UnityEngine.Object>(Resources.FindObjectsOfTypeAll(typeof(Texture2D)));
-                    objects.Sort((pA, pB) => String.Compare(pA.name, pB.name, StringComparison.OrdinalIgnoreCase));
+                    this.objects = new List<UnityEngine.Object>(Resources.FindObjectsOfTypeAll(typeof(Texture2D)));
+                    this.objects.Sort((pA, pB) => String.Compare(pA.name, pB.name, StringComparison.OrdinalIgnoreCase));
                 }
 
                 var rowHeight = 0.0f;
 
-                foreach (var oo in objects)
+                foreach (var oo in this.objects)
                 {
                     var texture = (Texture)oo;
 
@@ -155,7 +155,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
                     float height = texture.height + GUI.skin.button.CalcSize(new GUIContent(texture.name)).y + 8.0f;
 
-                    if (x + width > position.width - 32.0f)
+                    if (x + width > this.position.width - 32.0f)
                     {
                         x = 5.0f;
                         y += rowHeight + 8.0f;
@@ -172,7 +172,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
                     {
                         if (GUILayout.Button(texture.name, GUILayout.Width(width)))
                         {
-                            CopyText("EditorGUIUtility.FindTexture( \"" + texture.name + "\" )");
+                            this.CopyText("EditorGUIUtility.FindTexture( \"" + texture.name + "\" )");
                         }
 
                         var textureRect = GUILayoutUtility.GetRect(texture.width, texture.width, texture.height, texture.height, GUILayout.ExpandHeight(false), GUILayout.ExpandWidth(false));
@@ -181,30 +181,30 @@ public class BuiltInResourceViewerWindow : EditorWindow
 
                     x += width + 8.0f;
 
-                    drawings.Add(draw);
+                    this.drawings.Add(draw);
                 }
             }
 
-            maxY = y;
+            this.maxY = y;
         }
 
-        Rect r = position;
+        Rect r = this.position;
         r.y = top;
         r.height -= r.y;
         r.x = r.width - 16;
         r.width = 16;
 
-        var areaHeight = position.height - top;
-        scrollPos = GUI.VerticalScrollbar(r, scrollPos, areaHeight, 0.0f, maxY);
+        var areaHeight = this.position.height - top;
+        this.scrollPos = GUI.VerticalScrollbar(r, this.scrollPos, areaHeight, 0.0f, this.maxY);
 
-        var area = new Rect(0, top, position.width - 16.0f, areaHeight);
+        var area = new Rect(0, top, this.position.width - 16.0f, areaHeight);
         GUILayout.BeginArea(area);
 
         int count = 0;
-        foreach (var draw in drawings)
+        foreach (var draw in this.drawings)
         {
             Rect newRect = draw.Rect;
-            newRect.y -= scrollPos;
+            newRect.y -= this.scrollPos;
 
             if (newRect.y + newRect.height > 0 && newRect.y < areaHeight)
             {

@@ -69,7 +69,7 @@ public class CopyCatWindow : EditorWindow
         isInPasteMultiMode = true;
 
         //do Resources.FindObjectsOfTypeAll instead to get non scene objects as well maybe?
-        possiblePasteTargets = GameObject.FindObjectsOfType(t);
+        possiblePasteTargets = FindObjectsOfType(t);
 
         if (possiblePasteTargets == null)
         {
@@ -189,11 +189,11 @@ public class CopyCatWindow : EditorWindow
     {
         if (!isInPasteMultiMode)
         {
-            OnGUICopy();
+            this.OnGUICopy();
         }
         else
         {
-            OnGUIPasteMulti();
+            this.OnGUIPasteMulti();
         }
     }
 }

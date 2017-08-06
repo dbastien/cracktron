@@ -10,7 +10,7 @@ public class SimpleThirdPersonController : MonoBehaviour
         var h = Input.GetAxis("Horizontal");
         var v = Input.GetAxis("Vertical");
 
-        transform.Rotate(transform.up, h * Time.deltaTime * this.TurnSpeed);
+        this.transform.Rotate(this.transform.up, h * Time.deltaTime * this.TurnSpeed);
 
         this.transform.position += this.transform.forward * v * Time.deltaTime * this.MovementSpeed;
     }

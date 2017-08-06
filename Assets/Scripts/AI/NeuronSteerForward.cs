@@ -2,9 +2,9 @@
 {
     public override void Update()
     {
-        if (owner)
+        if (this.owner)
         {
-            this.Direction = owner.transform.forward;
+            this.Direction = this.owner.transform.forward;
             this.Direction.Normalize();
         }
     }
