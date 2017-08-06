@@ -13,18 +13,18 @@ public abstract class ImprovedSingletonBehavior<T> : MonoBehaviour where T : Imp
     {
         get
         {
-            if (instance == null)
+            if (ImprovedSingletonBehavior<T>.instance == null)
             {
                 // first time init
-                var sceneInstance = FindObjectOfType<T>();
+                var sceneInstance = Object.FindObjectOfType<T>();
                 if (sceneInstance)
                 {
                     sceneInstance.Initialize();
-                    instance = sceneInstance;
+                    ImprovedSingletonBehavior<T>.instance = sceneInstance;
                 }
             }
 
-            return instance;
+            return ImprovedSingletonBehavior<T>.instance;
         }
     }
 

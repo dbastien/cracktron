@@ -12,7 +12,7 @@ public class Brain : MonoBehaviour
     {
         this.ownerRigidbody = this.GetComponent<Rigidbody>();
 
-        this.BrainData = Instantiate(this.BrainData);
+        this.BrainData = Object.Instantiate(this.BrainData);
         this.BrainData.CloneNeurons();
 
         foreach (var neuron in this.BrainData.SteerNeurons)

@@ -28,19 +28,19 @@ public class CopyCatWindow : EditorWindow
     [MenuItem("CONTEXT/Component/CopyCat")]
     public static void CopyMenuSelected(MenuCommand command)
     {
-        isInPasteMultiMode = false;
+        CopyCatWindow.isInPasteMultiMode = false;
 
-        copySourceObject = command.context;
-        t = copySourceObject.GetType();
+        CopyCatWindow.copySourceObject = command.context;
+        CopyCatWindow.t = CopyCatWindow.copySourceObject.GetType();
 
-        properties = new List<PropertyInfo>();
-        properties.AddRange(t.GetProperties(BindingFlags.Public | BindingFlags.Instance));
+        CopyCatWindow.properties = new List<PropertyInfo>();
+        CopyCatWindow.properties.AddRange(CopyCatWindow.t.GetProperties(BindingFlags.Public | BindingFlags.Instance));
 
-        fields = new List<FieldInfo>();
-        fields.AddRange(t.GetFields(BindingFlags.Public | BindingFlags.Instance));
+        CopyCatWindow.fields = new List<FieldInfo>();
+        CopyCatWindow.fields.AddRange(CopyCatWindow.t.GetFields(BindingFlags.Public | BindingFlags.Instance));
 
         var propertiesToRemove = new List<PropertyInfo>();
-        foreach (var property in properties)
+        foreach (var property in CopyCatWindow.properties)
         {
             if (!property.CanRead || !property.CanWrite)
             {
@@ -50,37 +50,37 @@ public class CopyCatWindow : EditorWindow
 
         foreach (var property in propertiesToRemove)
         {
-            properties.Remove(property);
+            CopyCatWindow.properties.Remove(property);
         }
 
-        propertiesValue = new object[properties.Count];
-        propertiesSelected = new bool[properties.Count];
+        CopyCatWindow.propertiesValue = new object[CopyCatWindow.properties.Count];
+        CopyCatWindow.propertiesSelected = new bool[CopyCatWindow.properties.Count];
 
-        fieldsValue = new object[fields.Count];
-        fieldsSelected = new bool[fields.Count];
+        CopyCatWindow.fieldsValue = new object[CopyCatWindow.fields.Count];
+        CopyCatWindow.fieldsSelected = new bool[CopyCatWindow.fields.Count];
 
         //launch our window to allow for seletion of what to copy - rendered in OnGUI()
-        GetWindow(typeof(CopyCatWindow), true, "It looks like you're trying to copy something, would you like help with that?", true);
+        EditorWindow.GetWindow(typeof(CopyCatWindow), true, "It looks like you're trying to copy something, would you like help with that?", true);
     }
 
     [MenuItem("Edit/PasteCatMulti")]
     public static void PasteMultiMenuSelected()
     {
-        isInPasteMultiMode = true;
+        CopyCatWindow.isInPasteMultiMode = true;
 
         //do Resources.FindObjectsOfTypeAll instead to get non scene objects as well maybe?
-        possiblePasteTargets = FindObjectsOfType(t);
+        CopyCatWindow.possiblePasteTargets = Object.FindObjectsOfType(CopyCatWindow.t);
 
-        if (possiblePasteTargets == null)
+        if (CopyCatWindow.possiblePasteTargets == null)
         {
             Debug.LogError("CopyCat: No possible paste targets!");
             return;
         }
 
-        possiblePasteTargetsSelected = new bool[possiblePasteTargets.Length];
+        CopyCatWindow.possiblePasteTargetsSelected = new bool[CopyCatWindow.possiblePasteTargets.Length];
 
         //launch our window to allow for seletion of what to paste to - rendered in OnGUI()
-        GetWindow(typeof(CopyCatWindow), true, "It looks like you're trying to paste something, would you like help with that?", true);
+        EditorWindow.GetWindow(typeof(CopyCatWindow), true, "It looks like you're trying to paste something, would you like help with that?", true);
     }
 
     [MenuItem("CONTEXT/Component/PasteCat")]
@@ -88,7 +88,7 @@ public class CopyCatWindow : EditorWindow
     {
         var pasteTargetObject = command.context;
 
-        Paste(pasteTargetObject);
+        CopyCatWindow.Paste(pasteTargetObject);
     }
 
     public static void Paste(UnityEngine.Object pasteTargetObject)
@@ -96,24 +96,24 @@ public class CopyCatWindow : EditorWindow
         //TODO: undo support
 
         //nonhomogenous copy/paste? INSANITY
-        if (pasteTargetObject.GetType() != copySourceObject.GetType())
+        if (pasteTargetObject.GetType() != CopyCatWindow.copySourceObject.GetType())
         {
             return;
         }
 
-        for (var i = 0; i < propertiesSelected.Length; ++i)
+        for (var i = 0; i < CopyCatWindow.propertiesSelected.Length; ++i)
         {
-            if (propertiesSelected[i])
+            if (CopyCatWindow.propertiesSelected[i])
             {
-                properties[i].SetValue(pasteTargetObject, propertiesValue[i], null);
+                CopyCatWindow.properties[i].SetValue(pasteTargetObject, CopyCatWindow.propertiesValue[i], null);
             }
         }
 
-        for (var i = 0; i < fieldsSelected.Length; ++i)
+        for (var i = 0; i < CopyCatWindow.fieldsSelected.Length; ++i)
         {
-            if (fieldsSelected[i])
+            if (CopyCatWindow.fieldsSelected[i])
             {
-                fields[i].SetValue(pasteTargetObject, fieldsValue[i]);
+                CopyCatWindow.fields[i].SetValue(pasteTargetObject, CopyCatWindow.fieldsValue[i]);
             }
         }
 
@@ -126,16 +126,16 @@ public class CopyCatWindow : EditorWindow
     {
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Properties");
-        for (var i = 0; i < properties.Count; ++i)
+        for (var i = 0; i < CopyCatWindow.properties.Count; ++i)
         {
-            propertiesSelected[i] = EditorGUILayout.Toggle(properties[i].Name, propertiesSelected[i]);
+            CopyCatWindow.propertiesSelected[i] = EditorGUILayout.Toggle(CopyCatWindow.properties[i].Name, CopyCatWindow.propertiesSelected[i]);
         }
 
         EditorGUILayout.Separator();
         EditorGUILayout.LabelField("Fields");
-        for (var i = 0; i < fields.Count; ++i)
+        for (var i = 0; i < CopyCatWindow.fields.Count; ++i)
         {
-            fieldsSelected[i] = EditorGUILayout.Toggle(fields[i].Name, fieldsSelected[i]);
+            CopyCatWindow.fieldsSelected[i] = EditorGUILayout.Toggle(CopyCatWindow.fields[i].Name, CopyCatWindow.fieldsSelected[i]);
         }
 
         EditorGUILayout.Separator();
@@ -144,19 +144,19 @@ public class CopyCatWindow : EditorWindow
         //no cancel - but easy to implement, just keep a backup of propertiesSelected & fieldsSelected
         if (GUILayout.Button("CopyCat"))
         {
-            for (var i = 0; i < propertiesSelected.Length; ++i)
+            for (var i = 0; i < CopyCatWindow.propertiesSelected.Length; ++i)
             {
-                if (propertiesSelected[i])
+                if (CopyCatWindow.propertiesSelected[i])
                 {
-                    propertiesValue[i] = properties[i].GetValue(copySourceObject, null);
+                    CopyCatWindow.propertiesValue[i] = CopyCatWindow.properties[i].GetValue(CopyCatWindow.copySourceObject, null);
                 }
             }
 
-            for (var i = 0; i < fieldsSelected.Length; ++i)
+            for (var i = 0; i < CopyCatWindow.fieldsSelected.Length; ++i)
             {
-                if (fieldsSelected[i])
+                if (CopyCatWindow.fieldsSelected[i])
                 {
-                    fieldsValue[i] = fields[i].GetValue(copySourceObject);
+                    CopyCatWindow.fieldsValue[i] = CopyCatWindow.fields[i].GetValue(CopyCatWindow.copySourceObject);
                 }
             }
 
@@ -166,18 +166,18 @@ public class CopyCatWindow : EditorWindow
 
     private void OnGUIPasteMulti()
     {
-        for (var i = 0; i < possiblePasteTargets.Length; ++i)
+        for (var i = 0; i < CopyCatWindow.possiblePasteTargets.Length; ++i)
         {
-            possiblePasteTargetsSelected[i] = EditorGUILayout.Toggle(possiblePasteTargets[i].name, possiblePasteTargetsSelected[i]);
+            CopyCatWindow.possiblePasteTargetsSelected[i] = EditorGUILayout.Toggle(CopyCatWindow.possiblePasteTargets[i].name, CopyCatWindow.possiblePasteTargetsSelected[i]);
         }
 
         if (GUILayout.Button("PasteCat"))
         {
-            for (var i = 0; i < possiblePasteTargetsSelected.Length; ++i)
+            for (var i = 0; i < CopyCatWindow.possiblePasteTargetsSelected.Length; ++i)
             {
-                if (possiblePasteTargetsSelected[i])
+                if (CopyCatWindow.possiblePasteTargetsSelected[i])
                 {
-                    Paste(possiblePasteTargets[i]);
+                    CopyCatWindow.Paste(CopyCatWindow.possiblePasteTargets[i]);
                 }
             }
 
@@ -187,7 +187,7 @@ public class CopyCatWindow : EditorWindow
 
     public void OnGUI()
     {
-        if (!isInPasteMultiMode)
+        if (!CopyCatWindow.isInPasteMultiMode)
         {
             this.OnGUICopy();
         }

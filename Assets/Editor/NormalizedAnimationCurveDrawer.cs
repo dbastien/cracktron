@@ -34,7 +34,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
         Vector2 curveItemSize = new Vector2(40f, 40f);
         Vector2 curveItemPadding = new Vector2(5f, 5f);
 
-        var presetCount = CurvePresetLibraryWrapper.Count(presets);
+        var presetCount = CurvePresetLibraryWrapper.Count(NormalizedAnimationCurveDrawer.presets);
 
         //TODO: find size of layotable width - controls are inset
         int rowItems = Mathf.FloorToInt(Screen.width / (curveItemSize.x + curveItemPadding.x)) - 1;
@@ -53,14 +53,14 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
 
                 if (GUI.Button(rect, string.Empty))
                 {
-                    var animationCurve = CurvePresetLibraryWrapper.GetPreset(presets, p);
+                    var animationCurve = CurvePresetLibraryWrapper.GetPreset(NormalizedAnimationCurveDrawer.presets, p);
                     animationCurve.preWrapMode = (WrapMode)wrapMode;
                     animationCurve.postWrapMode = (WrapMode)wrapMode;
                     property.animationCurveValue = animationCurve;
                 }
                 if (Event.current.type == EventType.repaint)
                 {
-                    CurvePresetLibraryWrapper.Draw(presets, rect, p);
+                    CurvePresetLibraryWrapper.Draw(NormalizedAnimationCurveDrawer.presets, rect, p);
                 }
                 if (i != itemsThisRow - 1)
                 {
@@ -82,6 +82,6 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
     {
         var path = Application.dataPath + Constants.NormalizedCurvesPath;
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
-        presets = objs[0] as ScriptableObject;
+        NormalizedAnimationCurveDrawer.presets = objs[0] as ScriptableObject;
     }
 }

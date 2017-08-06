@@ -12,14 +12,14 @@ public class FindMissingAssetReferences
         Debug.LogFormat("Searching <b>{0}</b> AssetDatabase GameObjects for missing references", gameObjects.Count);
         foreach (var go in gameObjects)
         {
-            missingCount += FindMissingReferences(go);
+            missingCount += FindMissingAssetReferences.FindMissingReferences(go);
         }
 
         var sceneGameObjects = Resources.FindObjectsOfTypeAll<GameObject>();
         Debug.LogFormat("Searching <b>{0}</b> Scene GameObjects for missing references", sceneGameObjects.Length);
         foreach (var go in sceneGameObjects)
         {
-            missingCount += FindMissingReferences(go);
+            missingCount += FindMissingAssetReferences.FindMissingReferences(go);
         }
 
         var logString = string.Format("<b>Completed search, {0} missing references</b>", missingCount);

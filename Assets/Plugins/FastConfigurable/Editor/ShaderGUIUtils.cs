@@ -18,7 +18,7 @@ namespace HoloToolkit.Unity
         //re-implementation of MaterialEditor internal
         public static Rect GetControlRectForSingleLine()
         {
-            return EditorGUILayout.GetControlRect(true, 18f, EditorStyles.layerMaskField, GUILayoutEmptyArray);
+            return EditorGUILayout.GetControlRect(true, 18f, EditorStyles.layerMaskField, ShaderGUIUtils.GUILayoutEmptyArray);
         }
 
         //re-implementation of EditorGUI internal
@@ -36,19 +36,19 @@ namespace HoloToolkit.Unity
         {
             matEditor.ShaderProperty(prop, GUIContent.none);
             var rect = GUILayoutUtility.GetLastRect();
-            EditorGUI.indentLevel += IndentAmount;
+            EditorGUI.indentLevel += ShaderGUIUtils.IndentAmount;
             EditorGUI.LabelField(rect, headerText, EditorStyles.boldLabel);
         }
 
         public static void BeginHeader(string headerText)
         {
             EditorGUILayout.LabelField(headerText, EditorStyles.boldLabel);
-            EditorGUI.indentLevel += IndentAmount;
+            EditorGUI.indentLevel += ShaderGUIUtils.IndentAmount;
         }
 
         public static void EndHeader()
         {
-            EditorGUI.indentLevel -= IndentAmount;
+            EditorGUI.indentLevel -= ShaderGUIUtils.IndentAmount;
         }
 
         public static void HeaderSeparator()

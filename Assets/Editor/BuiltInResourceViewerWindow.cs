@@ -8,7 +8,7 @@ public class BuiltInResourceViewerWindow : EditorWindow
     [MenuItem("Window/Built-in styles and icons")]
     public static void ShowWindow()
     {
-        var w = GetWindow<BuiltInResourceViewerWindow>();
+        var w = EditorWindow.GetWindow<BuiltInResourceViewerWindow>();
         w.Show();
     }
 

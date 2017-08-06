@@ -24,9 +24,9 @@ namespace HoloToolkit.Unity
 
         protected override void CacheOutputConfigurationProperties(MaterialProperty[] props)
         {
-            this.zTest = FindProperty("_ZTest", props);
-            this.zWrite = FindProperty("_ZWrite", props);
-            this.colorWriteMask = FindProperty("_ColorWriteMask", props);
+            this.zTest = ShaderGUI.FindProperty("_ZTest", props);
+            this.zWrite = ShaderGUI.FindProperty("_ZWrite", props);
+            this.colorWriteMask = ShaderGUI.FindProperty("_ColorWriteMask", props);
         }
     }
 }

@@ -14,12 +14,12 @@ public class SnapManager : MonoBehaviour
 
     public void Awake()
     {
-        if (Instance != null)
+        if (SnapManager.Instance != null)
         {
             Debug.LogError("Multiple instances created");
         }
 
-        Instance = this;
+        SnapManager.Instance = this;
     }
 
     public Vector3 GetSnapPoint(Snap snap)

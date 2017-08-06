@@ -6,12 +6,12 @@ public class TargetingManager : MonoBehaviour
 
     public void Awake()
     {
-        if (Instance != null)
+        if (TargetingManager.Instance != null)
         {
             Debug.Log("Multiple instances of singleton created", this);
         }
 
-        Instance = this;
+        TargetingManager.Instance = this;
     }
 
     public GameObject FindByTag(string tag)

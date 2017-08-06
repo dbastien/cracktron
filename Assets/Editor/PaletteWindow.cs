@@ -9,7 +9,7 @@ public class PaletteWindow : EditorWindow
     [MenuItem("Cracktron/Palette Window")]
     public static void ShowWindow()
     {
-        var window = GetWindow<PaletteWindow>();
+        var window = EditorWindow.GetWindow<PaletteWindow>();
         window.name = "Palette";
         
         window.Show();

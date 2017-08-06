@@ -8,7 +8,7 @@ public static class ShaderGUIUtils
     //re-implementation of MaterialEditor internal
     public static Rect GetControlRectForSingleLine()
     {
-        return EditorGUILayout.GetControlRect(true, 18f, EditorStyles.layerMaskField, GUILayoutEmptyArray);
+        return EditorGUILayout.GetControlRect(true, 18f, EditorStyles.layerMaskField, ShaderGUIUtils.GUILayoutEmptyArray);
     }
 
     //re-implementation of EditorGUI internal

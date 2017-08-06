@@ -44,7 +44,7 @@ public class TransformCurve : MonoBehaviour
         this.UpdateTarget();
         this.Start = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
 
-        if (DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.End))
+        if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.End))
         {
             this.End += this.Start;
         }

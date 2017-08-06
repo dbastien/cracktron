@@ -23,12 +23,12 @@ public static class ReflectionUtils
 
         var serializedObject = new SerializedObject(unityObject);
 
-        if (cachedInspectorModeInfo == null)
+        if (ReflectionUtils.cachedInspectorModeInfo == null)
         {
-            cachedInspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            ReflectionUtils.cachedInspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
-        cachedInspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
+        ReflectionUtils.cachedInspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
         var serializedProperty = serializedObject.FindProperty("m_LocalIdentfierInFile");
         var id = serializedProperty.longValue;
 
@@ -37,7 +37,7 @@ public static class ReflectionUtils
             var prefabType = PrefabUtility.GetPrefabType(unityObject);
             if (prefabType != PrefabType.None)
             {
-                id = GetLocalIdentifierInFileForObject(PrefabUtility.GetPrefabParent(unityObject));
+                id = ReflectionUtils.GetLocalIdentifierInFileForObject(PrefabUtility.GetPrefabParent(unityObject));
             }
             else
             {

@@ -26,7 +26,7 @@ public static class TextureCropper
 
     public static Rect CreateCropRectNormalized(int sourceWidth, int sourceHeight, float targetAspect)
     {
-        var targetRect = CreateCropRectPixels(sourceWidth, sourceHeight, targetAspect);
+        var targetRect = TextureCropper.CreateCropRectPixels(sourceWidth, sourceHeight, targetAspect);
 
         targetRect.x /= sourceWidth;
         targetRect.y /= sourceHeight;

@@ -7,6 +7,6 @@
 
     public static float Remap(this float x, float minIn, float maxIn, float minOut, float maxOut)
     {
-        return minOut + (maxOut - minOut) * Remap01(x, minIn, maxIn);
+        return minOut + (maxOut - minOut) * FloatExtensions.Remap01(x, minIn, maxIn);
     }
 }

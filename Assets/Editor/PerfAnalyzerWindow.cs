@@ -17,7 +17,7 @@ public class PerfAnalyzerWindow : EditorWindow
     [MenuItem("Cracktron/Perf Analyzer Window")]
     public static void ShowWindow()
     {
-        var window = GetWindow<PerfAnalyzerWindow>();
+        var window = EditorWindow.GetWindow<PerfAnalyzerWindow>();
         window.name = "Perf Analyzer";
 
         window.settingSuggestedLabel = new GUIStyle(EditorStyles.label);

@@ -22,7 +22,7 @@ public class TransformCurveEditor : Editor
 
                 if (info.PropertyType == typeof(Vector3))
                 {
-                    propNames.Add(info.Name);
+                    TransformCurveEditor.propNames.Add(info.Name);
                 }
             }
         }
@@ -32,7 +32,7 @@ public class TransformCurveEditor : Editor
     {
         var targetCurve = this.target as TransformCurve;
 
-        int index = propNames.IndexOf(targetCurve.CurveTargetName);
+        int index = TransformCurveEditor.propNames.IndexOf(targetCurve.CurveTargetName);
         index = Mathf.Max(0, index);
 
         var curveProperty = this.serializedObject.FindProperty("Curve");
@@ -50,11 +50,11 @@ public class TransformCurveEditor : Editor
             {
                 EditorGUI.BeginChangeCheck();
                 {
-                    index = EditorGUILayout.Popup(index, propNames.ToArray());
+                    index = EditorGUILayout.Popup(index, TransformCurveEditor.propNames.ToArray());
                 }
                 if (EditorGUI.EndChangeCheck())
                 {
-                    targetCurve.CurveTargetName = propNames[index];
+                    targetCurve.CurveTargetName = TransformCurveEditor.propNames[index];
                     targetCurve.ResetStartEnd();
                 }
                 EditorGUIUtility.labelWidth = 90f;

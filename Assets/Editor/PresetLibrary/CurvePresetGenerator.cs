@@ -4,7 +4,7 @@ using UnityEngine;
 public static class CurvePresetGenerator
 {
     public static readonly int StepCount = 50;
-    public static readonly float StepSize = StepCount > 1 ? 1f / (StepCount - 1) : 1f;
+    public static readonly float StepSize = CurvePresetGenerator.StepCount > 1 ? 1f / (CurvePresetGenerator.StepCount - 1) : 1f;
 
     public delegate float NormalizedCurveFunction(float t);
 
@@ -12,16 +12,16 @@ public static class CurvePresetGenerator
     public static void GenerateCurvePresets()
     {
         var libraryNormalized = CurvePresetLibraryWrapper.CreateLibrary();
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.Linear), "linear");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SmoothStep), "smooth step");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SmootherStep), "smoother step");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CircularIn), "circular in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.SineHalf), "sine half");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CreateCurve(InterpolationNormalized.CircularOut), "circular out");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Linear), "linear");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStep), "smooth step");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStep), "smoother step");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularIn), "circular in");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SineHalf), "sine half");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularOut), "circular out");
         AssetDatabase.CreateAsset(libraryNormalized, "Assets" + Constants.NormalizedCurvesPath);
 
         var libraryUnnormalized = Object.Instantiate(libraryNormalized);
@@ -39,12 +39,12 @@ public static class CurvePresetGenerator
             postWrapMode = WrapMode.PingPong
         };
         float t = 0.0f;
-        for (var i = 0; i < StepCount; ++i)
+        for (var i = 0; i < CurvePresetGenerator.StepCount; ++i)
         {
             float tClamped = Mathf.Clamp01(t);
             float val = Mathf.Clamp01(f(tClamped));
             curve.AddKey(new Keyframe(tClamped, val));
-            t += StepSize;
+            t += CurvePresetGenerator.StepSize;
         }
 
         AnimationCurveUtils.SetTangentMode(curve, AnimationUtility.TangentMode.Auto);

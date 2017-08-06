@@ -29,6 +29,6 @@ public class SelfDestructAfterEffectsDone : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject);
+        Object.Destroy(this.gameObject);
     }
 }

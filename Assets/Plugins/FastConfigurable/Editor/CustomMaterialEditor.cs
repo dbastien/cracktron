@@ -20,7 +20,7 @@ namespace HoloToolkit.Unity
             MaterialProperty colorProp
         )
         {
-            var lineRect = GetControlRectForSingleLine();
+            var lineRect = CustomMaterialEditor.GetControlRectForSingleLine();
             var controlRect = lineRect;
 
             //TexturePropertyMiniThumbnail handles begin and end animation checks
@@ -94,9 +94,9 @@ namespace HoloToolkit.Unity
             MaterialProperty scaleOffsetProp
         )
         {
-            var rect = TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
+            var rect = CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
 
-            SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+            CustomMaterialEditor.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
 
             return rect;
         }

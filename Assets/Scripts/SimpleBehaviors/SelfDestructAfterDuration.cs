@@ -6,6 +6,6 @@ public class SelfDestructAfterDuration : MonoBehaviour
 
     public void Start()
     {
-        Destroy(this.gameObject, this.Duration);
+        Object.Destroy(this.gameObject, this.Duration);
     }
 }

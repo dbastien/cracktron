@@ -370,57 +370,57 @@ namespace HoloToolkit.Unity
 
         protected virtual void CacheMainProperties(MaterialProperty[] props)
         {
-            this.blendMode = FindProperty("_Mode", props);
+            this.blendMode = ShaderGUI.FindProperty("_Mode", props);
 
-            this.vertexColorEnabled = FindProperty("_UseVertexColor", props);
-            this.mainColorEnabled = FindProperty("_UseMainColor", props);
-            this.mainColor = FindProperty("_Color", props);
-            this.mainTexture = FindProperty("_MainTex", props);
-            this.alphaCutoff = FindProperty("_Cutoff", props);
+            this.vertexColorEnabled = ShaderGUI.FindProperty("_UseVertexColor", props);
+            this.mainColorEnabled = ShaderGUI.FindProperty("_UseMainColor", props);
+            this.mainColor = ShaderGUI.FindProperty("_Color", props);
+            this.mainTexture = ShaderGUI.FindProperty("_MainTex", props);
+            this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
 
-            this.occlusionMap = FindProperty("_OcclusionMap", props);
+            this.occlusionMap = ShaderGUI.FindProperty("_OcclusionMap", props);
 
-            this.ambientLightingEnabled = FindProperty("_UseAmbient", props);
-            this.diffuseLightingEnabled = FindProperty("_UseDiffuse", props);
-            this.useAdditionalLightingData = FindProperty("_Shade4", props);
-            this.perPixelLighting = FindProperty("_ForcePerPixel", props);
+            this.ambientLightingEnabled = ShaderGUI.FindProperty("_UseAmbient", props);
+            this.diffuseLightingEnabled = ShaderGUI.FindProperty("_UseDiffuse", props);
+            this.useAdditionalLightingData = ShaderGUI.FindProperty("_Shade4", props);
+            this.perPixelLighting = ShaderGUI.FindProperty("_ForcePerPixel", props);
 
-            this.specularLightingEnabled = FindProperty("_SpecularHighlights", props);
-            this.specularColor = FindProperty("_SpecColor", props);
-            this.specular = FindProperty("_Specular", props);
-            this.specularMap = FindProperty("_SpecularMap", props);
+            this.specularLightingEnabled = ShaderGUI.FindProperty("_SpecularHighlights", props);
+            this.specularColor = ShaderGUI.FindProperty("_SpecColor", props);
+            this.specular = ShaderGUI.FindProperty("_Specular", props);
+            this.specularMap = ShaderGUI.FindProperty("_SpecularMap", props);
 
-            this.gloss = FindProperty("_Gloss", props);
-            this.glossMap = FindProperty("_GlossMap", props);
+            this.gloss = ShaderGUI.FindProperty("_Gloss", props);
+            this.glossMap = ShaderGUI.FindProperty("_GlossMap", props);
 
-            this.normalMap = FindProperty("_BumpMap", props);
+            this.normalMap = ShaderGUI.FindProperty("_BumpMap", props);
 
-            this.reflectionsEnabled = FindProperty("_UseReflections", props);
-            this.cubeMap = FindProperty("_CubeMap", props);
-            this.reflectionScale = FindProperty("_ReflectionScale", props);
-            this.calibrationSpaceReflections = FindProperty("_CalibrationSpaceReflections", props);
+            this.reflectionsEnabled = ShaderGUI.FindProperty("_UseReflections", props);
+            this.cubeMap = ShaderGUI.FindProperty("_CubeMap", props);
+            this.reflectionScale = ShaderGUI.FindProperty("_ReflectionScale", props);
+            this.calibrationSpaceReflections = ShaderGUI.FindProperty("_CalibrationSpaceReflections", props);
 
-            this.rimLightingEnabled = FindProperty("_UseRimLighting", props);
-            this.rimPower = FindProperty("_RimPower", props);
-            this.rimColor = FindProperty("_RimColor", props);
+            this.rimLightingEnabled = ShaderGUI.FindProperty("_UseRimLighting", props);
+            this.rimPower = ShaderGUI.FindProperty("_RimPower", props);
+            this.rimColor = ShaderGUI.FindProperty("_RimColor", props);
 
-            this.emissionColorEnabled = FindProperty("_UseEmissionColor", props);
-            this.emissionColor = FindProperty("_EmissionColor", props);
-            this.emissionMap = FindProperty("_EmissionMap", props);
+            this.emissionColorEnabled = ShaderGUI.FindProperty("_UseEmissionColor", props);
+            this.emissionColor = ShaderGUI.FindProperty("_EmissionColor", props);
+            this.emissionMap = ShaderGUI.FindProperty("_EmissionMap", props);
 
-            this.textureScaleAndOffset = FindProperty("_TextureScaleOffset", props);
+            this.textureScaleAndOffset = ShaderGUI.FindProperty("_TextureScaleOffset", props);
 
-            this.srcBlend = FindProperty("_SrcBlend", props);
-            this.dstBlend = FindProperty("_DstBlend", props);
-            this.blendOp = FindProperty("_BlendOp", props);
+            this.srcBlend = ShaderGUI.FindProperty("_SrcBlend", props);
+            this.dstBlend = ShaderGUI.FindProperty("_DstBlend", props);
+            this.blendOp = ShaderGUI.FindProperty("_BlendOp", props);
         }
 
         protected virtual void CacheOutputConfigurationProperties(MaterialProperty[] props)
         {
-            this.cullMode = FindProperty("_Cull", props);
-            this.zTest = FindProperty("_ZTest", props);
-            this.zWrite = FindProperty("_ZWrite", props);
-            this.colorWriteMask = FindProperty("_ColorWriteMask", props);
+            this.cullMode = ShaderGUI.FindProperty("_Cull", props);
+            this.zTest = ShaderGUI.FindProperty("_ZTest", props);
+            this.zWrite = ShaderGUI.FindProperty("_ZWrite", props);
+            this.colorWriteMask = ShaderGUI.FindProperty("_ColorWriteMask", props);
         }
 
         protected static class Styles

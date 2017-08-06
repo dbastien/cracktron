@@ -57,7 +57,7 @@ public class BrainDataEditor : Editor
         var brainData = this.target as BrainData;
         var targetType = targetItem as Type;
 
-        var newScriptableObject = CreateInstance(targetType);
+        var newScriptableObject = ScriptableObject.CreateInstance(targetType);
 
         //we'll name the object based on the type - it'd be nice to be able to edit this later
         //but it's a property not a field...
@@ -79,7 +79,7 @@ public class BrainDataEditor : Editor
         brainData.SteerNeurons.Remove(neuron);
 
         //destroy the asset in the databse as well
-        DestroyImmediate(neuron, true);
+        Object.DestroyImmediate(neuron, true);
         AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(this.target));
     }
 
@@ -100,7 +100,7 @@ public class BrainDataEditor : Editor
         //we want to show the inspector for the selected object 
         if (isActive)
         {
-            var editor = CreateEditor(item, typeof(NeuronEditor));
+            var editor = Editor.CreateEditor(item, typeof(NeuronEditor));
             editor.OnInspectorGUI();
         }
     }

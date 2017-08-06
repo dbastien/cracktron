@@ -10,7 +10,7 @@ public class BrainData : ScriptableObject
     {
         for (int i = 0; i < this.SteerNeurons.Count; ++i)
         {
-            this.SteerNeurons[i] = Instantiate(this.SteerNeurons[i]);
+            this.SteerNeurons[i] = Object.Instantiate(this.SteerNeurons[i]);
         }
     }
 }

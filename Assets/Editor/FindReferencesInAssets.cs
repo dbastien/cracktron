@@ -28,14 +28,14 @@ public class FindReferencesInAssets
         Debug.LogFormat(asset, "Searching <b>{0}</b> AssetDatabase GameObjects for references to: <b>{1}</b>", gameObjects.Count, asset.name);
         foreach (var go in gameObjects)
         {
-            countFound += FindReferences(asset, go);
+            countFound += FindReferencesInAssets.FindReferences(asset, go);
         }
 
         var sceneGameObjects = Resources.FindObjectsOfTypeAll<GameObject>();
         Debug.LogFormat(asset, "Searching <b>{0}</b> Scene GameObjects for references to: <b>{1}</b>", sceneGameObjects.Length, asset.name);
         foreach (var go in sceneGameObjects)
         {
-            countFound += FindReferences(asset, go);
+            countFound += FindReferencesInAssets.FindReferences(asset, go);
         }
 
         Debug.LogFormat(asset, "<b>Completed search, {0} references found</b>", countFound);

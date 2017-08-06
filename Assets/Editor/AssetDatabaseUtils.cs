@@ -29,9 +29,9 @@ public static class AssetDatabaseUtils
 
     public static List<T> FindAndLoadAssets<T>() where T : Object
     {
-        var guids = FindAssetGUIDs<T>();
+        var guids = AssetDatabaseUtils.FindAssetGUIDs<T>();
 
-        return LoadAssetsByGUIDs<T>(guids);
+        return AssetDatabaseUtils.LoadAssetsByGUIDs<T>(guids);
     }
 
     public static string[] FindAssetGUIDs<T>() where T : Object
@@ -62,7 +62,7 @@ public static class AssetDatabaseUtils
 
         foreach (var guid in guids)
         {
-            T asset = LoadAssetByGUID<T>(guid);
+            T asset = AssetDatabaseUtils.LoadAssetByGUID<T>(guid);
 
             if (asset != null)
             {

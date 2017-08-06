@@ -86,7 +86,7 @@ public struct Int4 : IEquatable<Int4>, IFormattable
 
     public int dotOne
     {
-        get { return DotOne(this); }
+        get { return Int4.DotOne(this); }
     }
 
     public float Magnitude(Int4 v)

@@ -14,7 +14,7 @@ public class TextureGenerationWindow : EditorWindow
     public static void Init()
     {
         //get existing or spin up new window
-        var window = GetWindow<TextureGenerationWindow>();
+        var window = EditorWindow.GetWindow<TextureGenerationWindow>();
         window.minSize = new Vector2(100, 100);
         window.titleContent.text = "Texture Generation";
         window.Texture = new Texture2D(512, 512, TextureFormat.ARGB32, false);
@@ -50,8 +50,8 @@ public class TextureGenerationWindow : EditorWindow
         var previewLayout = new GUILayoutOption[] { GUILayout.MaxWidth(100f), GUILayout.MaxHeight(100f) };
 
         EditorGUILayout.BeginHorizontal();
-        this.ExportWidth = EditorGUILayout.IntField(Styles.resolutionX, this.ExportWidth, GUILayoutOptionEmptyArray);
-        this.ExportHeight = EditorGUILayout.IntField(Styles.resolutionY, this.ExportHeight, GUILayoutOptionEmptyArray);
+        this.ExportWidth = EditorGUILayout.IntField(Styles.resolutionX, this.ExportWidth, TextureGenerationWindow.GUILayoutOptionEmptyArray);
+        this.ExportHeight = EditorGUILayout.IntField(Styles.resolutionY, this.ExportHeight, TextureGenerationWindow.GUILayoutOptionEmptyArray);
         EditorGUILayout.EndHorizontal();
 
         //https://docs.unity3d.com/ScriptReference/EditorGUI.DrawPreviewTexture.html
@@ -67,7 +67,7 @@ public class TextureGenerationWindow : EditorWindow
         EditorGUI.DrawTextureAlpha(previewRect, this.Texture);
         EditorGUILayout.EndHorizontal();        
 
-        if (GUILayout.Button("Export", GUILayoutOptionEmptyArray))
+        if (GUILayout.Button("Export", TextureGenerationWindow.GUILayoutOptionEmptyArray))
         {
         }
     }
