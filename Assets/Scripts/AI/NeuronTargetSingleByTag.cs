@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-public class NeuronTargetSingleByTag : NeuronTargetSingle
+﻿public class NeuronTargetSingleByTag : NeuronTargetSingle
 {
     public string Tag;
 

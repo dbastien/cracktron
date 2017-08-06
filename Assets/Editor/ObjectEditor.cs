@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
+using UnityEngine;
 
 /// <summary>
 /// CustomEditor for Object in order to display reorderable list editor for all lists

@@ -1,5 +1,4 @@
 ﻿using UnityEditor;
-using UnityEngine;
 
 public static class SerializedObjectExtensions
 {

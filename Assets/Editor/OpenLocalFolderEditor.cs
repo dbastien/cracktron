@@ -1,6 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 [CustomPropertyDrawer(typeof(OpenLocalFolderAttribute))]
 public class OpenLocalFolderEditor : PropertyDrawer

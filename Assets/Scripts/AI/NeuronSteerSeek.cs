@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-public class NeuronSteerSeek : NeuronSteer
+﻿public class NeuronSteerSeek : NeuronSteer
 {
     public NeuronTargetSingle Targeting;
 

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public static class FilterMath
+﻿public static class FilterMath
 {
     //https://www.wikiwand.com/en/Low-pass_filter
     //y[i] := y[i-1] + α * (x[i] - y[i-1])

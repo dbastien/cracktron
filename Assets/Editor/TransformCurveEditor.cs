@@ -1,8 +1,7 @@
-﻿using System.Reflection;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using UnityEditor.Callbacks;
 
 //TODO: validate length scale != 0
 
