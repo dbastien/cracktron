@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Adds useful links to the help menu
+/// </summary>
 public static class AdditionalHelpItems
 {
     [MenuItem("Help/Doc Bookmarks/Execution Order")]

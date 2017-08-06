@@ -1,8 +1,11 @@
 ﻿using UnityEditor;
 
-//pure insanity there's no right click menu duplicate in unity
+/// <summary>
+/// Add duplicate (copy+paste as new) functionality to Unity's project view
+/// </summary>
 public static class DuplicateAsset
 {
+    //TODO: replace with true copy/paste
     [MenuItem("Assets/Duplicate")]
     public static void Duplicate()
     {

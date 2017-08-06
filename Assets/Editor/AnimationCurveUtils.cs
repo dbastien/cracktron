@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Utilities / helpers for Unity's AnimationCurve
+/// </summary>
 public static class AnimationCurveUtils
 {
     public static void SmoothAllTangents(AnimationCurve curve)

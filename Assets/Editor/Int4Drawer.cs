@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Property drawer for display of Int4
+/// </summary>
 [CustomPropertyDrawer(typeof(Int4))]
 public class Int4Drawer : PropertyDrawer
 {

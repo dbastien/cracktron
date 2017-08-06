@@ -17,10 +17,12 @@ UNITY_DECLARE_TEX2D(_MainTex);
 UNITY_DECLARE_TEX2D(_OcclusionMap);
 
 UNITY_DECLARE_TEX2D(_BumpMap);
+
 half _Specular;
+UNITY_DECLARE_TEX2D(_SpecularMap);
+
 half _Gloss;
 UNITY_DECLARE_TEX2D(_GlossMap);
-UNITY_DECLARE_TEX2D(_SpecularMap);
 
 samplerCUBE _CubeMap;
 half _ReflectionScale;
@@ -127,7 +129,7 @@ inline half3 FastConfigurableLightingBlinnPhong(half3 normal, half3 lightDir, ha
 }
 
 #if defined(_USERIMLIGHTING_ON)
-half3 RimLight(half3 worldNormal, half4 worldPos)
+half3 RimLight(half3 worldNormal, float4 worldPos)
 {
     const half rimBoost = 0.25;
 
@@ -140,14 +142,12 @@ half3 RimLight(half3 worldNormal, half4 worldPos)
 }
 #endif
 
-// Used in ForwardBase pass: Calculates diffuse lighting from 4 point lights, with data packed in a special way.
+//note that spot lights will behave as point lights with this approach
 half3 Shade4PointLightsHalf(float3 pos, half3 normal)
 {
-    //unity_4LightPosX0..Z0 are float4s
-    //unity_4LightAtten0 is a half
-    //unity_LightColor[n] is half4
-
     // to light vectors
+    //unity_4LightPosX0..Z0 are float4s
+    //TODO: make new global shader vars that send these up as half4s
     half4 toLightX = unity_4LightPosX0 - pos.x;
     half4 toLightY = unity_4LightPosY0 - pos.y;
     half4 toLightZ = unity_4LightPosZ0 - pos.z;
@@ -155,18 +155,16 @@ half3 Shade4PointLightsHalf(float3 pos, half3 normal)
     half4 ndotl = toLightX * normal.x + toLightY * normal.y + toLightZ * normal.z;
     half4 lengthSq = toLightX * toLightX + toLightY * toLightY + toLightZ * toLightZ;
 
-    // don't produce NaNs if some vertex position overlaps with the light
-    // TODO: likely can be optimized away with saturate magic
-    lengthSq = max(lengthSq, 0.00001);
-
     // correct NdotL
     ndotl = saturate(ndotl * rsqrt(lengthSq));
 
     // attenuation
+    //unity_4LightAtten0 is a half
     half4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1));
     half4 diff = ndotl * atten;
 
     // final color
+    //unity_LightColor[n] is half4
     return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
 }
 
@@ -304,6 +302,7 @@ half4 frag(v2f IN) : SV_Target
             #if defined(_USEBUMPMAP_ON)
                 //unpack can be expensive if normal map is dxt5
                 half3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
+                //grab ambient color from Unity's spherical harmonics
                 //ShadeSH9 operates in half precision
                 lightColorShadowAttenuated += ShadeSH9(half4(worldNormal, 1.0));
             #else
@@ -325,14 +324,13 @@ half4 frag(v2f IN) : SV_Target
                 lightColorShadowAttenuated += FastConfigurableLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
             #endif
             #if _SHADE4_ON
-                //handle point and directional lights
+                //handle point and spot lights
                 lightColorShadowAttenuated += Shade4PointLightsHalf(IN.worldPos, worldNormal);
             #endif
             #if defined(_USERIMLIGHTING_ON)
                 lightColorShadowAttenuated += RimLight(worldNormal, IN.worldPos);
             #endif
         #endif
-        //could save some work here in the 0 case
         lightColorShadowAttenuated *= lightAttenuation;
     #endif
     

@@ -1,6 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Property drawer for display of Int3
+/// </summary>
 [CustomPropertyDrawer(typeof(Int3))]
 public class Int3Drawer : PropertyDrawer
 {

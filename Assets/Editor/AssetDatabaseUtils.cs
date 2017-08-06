@@ -3,6 +3,9 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Utilitiies / helpers for Unity's AssetDatabase
+/// </summary>
 public static class AssetDatabaseUtils
 {
     public static List<T> FindAssetsByType<T>() where T : Object
@@ -10,11 +13,11 @@ public static class AssetDatabaseUtils
         var guids = AssetDatabase.FindAssets(string.Format("t:{0}", typeof(T)), null);
         var assets = new List<T>(guids.Length);
 
-        for (var i = 0; i < guids.Length; ++i)
+        foreach (var guid in guids)
         {
-            Debug.Log(guids[i]);
+            Debug.Log(guid);
 
-            var assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
 
             T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
@@ -46,7 +49,7 @@ public static class AssetDatabaseUtils
             typeName = typeName.Substring(lastIndex + 1);
         }
 
-        string search = string.Format("t:{0}", typeName);
+        var search = string.Format("t:{0}", typeName);
 
         return AssetDatabase.FindAssets(search);
     }
@@ -61,7 +64,7 @@ public static class AssetDatabaseUtils
     {
         var assets = new List<T>(guids.Length);
 
-        assets.AddRange(guids.Select(guid => AssetDatabaseUtils.LoadAssetByGUID<T>(guid)).Where(asset => asset != null));
+        assets.AddRange(guids.Select(AssetDatabaseUtils.LoadAssetByGUID<T>).Where(asset => asset != null));
 
         return assets;
     }

@@ -82,6 +82,7 @@ public class ObjectEditor : Editor
     {
         this.reorderableListStates = new Dictionary<string, ReorderableListState>();
     }
+
     protected void ArrayField(SerializedProperty property)
     {
         var reorderableList = this.GetReorderableListState(property).reorderableList;
