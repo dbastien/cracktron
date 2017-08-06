@@ -5,7 +5,7 @@ public class MaterialCurve : MonoBehaviour
 {
     public Color Start;
     public Color End;
-    public AnimationCurve Curve;
+    [NormalizedAnimationCurve] public AnimationCurve Curve;
 
     private float timeElapsed;
 

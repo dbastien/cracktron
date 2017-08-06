@@ -102,7 +102,8 @@ Shader "HoloToolkit/Fast Configurable 2 Sided"
 				#pragma shader_feature _USEBUMPMAP_ON
 				#pragma shader_feature _USEAMBIENT_ON
 				#pragma shader_feature _USEDIFFUSE_ON
-				#pragma shader_feature _USESPECULAR_ON
+                #pragma shader_feature _SPECULARHIGHLIGHTS_ON
+                #pragma shader_feature _FORCEPERPIXEL_ON
 				#pragma shader_feature _USEGLOSSMAP_ON
 				#pragma shader_feature _SHADE4_ON
 				#pragma shader_feature _USEREFLECTIONS_ON

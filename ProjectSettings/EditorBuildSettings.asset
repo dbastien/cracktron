@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/test.unity
+    path: Assets/Demos/Cracktro/main.unity
     guid: 26ef4b9f88291ae40ac9ea8c8abcb740

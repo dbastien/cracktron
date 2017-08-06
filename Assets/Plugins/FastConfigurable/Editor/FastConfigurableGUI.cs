@@ -74,6 +74,7 @@ namespace HoloToolkit.Unity
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
             if (firstTimeApply)
             {
+                SetMaterialAutoPropertiesAndKeywords(matEditor.target as Material);
                 firstTimeApply = false;
             }
 
@@ -281,9 +282,10 @@ namespace HoloToolkit.Unity
                     //TODO: need to handle way more cases
                     SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, vertexLit);
                 }
-
-                SetMaterialBlendMode(mat, blendMode);
             }
+
+            SetMaterialBlendMode(mat, blendMode);
+            SetMaterialAutoPropertiesAndKeywords(mat);
         }
 
         protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
@@ -354,7 +356,6 @@ namespace HoloToolkit.Unity
             ShaderGUIUtils.SetKeyword(mat, "_USEBUMPMAP_ON", usesBumpMap);
             ShaderGUIUtils.SetKeyword(mat, "_USESPECULARMAP_ON", usesSpecMap);
             ShaderGUIUtils.SetKeyword(mat, "_USEGLOSSMAP_ON", usesGlossMap);
-
             ShaderGUIUtils.SetKeyword(mat, "_USEEMISSIONMAP_ON", usesEmissionMap);
 
             if (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap)
