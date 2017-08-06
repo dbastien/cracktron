@@ -41,9 +41,9 @@ public static class CurvePresetGenerator
         float t = 0.0f;
         for (var i = 0; i < CurvePresetGenerator.StepCount; ++i)
         {
-            float tClamped = Mathf.Clamp01(t);
-            float val = Mathf.Clamp01(f(tClamped));
-            curve.AddKey(new Keyframe(tClamped, val));
+            float clamped = Mathf.Clamp01(t);
+            float val = Mathf.Clamp01(f(clamped));
+            curve.AddKey(new Keyframe(clamped, val));
             t += CurvePresetGenerator.StepSize;
         }
 

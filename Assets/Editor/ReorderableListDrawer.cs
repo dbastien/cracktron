@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Property drawers do not get called for the collection itself, only children
-//  this draws all children when called for the first, but the standard unity 
+//  this draws all children when called for the first, but the standard unity
 //  collection header will be shown in addition
 /// </summary>
 [CustomPropertyDrawer(typeof(ReorderableListAttribute))]

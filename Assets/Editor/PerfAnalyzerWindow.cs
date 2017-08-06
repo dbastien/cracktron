@@ -39,17 +39,17 @@ public class PerfAnalyzerWindow : EditorWindow
         EditorGUILayout.SelectableLabel("PlayerSettings", EditorStyles.boldLabel);
         PlayerSettings.graphicsJobs = this.DrawSuggestedSettingBool("graphicsJobs", PlayerSettings.graphicsJobs, true);
         PlayerSettings.virtualRealitySupported = this.DrawSuggestedSettingBool("virtualRealitySupported", PlayerSettings.virtualRealitySupported, true);
-        PlayerSettings.stereoRenderingPath = (StereoRenderingPath) this.DrawSuggestedSettingEnum("stereoRenderingPath", PlayerSettings.stereoRenderingPath, StereoRenderingPath.SinglePass); //TODO: shouldn't be <=
+        PlayerSettings.stereoRenderingPath = (StereoRenderingPath)this.DrawSuggestedSettingEnum("stereoRenderingPath", PlayerSettings.stereoRenderingPath, StereoRenderingPath.SinglePass); //TODO: shouldn't be <=
 
         EditorGUILayout.Separator();
         EditorGUILayout.Separator();
 
         EditorGUILayout.SelectableLabel("QualitySettings", EditorStyles.boldLabel);
         QualitySettings.pixelLightCount = this.DrawSuggestedSettingInt("pixelLightCount", QualitySettings.pixelLightCount, 1, 0, 16);
-        QualitySettings.anisotropicFiltering = (AnisotropicFiltering) this.DrawSuggestedSettingEnum("anisotropicFiltering", QualitySettings.anisotropicFiltering, AnisotropicFiltering.Enable);
+        QualitySettings.anisotropicFiltering = (AnisotropicFiltering)this.DrawSuggestedSettingEnum("anisotropicFiltering", QualitySettings.anisotropicFiltering, AnisotropicFiltering.Enable);
         QualitySettings.antiAliasing = this.DrawSuggestedSettingInt("antiAliasing", QualitySettings.antiAliasing, 0, 0, 8);
-        QualitySettings.shadows = (ShadowQuality) this.DrawSuggestedSettingEnum("shadows", QualitySettings.shadows, ShadowQuality.HardOnly);
-        QualitySettings.shadowResolution = (ShadowResolution) this.DrawSuggestedSettingEnum("shadowResolution", QualitySettings.shadowResolution, ShadowResolution.Medium);
+        QualitySettings.shadows = (ShadowQuality)this.DrawSuggestedSettingEnum("shadows", QualitySettings.shadows, ShadowQuality.HardOnly);
+        QualitySettings.shadowResolution = (ShadowResolution)this.DrawSuggestedSettingEnum("shadowResolution", QualitySettings.shadowResolution, ShadowResolution.Medium);
 
         EditorGUILayout.Separator();
         EditorGUILayout.Separator();
@@ -129,7 +129,8 @@ public class PerfAnalyzerWindow : EditorWindow
         bool isSuggested = (setValue == suggestedValue);
 
         EditorGUILayout.LabelField("Suggested Value: " + suggestedValue.ToString(),
-                                   isSuggested ? this.settingSuggestedLabel : this.settingNotSuggestedLabel, this.layoutColumnWidth);
+                                   isSuggested ? this.settingSuggestedLabel : this.settingNotSuggestedLabel, 
+                                   this.layoutColumnWidth);
 
         if (!isSuggested && GUILayout.Button("Set to suggested", this.layoutButtonWidth))
         {

@@ -29,8 +29,8 @@ public class TextureGenerationWindow : EditorWindow
         {
             for (var x = 0; x < this.Texture.width; ++x)
             {
-                float xNormalized = x / (float) this.Texture.width;
-                float yNormalized = y / (float) this.Texture.height;
+                float xNormalized = x / (float)this.Texture.width;
+                float yNormalized = y / (float)this.Texture.height;
 
                 float a = 1.0f;
                 float r = Mathf.PerlinNoise(xNormalized, yNormalized);

@@ -52,7 +52,8 @@ public class ObjectEditor : Editor
             do
             {
                 this.PropertyField(property);
-            } while (property.NextVisible(false));
+            }
+            while (property.NextVisible(false));
         }
         this.serializedObject.ApplyModifiedProperties();
     }
