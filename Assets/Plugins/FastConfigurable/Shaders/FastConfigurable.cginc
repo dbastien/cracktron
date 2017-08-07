@@ -285,6 +285,7 @@ half4 frag(v2f IN) : SV_Target
     #endif
 
     //light attenuation from shadows cast onto the object
+    //should end up in UnityComputeForwardShadows which returns a half
     half lightAttenuation = SHADOW_ATTENUATION(IN);
     
     //TODO: consider UnityComputeForwardShadows
