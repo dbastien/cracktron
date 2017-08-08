@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public static class ReflectionUtils
+public static class EditorReflectionUtils
 {
     private static PropertyInfo cachedInspectorModeInfo;
 
@@ -23,12 +23,12 @@ public static class ReflectionUtils
 
         var serializedObject = new SerializedObject(unityObject);
 
-        if (ReflectionUtils.cachedInspectorModeInfo == null)
+        if (EditorReflectionUtils.cachedInspectorModeInfo == null)
         {
-            ReflectionUtils.cachedInspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
+            EditorReflectionUtils.cachedInspectorModeInfo = typeof(SerializedObject).GetProperty("inspectorMode", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
-        ReflectionUtils.cachedInspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
+        EditorReflectionUtils.cachedInspectorModeInfo.SetValue(serializedObject, InspectorMode.Debug, null);
         var serializedProperty = serializedObject.FindProperty("m_LocalIdentfierInFile");
         var id = serializedProperty.longValue;
 
@@ -37,7 +37,7 @@ public static class ReflectionUtils
             var prefabType = PrefabUtility.GetPrefabType(unityObject);
             if (prefabType != PrefabType.None)
             {
-                id = ReflectionUtils.GetLocalIdentifierInFileForObject(PrefabUtility.GetPrefabParent(unityObject));
+                id = EditorReflectionUtils.GetLocalIdentifierInFileForObject(PrefabUtility.GetPrefabParent(unityObject));
             }
             else
             {

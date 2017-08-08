@@ -61,7 +61,7 @@ public class ObjectEditor : Editor
         }
         else
         {
-            bool isScriptProperty = ReflectionUtils.IsScriptProperty(property);
+            bool isScriptProperty = EditorReflectionUtils.IsScriptProperty(property);
 
             bool cachedGUIEnabled = GUI.enabled;
             if (isScriptProperty)

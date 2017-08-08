@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+//TODO: check/add vs add passes
+//TODO: only shadesh9 in base pass
+//TODO: support reflections from unity_SpecCube0 ?
+
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
@@ -152,8 +156,8 @@ half3 Shade4PointLightsHalf(float3 pos, half3 normal)
     half4 toLightY = unity_4LightPosY0 - pos.y;
     half4 toLightZ = unity_4LightPosZ0 - pos.z;
 
-    half4 ndotl = toLightX * normal.x + toLightY * normal.y + toLightZ * normal.z;
-    half4 lengthSq = toLightX * toLightX + toLightY * toLightY + toLightZ * toLightZ;
+    half4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
+    half4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
 
     // correct NdotL
     ndotl = saturate(ndotl * rsqrt(lengthSq));
@@ -209,6 +213,7 @@ v2f vert(a2v v)
         //TODO: explicit MAD?
         o.lmap.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
     #else
+        //TODO: use perpixel define instead
         #if defined(_USEAMBIENT_ON) && !defined(_USEBUMPMAP_ON)
             //grab ambient color from Unity's spherical harmonics
             //ShadeSH9 operates in half precision
@@ -286,6 +291,7 @@ half4 frag(v2f IN) : SV_Target
 
     //light attenuation from shadows cast onto the object
     //should end up in UnityComputeForwardShadows which returns a half
+    //TODO: should use UNITY_LIGHT_ATTENUATION?
     half lightAttenuation = SHADOW_ATTENUATION(IN);
     
     //TODO: consider UnityComputeForwardShadows

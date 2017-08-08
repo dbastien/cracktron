@@ -6,8 +6,8 @@ using UnityEditor;
 using UnityEngine.EventSystems;
 
 //TODO: rename to ComponentMemberReferenceDrawer, support properties
-[CustomPropertyDrawer(typeof(ComponentFieldReference))]
-public class ComponentFieldReferenceDrawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(ComponentMemberReference))]
+public class ComponentMemberReferenceDrawer : PropertyDrawer
 {
     public class ComponentFieldReferenceEntry
     {
@@ -35,11 +35,11 @@ public class ComponentFieldReferenceDrawer : PropertyDrawer
         position.y += 18f;
         GUI.changed = false;
 
-        var entries = ComponentFieldReferenceDrawer.GetFields(component.gameObject);
+        var entries = ComponentMemberReferenceDrawer.GetFields(component.gameObject);
         //var current = PropertyReference.ToString(target.objectReferenceValue as Component, field.stringValue);
         var current = targetFieldName.stringValue;
 
-        var names = ComponentFieldReferenceDrawer.GetNames(entries, current, out index);
+        var names = ComponentMemberReferenceDrawer.GetNames(entries, current, out index);
 
         // Draw a selection list
         GUI.changed = false;
@@ -80,7 +80,7 @@ public class ComponentFieldReferenceDrawer : PropertyDrawer
             }
         }
 
-        names[0] = string.IsNullOrEmpty(choice) || index == 0 ? "Select Field" : choice;
+        names[0] = string.IsNullOrEmpty(choice) || index == 0 ? "No Member" : choice;
 
         return names;
     }

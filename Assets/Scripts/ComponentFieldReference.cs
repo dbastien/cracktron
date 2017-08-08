@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 
 [System.Serializable]
-public class ComponentFieldReference
+public class ComponentMemberReference
 {
     [SerializeField] private Component targetComponent;
     [SerializeField] private string targetFieldName;

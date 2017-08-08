@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class FieldReferenceTestBehavior : MonoBehaviour
+public class MemberReferenceTestBehavior : MonoBehaviour
 {
-    [SerializeField] public ComponentFieldReference fieldReference;
+    [SerializeField] public ComponentMemberReference memberReference;
 
     void Awake()
     {
