@@ -16,38 +16,38 @@
 #define PIXEL_SHADER_USES_NORMAL (_FORCEPERPIXEL_ON || (USE_PER_PIXEL && !_USEBUMPMAP_ON))
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
-half4 _Color;
-UNITY_DECLARE_TEX2D_HALF(_MainTex);
-UNITY_DECLARE_TEX2D_HALF(_OcclusionMap);
+float4 _Color;
+UNITY_DECLARE_TEX2D(_MainTex);
+UNITY_DECLARE_TEX2D(_OcclusionMap);
 
-UNITY_DECLARE_TEX2D_HALF(_BumpMap);
+UNITY_DECLARE_TEX2D(_BumpMap);
 
-half _Specular;
-UNITY_DECLARE_TEX2D_HALF(_SpecularMap);
+float _Specular;
+UNITY_DECLARE_TEX2D(_SpecularMap);
 
-half _Gloss;
-UNITY_DECLARE_TEX2D_HALF(_GlossMap);
+float _Gloss;
+UNITY_DECLARE_TEX2D(_GlossMap);
 
 samplerCUBE _CubeMap;
-half _ReflectionScale;
-half4x4 CalibrationSpaceWorldToLocal;
+float _ReflectionScale;
+float4x4 CalibrationSpaceWorldToLocal;
 
-half _RimPower;
-half4 _RimColor;
+float _RimPower;
+float4 _RimColor;
 
-half4 _EmissionColor;
-UNITY_DECLARE_TEX2D_HALF(_EmissionMap);
+float4 _EmissionColor;
+UNITY_DECLARE_TEX2D(_EmissionMap);
 
-half _Cutoff;
+float _Cutoff;
 float4 _TextureScaleOffset;
 
 struct a2v
 {
     float4 vertex : POSITION;
-    half3 normal : NORMAL;
+    float3 normal : NORMAL;
 
     #if defined(_USEVERTEXCOLOR_ON)
-        half4 color : COLOR;
+        float4 color : COLOR;
     #endif
 
     #if USES_TEX_XY
@@ -66,11 +66,11 @@ struct v2f
     float4 pos : SV_POSITION;
 
     #if defined(_USEVERTEXCOLOR_ON)
-        half4 color : COLOR;
+        float4 color : COLOR;
     #endif
 
     #if !defined(_USEBUMPMAP_ON) && PIXEL_SHADER_USES_NORMAL
-        half3 worldNormal : NORMAL;
+        float3 worldNormal : NORMAL;
     #endif
 
     #if USES_TEX_XY || defined(_NEAR_PLANE_FADE_ON)
@@ -80,15 +80,15 @@ struct v2f
     #if LIGHTMAP_ON
         float2 lmap : TEXCOORD1;
     #else
-        half3 vertexLighting : TEXCOORD1;
+        float3 vertexLighting : TEXCOORD1;
     #endif
 
     #if PIXEL_SHADER_USES_WORLDPOS
-        float4 worldPos: TEXCOORD2;
+        float3 worldPos: TEXCOORD2;
     #endif
 
     #if defined(_USEREFLECTIONS_ON)
-        half3 worldReflection : TEXCOORD3;
+        float3 worldReflection : TEXCOORD3;
     #endif
 
     LIGHTING_COORDS(4, 5)
@@ -96,79 +96,84 @@ struct v2f
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
-inline half4 FastConfigurablePreMultiplyAlpha(half4 color)
-{
-#if defined(_ALPHAPREMULTIPLY_ON)
-    //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
-    return half4(color.rgb * color.a, color.a);
-#endif
-    return color;
-}
-
-inline half3 FastConfigurablePreMultiplyAlphaWithReflectivity(half3 diffColor, half alpha, half oneMinusReflectivity, out half outModifiedAlpha)
-{
-#if defined(_ALPHAPREMULTIPLY_ON)
-    //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
-    diffColor *= alpha;
-
-    //reflectivity is removed from the rest of components, including transparency
-    outModifiedAlpha = 1 - oneMinusReflectivity + alpha*oneMinusReflectivity;
-#else
-    outModifiedAlpha = alpha;
-#endif
-    return diffColor;
-}
-
-inline half3 FastConfigurableLightingLambertian(half3 normal, half3 lightDir, half3 lightCol)
+inline float3 FastLightingLambertian(float3 normal, float3 lightDir, float3 lightCol)
 {
     return lightCol * saturate(dot(normal, lightDir));
 }
 
-inline half3 FastConfigurableLightingBlinnPhong(half3 normal, half3 lightDir, half3 lightCol, half3 viewDir, half specularPower, half specularScale, half3 specularColor)
+inline float3 FastLightingBlinnPhong(float3 normal,
+                                     float3 lightDir, float3 lightCol,
+                                     float3 viewDir,
+                                     float specularPower, float specularScale, float3 specularColor)
 {
-    half3 h = normalize(lightDir + viewDir);
-    half nh = saturate(dot(normal, h));
+    float3 h = normalize(lightDir + viewDir);
+    float nh = saturate(dot(normal, h));
 
     return (lightCol * specularColor) * (pow(nh, specularPower) * specularScale);
 }
 
 #if defined(_USERIMLIGHTING_ON)
-half3 RimLight(half3 worldNormal, float4 worldPos)
+inline float3 RimLight(float3 worldNormal, float3 worldPos)
 {
-    const half rimBoost = 0.25;
+    float rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
 
-    //boost to the dot product to allow for a greater max effect
-    half rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
-
-    half smooth = smoothstep(rimBoost, 1.0, rim * _RimPower + rimBoost);
-
-    return smooth * _RimColor.rgb;
+    //boost to the dot product to allow for a greater max effect - .25 is the boost factor
+    return smoothstep(0.25, 1.0, mad(rim, _RimPower, 0.25)) * _RimColor.rgb;
 }
 #endif
 
+// normal should be normalized, w=1.0
+inline float3 FastSHEvalLinearL0L1(float4 normal)
+{
+    return float3(dot(unity_SHAr, normal), dot(unity_SHAg, normal), dot(unity_SHAb, normal));
+}
+
+// normal should be normalized, w=1.0
+float3 FastSHEvalLinearL2(float3 normal)
+{
+    // 4 of the quadratic (L2) polynomials
+    float4 vB = normal.xyzz * normal.yzzx;
+
+    //TODO: normal guaranteed to be normalized so some extraneous work here, would a dp3 and add be better?
+    float3 x1 = float3(dot(unity_SHBr, vB), dot(unity_SHBg, vB), dot(unity_SHBb, vB));
+
+    // Final (5th) quadratic (L2) polynomial
+    float vC = (normal.x*normal.x) - (normal.y*normal.y);
+
+    return mad(unity_SHC.rgb, vC, x1);
+}
+
+inline float3 FastShadeSH9(float4 normal)
+{
+    float3 res = saturate(FastSHEvalLinearL0L1(normal) + FastSHEvalLinearL2(normal));
+
+    #ifdef UNITY_COLORSPACE_GAMMA
+        res = saturate(mad(1.055, pow(res, 0.416666667), -0.055));
+    #endif
+
+    return res;
+}
+
 //note that spot lights will behave as point lights with this approach
-half3 Shade4PointLightsHalf(float3 pos, half3 normal)
+//TODO some vectors could be 3 component perhaps
+float3 FastShade4PointLights(float3 pos, float3 normal)
 {
     // to light vectors
-    //unity_4LightPosX0..Z0 are float4s
-    //TODO: make new global shader vars that send these up as half4s
-    half4 toLightX = unity_4LightPosX0 - pos.x;
-    half4 toLightY = unity_4LightPosY0 - pos.y;
-    half4 toLightZ = unity_4LightPosZ0 - pos.z;
+    float4 toLightX = unity_4LightPosX0 - pos.x;
+    float4 toLightY = unity_4LightPosY0 - pos.y;
+    float4 toLightZ = unity_4LightPosZ0 - pos.z;
 
-    half4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
-    half4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
+    float4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
+    float4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
 
     // correct NdotL
     ndotl = saturate(ndotl * rsqrt(lengthSq));
 
     // attenuation
-    //unity_4LightAtten0 is a half
-    half4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1));
-    half4 diff = ndotl * atten;
+    float4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1.0));
+    float4 diff = ndotl * atten;
 
     // final color
-    //unity_LightColor[n] is half4
     return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
 }
 
@@ -190,7 +195,7 @@ v2f vert(a2v v)
     #endif
 
     #if defined(_SPECULARHIGHLIGHTS_ON) || defined(_SHADE4_ON) || defined(_USEREFLECTIONS_ON) || defined(_USERIMLIGHTING_ON)
-        float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+        float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
     #endif
 
     #if PIXEL_SHADER_USES_WORLDPOS
@@ -202,34 +207,33 @@ v2f vert(a2v v)
     #endif
 
     #if FLIP_NORMALS
-        half3 flipCorrectedNormal = -v.normal;
+        float3 flipCorrectedNormal = -v.normal;
     #else
-        half3 flipCorrectedNormal = v.normal;
+        float3 flipCorrectedNormal = v.normal;
     #endif
 
-    half3 worldNormal = UnityObjectToWorldNormal(flipCorrectedNormal);
+    float3 worldNormal = UnityObjectToWorldNormal(flipCorrectedNormal);
 
     #if defined(LIGHTMAP_ON)
-        //TODO: explicit MAD?
-        o.lmap.xy = v.lightMapUV.xy * unity_LightmapST.xy + unity_LightmapST.zw;
+        o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
     #else
         //TODO: use perpixel define instead
         #if defined(_USEAMBIENT_ON) && !defined(_USEBUMPMAP_ON)
             //grab ambient color from Unity's spherical harmonics
             //ShadeSH9 operates in half precision
-            o.vertexLighting += ShadeSH9(half4(worldNormal, 1.0));
+            o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
         #endif
 
         #if !(USE_PER_PIXEL)
             #if defined(_USEDIFFUSE_ON)
-                o.vertexLighting += FastConfigurableLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
             #if defined(_SPECULARHIGHLIGHTS_ON)
-                o.vertexLighting += FastConfigurableLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(worldPos), _Specular, _Gloss, _SpecColor);
+                o.vertexLighting += FastLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(worldPos), _Specular, _Gloss, _SpecColor);
             #endif
-            #if defined(SHADE4_ON)
+            #if defined(_SHADE4_ON)
                 //handle point and spot lights
-                o.vertexLighting += Shade4PointLightsHalf(worldPos, worldNormal);
+                o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
             #endif
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
@@ -242,15 +246,16 @@ v2f vert(a2v v)
     #endif
     
     #if defined(_USEREFLECTIONS_ON)
-        half3 vertexToCamera = _WorldSpaceCameraPos - worldPos;	
+        float3 vertexToCamera = _WorldSpaceCameraPos - worldPos;	
 
         #if defined(_CALIBRATIONSPACEREFLECTIONS_ON)
-            half3 normalReflection = normalize(mul((half3x3)CalibrationSpaceWorldToLocal, flipCorrectedNormal);
-            vertexToCamera = normalize(mul((half3x3)CalibrationSpaceWorldToLocal, vertexToCamera));
+            //todo: skip normalize?
+            float3 normalReflection = normalize(mul((float3x3)CalibrationSpaceWorldToLocal, flipCorrectedNormal));
+            vertexToCamera = mul(CalibrationSpaceWorldToLocal, vertexToCamera);
         #else
-            half3 normalReflection = flipCorrectedNormal;
+            float3 normalReflection = flipCorrectedNormal;
         #endif
-
+        //incident vector need not be normalized
         o.worldReflection = reflect(vertexToCamera, normalReflection);
     #endif
 
@@ -266,12 +271,12 @@ v2f vert(a2v v)
     return o;
 }
 
-half4 frag(v2f IN) : SV_Target
+fixed4 frag(v2f IN) : SV_Target
 {
     #if defined(_USEMAINTEX_ON)
-        half4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.texXYFadeZ.xy);
+        float4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.texXYFadeZ.xy);
     #else
-        half4 color = 1;
+        float4 color = 1.0;
     #endif
 
     #if defined(_USEOCCLUSIONMAP_ON)
@@ -286,53 +291,54 @@ half4 frag(v2f IN) : SV_Target
     #endif
 
     #if defined(_ALPHATEST_ON)
+        //note execution continues but all writes are disabled
         clip(color.a - _Cutoff);
     #endif
 
     //light attenuation from shadows cast onto the object
     //should end up in UnityComputeForwardShadows which returns a half
     //TODO: should use UNITY_LIGHT_ATTENUATION?
-    half lightAttenuation = SHADOW_ATTENUATION(IN);
+    float lightAttenuation = SHADOW_ATTENUATION(IN);
     
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
-        half3 lightmapResult = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+        float3 lightmapResult = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
         #if defined(SHADOWS_SCREEN)
-            half3 lightColorShadowAttenuated = min(lightmapResult, lightAttenuation * 2);
+            float3 lightColorShadowAttenuated = min(lightmapResult, lightAttenuation * 2.0);
         #else
-            half3 lightColorShadowAttenuated = lightmapResult;
+            float3 lightColorShadowAttenuated = lightmapResult;
         #endif	
     #else
-        half3 lightColorShadowAttenuated = IN.vertexLighting;
+        float3 lightColorShadowAttenuated = IN.vertexLighting;
         #if USE_PER_PIXEL
             //if a normal map is on, it makes sense to do most calculations per-pixel
             #if defined(_USEBUMPMAP_ON)
                 //unpack can be expensive if normal map is dxt5
-                half3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
+                float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
                 //grab ambient color from Unity's spherical harmonics
                 //ShadeSH9 operates in half precision
-                lightColorShadowAttenuated += ShadeSH9(half4(worldNormal, 1.0));
+                lightColorShadowAttenuated += FastShadeSH9(float4(worldNormal, 1.0));
             #else
-                half3 worldNormal = IN.worldNormal;
+                float3 worldNormal = IN.worldNormal;
             #endif					
         
             #if defined(_USEDIFFUSE_ON)
-                lightColorShadowAttenuated += FastConfigurableLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                lightColorShadowAttenuated += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
             #if defined(_SPECULARHIGHLIGHTS_ON)
-                half gloss = _Gloss;
+                float gloss = _Gloss;
                 #if defined(_USEGLOSSMAP_ON)
                     gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
                 #endif
-                half specular = _Specular;
+                float specular = _Specular;
                 #if defined(_USESPECULARMAP_ON)
                     specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
                 #endif
-                lightColorShadowAttenuated += FastConfigurableLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
+                lightColorShadowAttenuated += FastLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
             #endif
-            #if _SHADE4_ON
+            #if defined(_SHADE4_ON)
                 //handle point and spot lights
-                lightColorShadowAttenuated += Shade4PointLightsHalf(IN.worldPos, worldNormal);
+                lightColorShadowAttenuated += FastShade4PointLights(IN.worldPos, worldNormal);
             #endif
             #if defined(_USERIMLIGHTING_ON)
                 lightColorShadowAttenuated += RimLight(worldNormal, IN.worldPos);
