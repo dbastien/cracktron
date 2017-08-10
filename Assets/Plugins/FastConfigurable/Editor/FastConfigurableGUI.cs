@@ -136,7 +136,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
                 {
-                    if (this.specularLightingEnabled.floatValue != 0.0f)
+                    if (this.specularLightingEnabled.floatValue > 0.0f)
                     {
                         matEditor.ShaderProperty(this.specularColor, Styles.specularColor);
 
@@ -151,7 +151,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled);
                 {
-                    if (this.rimLightingEnabled.floatValue != 0.0f)
+                    if (this.rimLightingEnabled.floatValue > 0.0f)
                     {
                         matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
                         matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
@@ -161,7 +161,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled);
                 {
-                    if (this.reflectionsEnabled.floatValue != 0.0f)
+                    if (this.reflectionsEnabled.floatValue > 0.0f)
                     {
                         matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
                         matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
@@ -361,8 +361,8 @@ namespace HoloToolkit.Unity
             }
 
             var texScaleOffset = mat.GetVector("_TextureScaleOffset");
-            bool usesScale = texScaleOffset.x != 1.0f || texScaleOffset.y != 1.0f;
-            bool usesOffset = texScaleOffset.z != 0.0f || texScaleOffset.w != 0.0f;
+            bool usesScale = texScaleOffset.x > 1.0f || texScaleOffset.y > 1.0f;
+            bool usesOffset = texScaleOffset.z > 0.0f || texScaleOffset.w > 0.0f;
 
             ShaderGUIUtils.SetKeyword(mat, "_MainTex_SCALE_ON", usesScale);
             ShaderGUIUtils.SetKeyword(mat, "_MainTex_OFFSET_ON", usesOffset);
