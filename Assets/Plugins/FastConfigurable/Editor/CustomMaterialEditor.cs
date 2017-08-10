@@ -81,8 +81,8 @@ namespace HoloToolkit.Unity
             var scaleKeyword = textureProp.name + "_SCALE_ON";
             var offsetKeyword = textureProp.name + "_OFFSET_ON";
 
-            ShaderGUIUtils.SetKeyword(mat, scaleKeyword, usesScale);
-            ShaderGUIUtils.SetKeyword(mat, offsetKeyword, usesOffset);
+            mat.SetKeyword(scaleKeyword, usesScale);
+            mat.SetKeyword(offsetKeyword, usesOffset);
         }
 
         public static Rect TextureWithToggleableColorAutoScaleOffsetSingleLine

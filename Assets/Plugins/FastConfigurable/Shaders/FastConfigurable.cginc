@@ -115,6 +115,7 @@ inline float3 FastLightingBlinnPhong(float3 normal,
 #if defined(_USERIMLIGHTING_ON)
 inline float3 RimLight(float3 worldNormal, float3 worldPos)
 {
+    //TODO: optimize
     float rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
 
     //boost to the dot product to allow for a greater max effect - .25 is the boost factor
@@ -128,7 +129,6 @@ inline float3 FastSHEvalLinearL0L1(float4 normal)
     return float3(dot(unity_SHAr, normal), dot(unity_SHAg, normal), dot(unity_SHAb, normal));
 }
 
-// normal should be normalized, w=1.0
 float3 FastSHEvalLinearL2(float3 normal)
 {
     // 4 of the quadratic (L2) polynomials
@@ -139,7 +139,7 @@ float3 FastSHEvalLinearL2(float3 normal)
 
     // Final (5th) quadratic (L2) polynomial
     float vC = (normal.x*normal.x) - (normal.y*normal.y);
-
+    
     return mad(unity_SHC.rgb, vC, x1);
 }
 
@@ -163,6 +163,7 @@ float3 FastShade4PointLights(float3 pos, float3 normal)
     float4 toLightY = unity_4LightPosY0 - pos.y;
     float4 toLightZ = unity_4LightPosZ0 - pos.z;
 
+    //TODO: mad possibilities
     float4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
     float4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
 
@@ -251,7 +252,7 @@ v2f vert(a2v v)
         #if defined(_CALIBRATIONSPACEREFLECTIONS_ON)
             //todo: skip normalize?
             float3 normalReflection = normalize(mul((float3x3)CalibrationSpaceWorldToLocal, flipCorrectedNormal));
-            vertexToCamera = mul(CalibrationSpaceWorldToLocal, vertexToCamera);
+            vertexToCamera = mul((float3x3)CalibrationSpaceWorldToLocal, vertexToCamera);
         #else
             float3 normalReflection = flipCorrectedNormal;
         #endif

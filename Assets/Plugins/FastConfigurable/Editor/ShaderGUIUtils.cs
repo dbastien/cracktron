@@ -28,7 +28,7 @@ namespace HoloToolkit.Unity
             thumbRect.y -= 1f;
             thumbRect.height = 18f;
             thumbRect.width = 32f;
-            float num = thumbRect.x + 30f;
+            var num = thumbRect.x + 30f;
             labelRect = new Rect(num, position.y, thumbRect.x + EditorGUIUtility.labelWidth - num, position.height);
         }
 
@@ -55,27 +55,6 @@ namespace HoloToolkit.Unity
         {
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
-        }
-
-        public static void SetKeyword(Material mat, string keyword, bool state)
-        {
-            if (state)
-            {
-                mat.EnableKeyword(keyword);
-            }
-            else
-            {
-                mat.DisableKeyword(keyword);
-            }
-        }
-
-        public static bool TryGetToggle(Material material, string property, bool defaultVal)
-        {
-            if (material.HasProperty(property))
-            {
-                return material.GetFloat(property) == 1.0f;
-            }
-            return defaultVal;
         }
     }
 }

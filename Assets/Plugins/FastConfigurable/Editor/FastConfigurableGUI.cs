@@ -74,7 +74,9 @@ namespace HoloToolkit.Unity
             // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
             if (this.firstTimeApply)
             {
-                this.SetMaterialAutoPropertiesAndKeywords(matEditor.target as Material);
+                var matTarget = matEditor.target as Material;
+                this.SetMaterialBlendMode(matTarget, (BlendMode)this.blendMode.floatValue);
+                this.SetMaterialAutoPropertiesAndKeywords(matTarget);
                 this.firstTimeApply = false;
             }
 
@@ -85,8 +87,7 @@ namespace HoloToolkit.Unity
                 this.ShowMainGUI(matEditor);
                 this.ShowOutputConfigurationGUI(matEditor);
 
-                var mode = (BlendMode)this.blendMode.floatValue;
-                if (mode == BlendMode.Advanced)
+                if ((BlendMode)this.blendMode.floatValue == BlendMode.Advanced)
                 {
                     matEditor.RenderQueueField();
                 }
@@ -136,7 +137,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
                 {
-                    if (this.specularLightingEnabled.floatValue > 0.0f)
+                    if (this.specularLightingEnabled.floatValue > 0f)
                     {
                         matEditor.ShaderProperty(this.specularColor, Styles.specularColor);
 
@@ -151,7 +152,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled);
                 {
-                    if (this.rimLightingEnabled.floatValue > 0.0f)
+                    if (this.rimLightingEnabled.floatValue > 0f)
                     {
                         matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
                         matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
@@ -161,7 +162,7 @@ namespace HoloToolkit.Unity
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled);
                 {
-                    if (this.reflectionsEnabled.floatValue > 0.0f)
+                    if (this.reflectionsEnabled.floatValue > 0f)
                     {
                         matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
                         matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
@@ -210,7 +211,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            BlendMode blendMode = BlendMode.Opaque;
+            var blendMode = BlendMode.Opaque;
 
             bool standard = oldShader.name.Contains("Standard");
             bool legacy = oldShader.name.Contains("Legacy Shaders/");
@@ -223,10 +224,19 @@ namespace HoloToolkit.Unity
             bool vertexLit = oldShader.name.Contains("VertexLit");
             bool spec = !oldShader.name.Contains("Diffuse");
 
+            //FastConfigurable uses shared scale and offset
+            //pull them from the main texture on the source material if available
+            if (mat.HasProperty("_MainTex_ST"))
+            {
+                var scaleOffset = mat.GetVector("_MainTex_ST");
+                mat.SetVector("_TextureScaleOffset", scaleOffset);
+            }
+
             if (standard)
             {
-                this.SetMaterialLighting(mat, true, true, ShaderGUIUtils.TryGetToggle(mat, "_SpecularHighlights", true), true, true);
-            }
+                //TODO: toggle on albedo if map or color set
+                this.SetMaterialLighting(mat, true, true, mat.TryGetToggle("_SpecularHighlights", true), true, true);
+            } 
             else if (mobile || legacy)
             {
                 if (cutout)
@@ -287,12 +297,12 @@ namespace HoloToolkit.Unity
 
         protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
         {
-            mat.SetFloat("_UseAmbient", ambient ? 1.0f : 0.0f);
-            mat.SetFloat("_UseDiffuse", diffuse ? 1.0f : 0.0f);
-            mat.SetFloat("_SpecularHighlights", specular ? 1.0f : 0.0f);
-            mat.SetFloat("_Shade4", additional ? 1.0f : 0.0f);
+            mat.SetFloat("_UseAmbient", ambient ? 1f : 0f);
+            mat.SetFloat("_UseDiffuse", diffuse ? 1f : 0f);
+            mat.SetFloat("_SpecularHighlights", specular ? 1f : 0f);
+            mat.SetFloat("_Shade4", additional ? 1f : 0f);
 
-            mat.SetFloat("_ForcePerPixel", perPixel ? 1.0f : 0.0f);
+            mat.SetFloat("_ForcePerPixel", perPixel ? 1f : 0f);
         }
 
         protected virtual void SetMaterialBlendMode(Material mat, BlendMode blendMode)
@@ -304,7 +314,7 @@ namespace HoloToolkit.Unity
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
-                    ShaderGUIUtils.SetKeyword(mat, "_ALPHATEST_ON", false);
+                    mat.SetKeyword("_ALPHATEST_ON", false);
                     mat.renderQueue = -1;
                     break;
                 case BlendMode.Cutout:
@@ -312,7 +322,7 @@ namespace HoloToolkit.Unity
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
-                    ShaderGUIUtils.SetKeyword(mat, "_ALPHATEST_ON", true);
+                    mat.SetKeyword("_ALPHATEST_ON", true);
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
                     break;
                 case BlendMode.Transparent:
@@ -321,7 +331,7 @@ namespace HoloToolkit.Unity
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
                     mat.SetInt("_ZWrite", 1);
-                    ShaderGUIUtils.SetKeyword(mat, "_ALPHATEST_ON", false);
+                    mat.SetKeyword("_ALPHATEST_ON", false);
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
                     break;
                 case BlendMode.Advanced:
@@ -332,40 +342,40 @@ namespace HoloToolkit.Unity
 
         protected virtual bool MaterialNeedsPerPixel(Material mat)
         {
-            bool usesBumpMap = mat.GetTexture("_BumpMap");
-            bool usesSpecMap = mat.GetTexture("_SpecularMap");
-            bool usesGlossMap = mat.GetTexture("_GlossMap");
-            bool usesEmissionMap = mat.GetTexture("_EmissionMap");
+            bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
+            bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
+            bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
+            bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
 
             return (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap);
         }
 
         protected virtual void SetMaterialAutoPropertiesAndKeywords(Material mat)
         {
-            ShaderGUIUtils.SetKeyword(mat, "_USEMAINTEX_ON", mat.GetTexture("_MainTex"));
-            ShaderGUIUtils.SetKeyword(mat, "_USEOCCLUSIONMAP_ON", mat.GetTexture("_OcclusionMap"));
+            mat.SetKeyword("_USEMAINTEX_ON", mat.GetTexture("_MainTex") != null);
+            mat.SetKeyword("_USEOCCLUSIONMAP_ON", mat.GetTexture("_OcclusionMap") != null);
 
-            bool usesBumpMap = mat.GetTexture("_BumpMap");
-            bool usesSpecMap = mat.GetTexture("_SpecularMap");
-            bool usesGlossMap = mat.GetTexture("_GlossMap");
-            bool usesEmissionMap = mat.GetTexture("_EmissionMap");
+            bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
+            bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
+            bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
+            bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
 
-            ShaderGUIUtils.SetKeyword(mat, "_USEBUMPMAP_ON", usesBumpMap);
-            ShaderGUIUtils.SetKeyword(mat, "_USESPECULARMAP_ON", usesSpecMap);
-            ShaderGUIUtils.SetKeyword(mat, "_USEGLOSSMAP_ON", usesGlossMap);
-            ShaderGUIUtils.SetKeyword(mat, "_USEEMISSIONMAP_ON", usesEmissionMap);
+            mat.SetKeyword("_USEBUMPMAP_ON", usesBumpMap);
+            mat.SetKeyword("_USESPECULARMAP_ON", usesSpecMap);
+            mat.SetKeyword("_USEGLOSSMAP_ON", usesGlossMap);
+            mat.SetKeyword("_USEEMISSIONMAP_ON", usesEmissionMap);
 
             if (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap)
             {
-                mat.SetFloat("_ForcePerPixel", 1.0f);
+                mat.SetInt("_ForcePerPixel", 1);
             }
 
             var texScaleOffset = mat.GetVector("_TextureScaleOffset");
-            bool usesScale = texScaleOffset.x > 1.0f || texScaleOffset.y > 1.0f;
-            bool usesOffset = texScaleOffset.z > 0.0f || texScaleOffset.w > 0.0f;
+            bool usesScale = (texScaleOffset.x != 1f) || (texScaleOffset.y != 1f);
+            bool usesOffset = (texScaleOffset.z != 0f) || (texScaleOffset.w != 0f);
 
-            ShaderGUIUtils.SetKeyword(mat, "_MainTex_SCALE_ON", usesScale);
-            ShaderGUIUtils.SetKeyword(mat, "_MainTex_OFFSET_ON", usesOffset);
+            mat.SetKeyword(@"_MainTex_SCALE_ON", usesScale);
+            mat.SetKeyword("_MainTex_OFFSET_ON", usesOffset);
         }
 
         protected virtual void CacheMainProperties(MaterialProperty[] props)

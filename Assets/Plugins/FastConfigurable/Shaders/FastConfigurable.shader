@@ -95,6 +95,7 @@ Shader "HoloToolkit/Fast Configurable"
                 //We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
                 #pragma target 5.0
                 #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
