@@ -6,22 +6,35 @@ using UnityEngine;
 public class ComponentMemberReference
 {
     [SerializeField] private Component targetComponent;
-    [SerializeField] private string targetFieldName;
+    [SerializeField] private string targetMemberName;
 
     private FieldInfo fieldInfo;
+    private PropertyInfo propertyInfo;
 
     public object GetValue()
     {
         this.CacheInfo();
 
-        return this.fieldInfo.GetValue(this.targetComponent);
+        if (this.fieldInfo != null)
+        {
+            return this.fieldInfo.GetValue(this.targetComponent);
+        }
+
+        return this.propertyInfo.GetValue(this.targetComponent);
     }
 
     public void SetValue(object value)
     {
         this.CacheInfo();
 
-        this.fieldInfo.SetValue(this.targetComponent, value);
+        if (this.fieldInfo != null)
+        {
+            this.fieldInfo.SetValue(this.targetComponent, value);
+        }
+        else
+        {
+            this.propertyInfo.SetValue(this.targetComponent, value);
+        }
     }
 
     private void CacheInfo()
@@ -33,6 +46,7 @@ public class ComponentMemberReference
 
         var type = this.targetComponent.GetType();
 
-        this.fieldInfo = type.GetField(this.targetFieldName);
+        this.fieldInfo = type.GetField(this.targetMemberName);
+        this.propertyInfo = type.GetProperty(this.targetMemberName);
     }
 }

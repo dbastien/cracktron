@@ -12,7 +12,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
     public class ComponentFieldReferenceEntry
     {
         public Component targetComponent;
-        public string targetFieldName;
+        public string targetMemberName;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -20,7 +20,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         int index = 0;
 
         var targetComponent = property.FindPropertyRelative("targetComponent");
-        var targetFieldName = property.FindPropertyRelative("targetFieldName");
+        var targetFieldName = property.FindPropertyRelative("targetMemberName");
 
         position.height = 16f;
         EditorGUI.PropertyField(position, targetComponent, label);
@@ -52,7 +52,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         {
             var entry = entries[choice - 1];
             targetComponent.objectReferenceValue = entry.targetComponent;
-            targetFieldName.stringValue = entry.targetFieldName;
+            targetFieldName.stringValue = entry.targetMemberName;
         }
     }
 
@@ -71,7 +71,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         for (var i = 0; i < list.Count; ++i)
         {
             var entry = list[i];
-            var name = entry.targetFieldName;
+            var name = entry.targetMemberName;
             names[i+1] = name;
 
             if (index == 0 && string.Equals(name, choice))
@@ -98,6 +98,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
             var flags = BindingFlags.Instance | BindingFlags.Public;
 
             var fields = type.GetFields(flags);
+            var props = type.GetProperties(flags);
 
             for (var f = 0; f < fields.Length; ++f)
             {
@@ -105,7 +106,19 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
                 var entry = new ComponentFieldReferenceEntry
                 {
                     targetComponent = component,
-                    targetFieldName = field.Name
+                    targetMemberName = field.Name
+                };
+                entries.Add(entry);
+            }
+
+            for (var p = 0; p < props.Length; ++p)
+            {
+                var prop = props[p];
+
+                var entry = new ComponentFieldReferenceEntry
+                {
+                    targetComponent = component,
+                    targetMemberName = prop.Name
                 };
                 entries.Add(entry);
             }
