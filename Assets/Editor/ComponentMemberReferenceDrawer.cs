@@ -1,18 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.EventSystems;
 
-//TODO: rename to ComponentMemberReferenceDrawer, support properties
 [CustomPropertyDrawer(typeof(ComponentMemberReference))]
 public class ComponentMemberReferenceDrawer : PropertyDrawer
 {
+    public static readonly List<Type> TargetTypes = new List<Type>
+    {
+        typeof(float),
+        typeof(Vector2), typeof(Vector3), typeof(Vector4),
+        typeof(Color)
+    };
+
     public class ComponentFieldReferenceEntry
     {
         public Component targetComponent;
         public string targetMemberName;
+    }
+
+    private static string GetFriendlyName(object component, string member)
+    {
+        return component.GetType().Name + " " + member;
     }
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -20,7 +32,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         int index = 0;
 
         var targetComponent = property.FindPropertyRelative("targetComponent");
-        var targetFieldName = property.FindPropertyRelative("targetMemberName");
+        var targetMemberName = property.FindPropertyRelative("targetMemberName");
 
         position.height = 16f;
         EditorGUI.PropertyField(position, targetComponent, label);
@@ -36,8 +48,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         GUI.changed = false;
 
         var entries = ComponentMemberReferenceDrawer.GetFields(component.gameObject);
-        //var current = PropertyReference.ToString(target.objectReferenceValue as Component, field.stringValue);
-        var current = targetFieldName.stringValue;
+        var current = ComponentMemberReferenceDrawer.GetFriendlyName((Component)targetComponent.objectReferenceValue, targetMemberName.stringValue);
 
         var names = ComponentMemberReferenceDrawer.GetNames(entries, current, out index);
 
@@ -52,7 +63,7 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         {
             var entry = entries[choice - 1];
             targetComponent.objectReferenceValue = entry.targetComponent;
-            targetFieldName.stringValue = entry.targetMemberName;
+            targetMemberName.stringValue = entry.targetMemberName;
         }
     }
 
@@ -71,10 +82,10 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
         for (var i = 0; i < list.Count; ++i)
         {
             var entry = list[i];
-            var name = entry.targetMemberName;
-            names[i+1] = name;
+            var friendlyName = ComponentMemberReferenceDrawer.GetFriendlyName(entry.targetComponent, entry.targetMemberName);
+            names[i + 1] = friendlyName;
 
-            if (index == 0 && string.Equals(name, choice))
+            if (index == 0 && string.Equals(friendlyName, choice))
             {
                 index = i+1;
             }
@@ -88,40 +99,27 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
     public static List<ComponentFieldReferenceEntry> GetFields(GameObject target)
     {
         var components = target.GetComponents<Component>();
-
         var entries = new List<ComponentFieldReferenceEntry>();
+        var flags = BindingFlags.Instance | BindingFlags.Public;
 
-        for (var c = 0; c < components.Length; ++c)
+        foreach (var component in components)
         {
-            var component = components[c];
             Type type = component.GetType();
-            var flags = BindingFlags.Instance | BindingFlags.Public;
 
-            var fields = type.GetFields(flags);
-            var props = type.GetProperties(flags);
+            var fields = type.GetFields(flags).Where(f => ComponentMemberReferenceDrawer.TargetTypes.Contains(f.FieldType));
+            var props = type.GetProperties(flags).Where(p => ComponentMemberReferenceDrawer.TargetTypes.Contains(p.PropertyType));
 
-            for (var f = 0; f < fields.Length; ++f)
+            entries.AddRange(fields.Select(field => new ComponentFieldReferenceEntry
             {
-                var field = fields[f];
-                var entry = new ComponentFieldReferenceEntry
-                {
-                    targetComponent = component,
-                    targetMemberName = field.Name
-                };
-                entries.Add(entry);
-            }
+                targetComponent = component,
+                targetMemberName = field.Name
+            }));
 
-            for (var p = 0; p < props.Length; ++p)
+            entries.AddRange(props.Select(prop => new ComponentFieldReferenceEntry
             {
-                var prop = props[p];
-
-                var entry = new ComponentFieldReferenceEntry
-                {
-                    targetComponent = component,
-                    targetMemberName = prop.Name
-                };
-                entries.Add(entry);
-            }
+                targetComponent = component,
+                targetMemberName = prop.Name
+            }));
         }
 
         return entries;

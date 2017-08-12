@@ -4605,7 +4605,7 @@ MonoBehaviour:
     m_PostInfinity: 0
     m_RotationOrder: 0
   Start: {x: -5, y: 3, z: -2}
-  End: {x: -0.45, y: 3, z: 2}
+  End: {x: 0.45, y: 3, z: 2}
   LengthScale: 3.33
   CurveTargetName: position
 --- !u!23 &747591434
@@ -6086,9 +6086,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13cf55f62b33a9a47ac32825ecb714b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldReference:
-    targetComponent: {fileID: 493622007}
-    targetFieldName: Curve
+  memberReference:
+    targetComponent: {fileID: 1455701484}
+    targetMemberName: right
 --- !u!114 &1455701483
 MonoBehaviour:
   m_ObjectHideFlags: 0
