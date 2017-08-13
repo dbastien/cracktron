@@ -9,8 +9,9 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        EditorGUI.PrefixLabel(position, label);
         EditorGUI.BeginProperty(position, label, property);
-        property.serializedObject.Update();
+        //property.serializedObject.Update();
 
         var oldCurve = property.animationCurveValue;
 

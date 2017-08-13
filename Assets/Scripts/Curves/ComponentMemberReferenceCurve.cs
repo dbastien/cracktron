@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-public class MemberReferenceTestBehavior : MonoBehaviour
+public class ComponentMemberReferenceCurve : MonoBehaviour 
 {
-    [SerializeField] public ComponentMemberReference memberReference;
+    [SerializeField] public ComponentMemberReference MemberReference;
 
     void Awake()
     {
-        
+
     }
 
     void OnEnable()

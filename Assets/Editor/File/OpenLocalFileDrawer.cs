@@ -2,14 +2,14 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(OpenLocalFolderAttribute))]
-public class OpenLocalFolderEditor : PropertyDrawer
+[CustomPropertyDrawer(typeof(OpenLocalFileAttribute))]
+public class OpenLocalFileDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         if (property.propertyType != SerializedPropertyType.String)
         {
-            throw new ArgumentException();
+            throw new ArgumentException() { };
         }
 
         position.width -= 30;
@@ -20,7 +20,7 @@ public class OpenLocalFolderEditor : PropertyDrawer
 
         if (GUI.Button(position, "..."))
         {
-            var path = EditorUtility.OpenFolderPanel("Select a folder", Application.dataPath, string.Empty);
+            var path = EditorUtility.OpenFilePanel("Select a file", Application.dataPath, string.Empty);
             if (string.IsNullOrEmpty(path))
             {
                 return;
@@ -31,7 +31,13 @@ public class OpenLocalFolderEditor : PropertyDrawer
                 path = path.Substring(Application.dataPath.Length);
                 path.Replace("/", "\\");
             }
+
             property.stringValue = path;
         }
+    }
+
+    public override float GetPropertyHeight(SerializedProperty serializedProperty, GUIContent label)
+    {
+        return EditorGUIUtility.singleLineHeight;
     }
 }

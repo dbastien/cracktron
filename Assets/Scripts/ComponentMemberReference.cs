@@ -39,7 +39,7 @@ public class ComponentMemberReference
 
     private void CacheInfo()
     {
-        if (this.fieldInfo == null)
+        if (this.fieldInfo == null && this.propertyInfo == null)
         {
             return;
         }

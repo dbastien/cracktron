@@ -6052,12 +6052,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1455701481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13cf55f62b33a9a47ac32825ecb714b2, type: 3}
+  m_Script: {fileID: 11500000, guid: a57132e30fb834243aea3e48530a5583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   memberReference:
-    targetComponent: {fileID: 747591437}
-    targetMemberName: up
+    targetComponent: {fileID: 0}
+    targetMemberName: 
 --- !u!114 &1455701483
 MonoBehaviour:
   m_ObjectHideFlags: 0

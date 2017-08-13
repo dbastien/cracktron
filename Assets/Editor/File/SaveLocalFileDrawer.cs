@@ -2,8 +2,8 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(OpenLocalFileAttribute))]
-public class OpenLocalFileEditor : PropertyDrawer
+[CustomPropertyDrawer(typeof(SaveLocalFileAttribute))]
+public class SaveLocalFileDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
@@ -20,7 +20,7 @@ public class OpenLocalFileEditor : PropertyDrawer
 
         if (GUI.Button(position, "..."))
         {
-            var path = EditorUtility.OpenFilePanel("Select a file", Application.dataPath, string.Empty);
+            var path = EditorUtility.SaveFilePanel("Select a file", Application.dataPath, string.Empty, string.Empty);
             if (string.IsNullOrEmpty(path))
             {
                 return;
@@ -29,7 +29,6 @@ public class OpenLocalFileEditor : PropertyDrawer
             if (path.StartsWith(Application.dataPath))
             {
                 path = path.Substring(Application.dataPath.Length);
-                path.Replace("/", "\\");
             }
 
             property.stringValue = path;

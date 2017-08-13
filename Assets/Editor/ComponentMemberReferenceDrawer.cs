@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.EventSystems;
 
 [CustomPropertyDrawer(typeof(ComponentMemberReference))]
 public class ComponentMemberReferenceDrawer : PropertyDrawer
@@ -52,13 +51,13 @@ public class ComponentMemberReferenceDrawer : PropertyDrawer
 
         var names = ComponentMemberReferenceDrawer.GetNames(entries, current, out index);
 
-        // Draw a selection list
+        // draw popup list
         GUI.changed = false;
         position.xMin += EditorGUIUtility.labelWidth;
         position.width -= 18f;
         var choice = EditorGUI.Popup(position, string.Empty, index, names);
 
-        // Update the target object and property name
+        // update the target object and member name
         if (GUI.changed && choice > 0)
         {
             var entry = entries[choice - 1];
