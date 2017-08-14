@@ -1576,6 +1576,11 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114222947105813636, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: AnimationSpeed
+      value: 0.7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5a86f957c795944a917dd168669df42, type: 2}
   m_IsPrefabParent: 0

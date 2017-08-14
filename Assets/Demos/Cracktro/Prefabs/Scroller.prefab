@@ -415,7 +415,8 @@ MonoBehaviour:
   CurveScale: 1
   AnimationSpeed: 0.6
   RotateLetters: 1
-  RotationScale: 1.5
+  RotationScale: 4
+  RotationSmoothing: 0.65
 --- !u!114 &114233728110260778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -545,7 +546,7 @@ MonoBehaviour:
   m_Vertical: 0
   m_MovementType: 0
   m_Elasticity: 0.1
-  m_Inertia: 1
+  m_Inertia: 0
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 1
   m_Viewport: {fileID: 224617781409709430}
@@ -571,7 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902ac2a6a6a841b4ea7e6db47f16d4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollSpeed: 0.1
+  ScrollSpeed: 0.08
 --- !u!114 &114826720645751954
 MonoBehaviour:
   m_ObjectHideFlags: 1

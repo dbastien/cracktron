@@ -11,10 +11,13 @@ public class TextMeshCurve : MonoBehaviour
 
     public bool RotateLetters;
     [Range(0.01f, 10.0f)] public float RotationScale = 1.0f;
+    [Range(0.0f, 1.0f)] public float RotationSmoothing = 0.5f;
 
     private float timeElapsed;
     private TMP_Text textComponent;
     private TMP_MeshInfo[] initialMeshInfo;
+
+    private Quaternion lastLetterRotation = Quaternion.identity;
 
     public void Update()
     {
@@ -69,8 +72,12 @@ public class TextMeshCurve : MonoBehaviour
                 var cross = Vector3.Cross(Vector3.right, tangent);
                 var angle = cross.z > 0 ? dot : 360 - dot;
 
+                var curLetterRotation = Quaternion.Euler(0, 0, angle);
+                var q = Quaternion.Slerp(this.lastLetterRotation, curLetterRotation, (Time.deltaTime * 100f * (1f - this.RotationSmoothing)));
+                this.lastLetterRotation = q;
+
                 matrix = Matrix4x4.Translate(offsetToMidBaseline) *
-                         Matrix4x4.TRS(new Vector3(0, y0, 0), Quaternion.Euler(0, 0, angle), Vector3.one) *
+                         Matrix4x4.TRS(new Vector3(0, y0, 0), q, Vector3.one) *
                          Matrix4x4.Translate(-offsetToMidBaseline);
             }
             else
