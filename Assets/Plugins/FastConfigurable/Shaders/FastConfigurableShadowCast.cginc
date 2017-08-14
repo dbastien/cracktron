@@ -25,5 +25,6 @@ shadowcast_v2f shadowcast_vert(shadowcast_a2v v)
 
 fixed4 shadowcast_frag(shadowcast_v2f IN) : SV_Target
 {
+    //TODO: optionally support alpha testing cutouts for shadows
     SHADOW_CASTER_FRAGMENT(IN)
 }

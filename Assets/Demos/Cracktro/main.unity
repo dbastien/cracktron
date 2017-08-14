@@ -455,8 +455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00976f0e7e88c1b4795c8946bef3a0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {r: 0.9852941, g: 0.85865486, b: 0.31877163, a: 1}
-  End: {r: 0, g: 0.2006085, b: 0.6764706, a: 1}
+  Start: {r: 0.766, g: 0.6603448, b: 0.31541175, a: 1}
+  End: {r: 0.23552941, g: 0.33531034, b: 0.572, a: 1}
   Curve:
     serializedVersion: 2
     m_Curve:
@@ -1080,8 +1080,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: 6, y: 3, z: -3}
-  End: {x: -0.75, y: 3, z: 2}
+  Start: {x: 6, y: 3, z: -5}
+  End: {x: 0, y: 3, z: 3}
   LengthScale: 3.33
   CurveTargetName: position
 --- !u!23 &578477996
@@ -1581,6 +1581,16 @@ Prefab:
       propertyPath: AnimationSpeed
       value: 0.7
       objectReference: {fileID: 0}
+    - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: m_characterSpacing
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5a86f957c795944a917dd168669df42, type: 2}
   m_IsPrefabParent: 0
@@ -1922,8 +1932,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: -6, y: 3, z: -3}
-  End: {x: -0.75, y: 3, z: 2}
+  Start: {x: -6, y: 3, z: -5}
+  End: {x: 0, y: 3, z: 3}
   LengthScale: 3.33
   CurveTargetName: position
 --- !u!23 &747591434
@@ -2001,8 +2011,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00976f0e7e88c1b4795c8946bef3a0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {r: 0, g: 0.2006085, b: 0.6764706, a: 1}
-  End: {r: 0.8450848, g: 0.21568626, b: 1, a: 1}
+  Start: {r: 0.666, g: 0.27423528, b: 0.27423528, a: 1}
+  End: {r: 0.766, g: 0.6603448, b: 0.31541175, a: 1}
   Curve:
     serializedVersion: 2
     m_Curve:

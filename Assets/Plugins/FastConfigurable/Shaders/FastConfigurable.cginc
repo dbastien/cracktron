@@ -7,8 +7,8 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
-#include "HoloToolkitCommon.cginc"
-#include "macro.cginc"
+#include "ShaderCommon.cginc"
+#include "Macro.cginc"
 
 #define USE_PER_PIXEL (_USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _FORCEPERPIXEL_ON)
 #define PIXEL_SHADER_USES_WORLDPOS  (USE_PER_PIXEL && (_SPECULARHIGHLIGHTS_ON || _SHADE4_ON || _USERIMLIGHTING_ON))

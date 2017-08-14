@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 2108210716, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
   m_Name: TMP Scroller Gradient
   m_EditorClassIdentifier: 
-  topLeft: {r: 0.9705882, g: 0.7605894, b: 0.20934254, a: 1}
-  topRight: {r: 0.53676474, g: 0.32626876, b: 0.530958, a: 1}
-  bottomLeft: {r: 0.53676474, g: 0.32626876, b: 0.530958, a: 1}
-  bottomRight: {r: 0.9705882, g: 0.7605894, b: 0.20934254, a: 1}
+  topLeft: {r: 1, g: 0.7140205, b: 0.1372549, a: 1}
+  topRight: {r: 0.1845444, g: 0.38245422, b: 0.5882353, a: 1}
+  bottomLeft: {r: 0.78431374, g: 0.62140554, b: 0.4152249, a: 1}
+  bottomRight: {r: 0.39215687, g: 0.28000802, b: 0.05382545, a: 1}
