@@ -128,7 +128,7 @@ Shader "HoloToolkit/Fast Configurable"
 
         Pass
         {
-            Name "FORWARD_DELTA "
+            Name "FORWARD_DELTA"
             Tags{ "LightMode" = "ForwardAdd" }
             Blend[_SrcBlend] One
             ZWrite Off
