@@ -92,7 +92,6 @@ Shader "HoloToolkit/Fast Configurable"
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
-                //We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
                 #pragma target 5.0
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
@@ -143,7 +142,6 @@ Shader "HoloToolkit/Fast Configurable"
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
-                //We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
                 #pragma target 5.0
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
@@ -176,8 +174,30 @@ Shader "HoloToolkit/Fast Configurable"
                 #include "FastConfigurable.cginc"
             ENDCG
         }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags{ "LightMode" = "ShadowCaster" }
+            Blend[_SrcBlend] One
+
+            CGPROGRAM
+                #pragma vertex shadowcast_vert
+                #pragma fragment shadowcast_frag
+
+                #pragma multi_compile_shadowcaster
+
+                #pragma target 5.0
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
+
+                //may be set from script so generate both paths
+                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
+
+                #include "FastConfigurableShadowCast.cginc" 
+            ENDCG
+        }
     } 
     
     CustomEditor "HoloToolkit.Unity.FastConfigurableGUI"
-    Fallback "Legacy Shaders/VertexLit" //for shadow casting
 }
