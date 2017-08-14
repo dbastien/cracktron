@@ -38,9 +38,9 @@ GameObject:
   m_Component:
   - component: {fileID: 224483812115137706}
   - component: {fileID: 222163448630404174}
-  - component: {fileID: 114592771375028494}
   - component: {fileID: 114742065616173078}
   - component: {fileID: 114222947105813636}
+  - component: {fileID: 114233728110260778}
   m_Layer: 5
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -111,29 +111,424 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: -0.49624634
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 0
+      inSlope: 3.139441
+      outSlope: 3.139441
+      tangentMode: 34
     - serializedVersion: 2
-      time: 0.25
-      value: 0.50375366
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      time: 0.020408163
+      value: 0.064070225
+      inSlope: 3.1329904
+      outSlope: 3.1329904
+      tangentMode: 34
     - serializedVersion: 2
-      time: 0.5
-      value: -0.49624634
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 1
-    m_PostInfinity: 1
+      time: 0.040816326
+      value: 0.12787716
+      inSlope: 3.113666
+      outSlope: 3.113666
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.06122449
+      value: 0.19115864
+      inSlope: 3.0815473
+      outSlope: 3.0815473
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.08163265
+      value: 0.2536546
+      inSlope: 3.0367649
+      outSlope: 3.0367649
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.10204081
+      value: 0.3151082
+      inSlope: 2.979504
+      outSlope: 2.979504
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.12244897
+      value: 0.375267
+      inSlope: 2.9100006
+      outSlope: 2.9100006
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.14285713
+      value: 0.43388373
+      inSlope: 2.8285384
+      outSlope: 2.8285384
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.1632653
+      value: 0.49071756
+      inSlope: 2.7354531
+      outSlope: 2.7354531
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.18367347
+      value: 0.5455349
+      inSlope: 2.6311278
+      outSlope: 2.6311278
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.20408164
+      value: 0.59811056
+      inSlope: 2.5159917
+      outSlope: 2.5159917
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.22448981
+      value: 0.64822847
+      inSlope: 2.3905156
+      outSlope: 2.3905156
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.24489798
+      value: 0.69568264
+      inSlope: 2.2552147
+      outSlope: 2.2552147
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.26530614
+      value: 0.74027807
+      inSlope: 2.1106472
+      outSlope: 2.1106472
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.2857143
+      value: 0.7818315
+      inSlope: 1.9574084
+      outSlope: 1.9574084
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.30612245
+      value: 0.82017225
+      inSlope: 1.796127
+      outSlope: 1.796127
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3265306
+      value: 0.8551428
+      inSlope: 1.6274636
+      outSlope: 1.6274636
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.34693876
+      value: 0.8865993
+      inSlope: 1.452112
+      outSlope: 1.452112
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3673469
+      value: 0.9144126
+      inSlope: 1.2707934
+      outSlope: 1.2707934
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.38775507
+      value: 0.9384684
+      inSlope: 1.0842528
+      outSlope: 1.0842528
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.40816322
+      value: 0.9586678
+      inSlope: 0.89325833
+      outSlope: 0.89325833
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.42857137
+      value: 0.9749279
+      inSlope: 0.6985911
+      outSlope: 0.6985911
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.44897953
+      value: 0.9871817
+      inSlope: 0.50105435
+      outSlope: 0.50105435
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.46938768
+      value: 0.9953791
+      inSlope: 0.30146003
+      outSlope: 0.30146003
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.48979583
+      value: 0.9994862
+      inSlope: 0.10062443
+      outSlope: 0.10062443
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.510204
+      value: 0.9994862
+      inSlope: -0.10062297
+      outSlope: -0.10062297
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5306122
+      value: 0.99537915
+      inSlope: -0.30145854
+      outSlope: -0.30145854
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5510203
+      value: 0.9871818
+      inSlope: -0.50105435
+      outSlope: -0.50105435
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5714285
+      value: 0.97492796
+      inSlope: -0.6985896
+      outSlope: -0.6985896
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.59183663
+      value: 0.95866793
+      inSlope: -0.89325684
+      outSlope: -0.89325684
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6122448
+      value: 0.9384685
+      inSlope: -1.0842528
+      outSlope: -1.0842528
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.63265294
+      value: 0.91441274
+      inSlope: -1.270792
+      outSlope: -1.270792
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6530611
+      value: 0.8865995
+      inSlope: -1.452109
+      outSlope: -1.452109
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.67346925
+      value: 0.855143
+      inSlope: -1.6274606
+      outSlope: -1.6274606
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6938774
+      value: 0.82017255
+      inSlope: -1.7961254
+      outSlope: -1.7961254
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.71428555
+      value: 0.7818318
+      inSlope: -1.9574084
+      outSlope: -1.9574084
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.7346937
+      value: 0.74027836
+      inSlope: -2.1106467
+      outSlope: -2.1106467
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.75510186
+      value: 0.695683
+      inSlope: -2.2552133
+      outSlope: -2.2552133
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.77551
+      value: 0.6482289
+      inSlope: -2.3905172
+      outSlope: -2.3905172
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.79591817
+      value: 0.5981109
+      inSlope: -2.5159934
+      outSlope: -2.5159934
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8163263
+      value: 0.5455353
+      inSlope: -2.6311274
+      outSlope: -2.6311274
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8367345
+      value: 0.490718
+      inSlope: -2.7354524
+      outSlope: -2.7354524
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8571426
+      value: 0.43388426
+      inSlope: -2.8285372
+      outSlope: -2.8285372
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8775508
+      value: 0.37526757
+      inSlope: -2.9099994
+      outSlope: -2.9099994
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.89795893
+      value: 0.31510884
+      inSlope: -2.9795032
+      outSlope: -2.9795032
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9183671
+      value: 0.25365525
+      inSlope: -3.0367637
+      outSlope: -3.0367637
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.93877524
+      value: 0.19115935
+      inSlope: -3.0815458
+      outSlope: -3.0815458
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9591834
+      value: 0.12787794
+      inSlope: -3.113665
+      outSlope: -3.113665
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.97959155
+      value: 0.064071044
+      inSlope: -3.13299
+      outSlope: -3.13299
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9999997
+      value: 0.0000008662515
+      inSlope: -3.1394403
+      outSlope: -3.1394403
+      tangentMode: 34
+    m_PreInfinity: 0
+    m_PostInfinity: 0
     m_RotationOrder: 0
   CurveScale: 1
   AnimationSpeed: 0.6
   RotateLetters: 1
   RotationScale: 1.5
+--- !u!114 &114233728110260778
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179482230831604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1453722849, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: 'shout out to all my #emu homiez - console consortium lives on!!!'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 163292f6f226d954593d45b079f8aae0, type: 2}
+  m_sharedMaterial: {fileID: 2140032, guid: 163292f6f226d954593d45b079f8aae0, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 1
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 11400000, guid: 387cb29954bf05c408458145be5694db,
+    type: 2}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 2
+  m_fontSizeBase: 2
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_textAlignment: 1025
+  m_isAlignmentEnumConverted: 1
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_firstOverflowCharacterIndex: -1
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_enableKerning: 0
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 114233728110260778}
+    characterCount: 64
+    spriteCount: 0
+    spaceCount: 11
+    wordCount: 12
+    linkCount: 0
+    lineCount: 1
+    pageCount: 1
+    materialCount: 1
+  m_havePropertiesChanged: 1
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 1
+  m_inputSource: 0
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &114320555948754452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -165,118 +560,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114592771375028494
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1179482230831604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1453722849, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: sample scrolling text
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: d62a573c923f5cb47b8ff65261033b90, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 1
-  m_fontColorGradient:
-    topLeft: {r: 0.8450848, g: 0.21568626, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 0.9852941, g: 0.85865486, b: 0.31877163, a: 1}
-    bottomRight: {r: 0.21568626, g: 0.3833671, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_outlineColor:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontSize: 2.5
-  m_fontSizeBase: 2.5
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_textAlignment: 513
-  m_isAlignmentEnumConverted: 1
-  m_characterSpacing: 14
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
-  m_linkedTextComponent: {fileID: 0}
-  m_isLinkedTextComponent: 0
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 0
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_ignoreRectMaskCulling: 0
-  m_ignoreCulling: 1
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_firstVisibleCharacter: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_textInfo:
-    textComponent: {fileID: 114592771375028494}
-    characterCount: 21
-    spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
-    linkCount: 0
-    lineCount: 1
-    pageCount: 1
-    materialCount: 1
-  m_havePropertiesChanged: 1
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
-  m_inputSource: 0
-  m_hasFontAssetChanged: 0
-  m_subTextObjects:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &114742065616173078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -288,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 902ac2a6a6a841b4ea7e6db47f16d4cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ScrollSpeed: 0.07
+  ScrollSpeed: 0.1
 --- !u!114 &114826720645751954
 MonoBehaviour:
   m_ObjectHideFlags: 1
