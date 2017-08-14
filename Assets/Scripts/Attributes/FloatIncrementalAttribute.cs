@@ -2,10 +2,10 @@
 
 public class FloatIncrementalAttribute : PropertyAttribute
 {
-    public float Incremeent;
+    public float Increment;
 
     public FloatIncrementalAttribute(float increment)
     {
-        this.Incremeent = increment;
+        this.Increment = increment;
     }
 }

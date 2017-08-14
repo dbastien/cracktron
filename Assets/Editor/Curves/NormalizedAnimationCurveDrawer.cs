@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
         var presetCount = CurvePresetLibraryWrapper.Count(NormalizedAnimationCurveDrawer.presets);
 
         //TODO: find size of layotable width - controls are inset
-        int rowItems = Mathf.FloorToInt(Screen.width / (curveItemSize.x + curveItemPadding.x)) - 1;
+        var rowItems = Mathf.FloorToInt(Screen.width / (curveItemSize.x + curveItemPadding.x)) - 1;
 
         int p = 0;
         while (p < presetCount)
@@ -83,6 +84,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
     {
         var path = Application.dataPath + Constants.NormalizedCurvesPath;
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
+
         NormalizedAnimationCurveDrawer.presets = objs[0] as ScriptableObject;
     }
 }
