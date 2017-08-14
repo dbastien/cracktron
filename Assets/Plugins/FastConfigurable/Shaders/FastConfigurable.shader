@@ -125,6 +125,57 @@ Shader "HoloToolkit/Fast Configurable"
                 #include "FastConfigurable.cginc"
             ENDCG
         }
+
+        Pass
+        {
+            Name "FORWARD_DELTA "
+            Tags{ "LightMode" = "ForwardAdd" }
+            Blend[_SrcBlend] One
+            ZWrite Off
+            ZTest LEqual
+
+            CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
+                
+                #pragma multi_compile_fwdadd_fullshadows
+
+                //expands to several variants to handle different fog types
+                #pragma multi_compile_fog
+
+                //We only target the HoloLens (and the Unity editor), so take advantage of shader model 5.
+                #pragma target 5.0
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
+
+                //shader features are only compiled if a material uses them
+                #pragma shader_feature _USEVERTEXCOLOR_ON
+                #pragma shader_feature _USEMAINCOLOR_ON
+                #pragma shader_feature _USEMAINTEX_ON
+                #pragma shader_feature _USEOCCLUSIONMAP_ON
+                #pragma shader_feature _USEBUMPMAP_ON
+                #pragma shader_feature _USEAMBIENT_ON
+                #pragma shader_feature _USEDIFFUSE_ON
+                #pragma shader_feature _SPECULARHIGHLIGHTS_ON
+                #pragma shader_feature _FORCEPERPIXEL_ON
+                #pragma shader_feature _USEGLOSSMAP_ON
+                #pragma shader_feature _SHADE4_ON
+                #pragma shader_feature _USEREFLECTIONS_ON
+                #pragma shader_feature _USERIMLIGHTING_ON
+                #pragma shader_feature _USEEMISSIONCOLOR_ON
+                #pragma shader_feature _USEEMISSIONMAP_ON
+                #pragma shader_feature _ALPHATEST_ON
+
+                //scale and offset will apply to all
+                #pragma shader_feature _MainTex_SCALE_ON
+                #pragma shader_feature _MainTex_OFFSET_ON
+
+                //may be set from script so generate both paths
+                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
+
+                #include "FastConfigurable.cginc"
+            ENDCG
+        }
     } 
     
     CustomEditor "HoloToolkit.Unity.FastConfigurableGUI"
