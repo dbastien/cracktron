@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 //TODO: check/add vs add passes
-//TODO: only shadesh9 in base pass
 //TODO: support reflections from unity_SpecCube0 ?
 
 #include "Lighting.cginc"
@@ -101,9 +100,9 @@ inline float3 FastLightingLambertian(float3 normal, float3 lightDir, float3 ligh
     return lightCol * saturate(dot(normal, lightDir));
 }
 
-inline float3 FastLightingBlinnPhong(float3 normal,
+inline float3 FastLightingBlinnPhong(float3 normal, float3 viewDir,
                                      float3 lightDir, float3 lightCol,
-                                     float3 viewDir,
+                                     
                                      float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
@@ -115,7 +114,7 @@ inline float3 FastLightingBlinnPhong(float3 normal,
 #if defined(_USERIMLIGHTING_ON)
 inline float3 RimLight(float3 worldNormal, float3 worldPos)
 {
-    //TODO: optimize
+    //TODO: optimize whole function
     float rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
 
     //boost to the dot product to allow for a greater max effect - .25 is the boost factor
@@ -221,8 +220,9 @@ v2f vert(a2v v)
         //TODO: use perpixel define instead
         #if defined(_USEAMBIENT_ON) && !defined(_USEBUMPMAP_ON)
             //grab ambient color from Unity's spherical harmonics
-            //ShadeSH9 operates in half precision
-            o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
+            #if UNITY_SHOULD_SAMPLE_SH
+                o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
+            #endif
         #endif
 
         #if !(USE_PER_PIXEL)
@@ -230,7 +230,7 @@ v2f vert(a2v v)
                 o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
             #if defined(_SPECULARHIGHLIGHTS_ON)
-                o.vertexLighting += FastLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(worldPos), _Specular, _Gloss, _SpecColor);
+                o.vertexLighting += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, _Gloss, _SpecColor);
             #endif
             #if defined(_SHADE4_ON)
                 //handle point and spot lights
@@ -295,11 +295,9 @@ fixed4 frag(v2f IN) : SV_Target
         //note execution continues but all writes are disabled
         clip(color.a - _Cutoff);
     #endif
-
-    //light attenuation from shadows cast onto the object
-    //should end up in UnityComputeForwardShadows which returns a half
-    //TODO: should use UNITY_LIGHT_ATTENUATION?
-    float lightAttenuation = SHADOW_ATTENUATION(IN);
+        
+    //float lightAttenuation = SHADOW_ATTENUATION(IN);
+    float lightAttenuation = LIGHT_ATTENUATION(IN);
     
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
@@ -317,8 +315,9 @@ fixed4 frag(v2f IN) : SV_Target
                 //unpack can be expensive if normal map is dxt5
                 float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
                 //grab ambient color from Unity's spherical harmonics
-                //ShadeSH9 operates in half precision
-                lightColorShadowAttenuated += FastShadeSH9(float4(worldNormal, 1.0));
+                #if UNITY_SHOULD_SAMPLE_SH
+                    lightColorShadowAttenuated += FastShadeSH9(float4(worldNormal, 1.0));
+                #endif
             #else
                 float3 worldNormal = IN.worldNormal;
             #endif					
@@ -335,7 +334,7 @@ fixed4 frag(v2f IN) : SV_Target
                 #if defined(_USESPECULARMAP_ON)
                     specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
                 #endif
-                lightColorShadowAttenuated += FastLightingBlinnPhong(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb, UnityWorldSpaceViewDir(IN.worldPos), specular, gloss, _SpecColor);
+                lightColorShadowAttenuated += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
             #endif
             #if defined(_SHADE4_ON)
                 //handle point and spot lights

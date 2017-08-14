@@ -5455,7 +5455,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1301333548}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6056,8 +6056,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MemberReference:
-    targetComponent: {fileID: 0}
-    targetMemberName: 
+    targetComponent: {fileID: 1442181147}
+    targetMemberName: up
 --- !u!114 &1455701483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6070,7 +6070,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpenLocalFileEditorTest: 
-  FloatIncrementalTest: 1.75
+  IntIncrementalTest: 4
+  FloatIncrementalTest: 3
 --- !u!4 &1455701484
 Transform:
   m_ObjectHideFlags: 0
@@ -6078,7 +6079,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1455701481}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.408375, y: 1.942818, z: 4.0173845}
+  m_LocalPosition: {x: -4.408375, y: 1.942818, z: 54.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
