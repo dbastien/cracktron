@@ -1,0 +1,29 @@
+﻿using UnityEngine;
+
+public class #SCRIPTNAME# : MonoBehaviour 
+{
+    void Awake()
+    {
+        #NOTRIM#
+    }
+
+    void OnEnable()
+    {
+        #NOTRIM#
+    }
+
+    void Start()
+    {
+        #NOTRIM#
+    }
+    
+    void OnDisable()
+    {
+        #NOTRIM#
+    }
+    
+    void Update() 
+    {
+        #NOTRIM#
+    }
+}

@@ -1,0 +1,17 @@
+﻿# unity
+/[Ll]ibrary
+/[Tt]emp
+/[Oo]bj
+/[Bb]uild
+
+# unity crash report
+sysinfo.txt
+
+# visual studio
+.vs/
+/*.csproj
+/*.sln
+/*.suo
+/*.pdb
+/StyleCop.Cache
+/uwp

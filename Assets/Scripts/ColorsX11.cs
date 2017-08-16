@@ -1,0 +1,1 @@
+﻿//todo: https://www.wikiwand.com/en/Web_colors

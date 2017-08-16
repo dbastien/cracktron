@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00ec4ffe234b08438a7683b3a90f7f1, type: 3}
+  m_Name: brains
+  m_EditorClassIdentifier: 
+  SteerNeurons:
+  - {fileID: 114256654901600974}
+  - {fileID: 114509185985628872}
+--- !u!114 &114175842652972528
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82921ffe758b57c41a4ba19392c2774f, type: 3}
+  m_Name: NeuronSteerRandom
+  m_EditorClassIdentifier: 
+  Weight: 1
+  DirectionWeight: {x: 1, y: 0, z: 1}
+  Smoothing: 1
+  UpdateFrequencySeconds: 0.02
+--- !u!114 &114192166408427096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d04f0f129b9183143b28b7b5864596ff, type: 3}
+  m_Name: NeuronSteerForward
+  m_EditorClassIdentifier: 
+  Weight: 1
+--- !u!114 &114256654901600974
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d04f0f129b9183143b28b7b5864596ff, type: 3}
+  m_Name: NeuronSteerForward
+  m_EditorClassIdentifier: 
+  Weight: 1
+--- !u!114 &114397623466316038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fda9e7e3d28534e9b8b3472e5dfe78, type: 3}
+  m_Name: NeuronSteerSeek
+  m_EditorClassIdentifier: 
+  Weight: 1
+  Targeting: {fileID: 0}
+--- !u!114 &114509185985628872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fda9e7e3d28534e9b8b3472e5dfe78, type: 3}
+  m_Name: NeuronSteerSeek
+  m_EditorClassIdentifier: 
+  Weight: 1
+  Targeting: {fileID: 0}
