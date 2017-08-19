@@ -6,10 +6,15 @@
 struct shadowcast_a2v
 {
     float4 vertex : POSITION;
+//    float4 color : COLOR;
+//    float2 mainUV : TEXCOORD0;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct shadowcast_v2f
 {
+//    float4 color : COLOR;
+//    float3 texXYFadeZ : TEXCOORD0;
     V2F_SHADOW_CASTER;
     UNITY_VERTEX_OUTPUT_STEREO
 };

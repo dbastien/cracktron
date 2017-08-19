@@ -10,46 +10,16 @@ namespace HoloToolkit.Unity
     /// <summary>
     /// Editor for FastConfigurable shader
     /// </summary>
-    public class FastConfigurableGUI : ShaderGUI
+    public class FastConfigurableParticlesGUI : ShaderGUI
     {
         protected bool firstTimeApply = true;
 
         //cached material properties
         protected MaterialProperty blendMode;
 
-        protected MaterialProperty vertexColorEnabled;
-        protected MaterialProperty mainColorEnabled;
         protected MaterialProperty mainColor;
         protected MaterialProperty mainTexture;
         protected MaterialProperty alphaCutoff;
-        protected MaterialProperty occlusionMap;
-
-        protected MaterialProperty ambientLightingEnabled;
-        protected MaterialProperty diffuseLightingEnabled;
-        protected MaterialProperty useAdditionalLightingData;
-        protected MaterialProperty perPixelLighting;
-
-        protected MaterialProperty specularLightingEnabled;
-        protected MaterialProperty specularColor;
-        protected MaterialProperty specular;
-        protected MaterialProperty specularMap;
-        protected MaterialProperty gloss;
-        protected MaterialProperty glossMap;
-
-        protected MaterialProperty normalMap;
-
-        protected MaterialProperty reflectionsEnabled;
-        protected MaterialProperty cubeMap;
-        protected MaterialProperty reflectionScale;
-        protected MaterialProperty calibrationSpaceReflections;
-
-        protected MaterialProperty rimLightingEnabled;
-        protected MaterialProperty rimPower;
-        protected MaterialProperty rimColor;
-
-        protected MaterialProperty emissionColorEnabled;
-        protected MaterialProperty emissionColor;
-        protected MaterialProperty emissionMap;
 
         protected MaterialProperty useTextureScale;
         protected MaterialProperty useTextureOffset;
@@ -112,66 +82,12 @@ namespace HoloToolkit.Unity
 
             ShaderGUIUtils.BeginHeader("Base Texture and Color");
             {
-                matEditor.ShaderProperty(this.vertexColorEnabled, Styles.vertexColorEnabled);
-
-                CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
-
-                matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
+                CustomMaterialEditor.TextureWithAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.textureScaleAndOffset);
 
                 if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
                 {
                     matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoffText.text);
                 }
-            }
-            ShaderGUIUtils.EndHeader();
-            ShaderGUIUtils.HeaderSeparator();
-
-            ShaderGUIUtils.BeginHeader("Lighting");
-            {
-                matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
-                matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
-                matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
-                EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
-                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
-                EditorGUI.EndDisabledGroup();
-
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
-                {
-                    if (this.specularLightingEnabled.floatValue > 0f)
-                    {
-                        matEditor.ShaderProperty(this.specularColor, Styles.specularColor);
-
-                        //consider a special slider + tex control
-                        matEditor.TexturePropertySingleLine(Styles.specular, this.specularMap, this.specular);
-                        matEditor.TexturePropertySingleLine(Styles.gloss, this.glossMap, this.gloss);
-                    }
-                }
-                ShaderGUIUtils.EndHeader();
-
-                matEditor.TexturePropertySingleLine(Styles.normalMap, this.normalMap);
-
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled);
-                {
-                    if (this.rimLightingEnabled.floatValue > 0f)
-                    {
-                        matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
-                        matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
-                    }
-                }
-                ShaderGUIUtils.EndHeader();
-
-                ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled);
-                {
-                    if (this.reflectionsEnabled.floatValue > 0f)
-                    {
-                        matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
-                        matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
-                        matEditor.ShaderProperty(this.calibrationSpaceReflections, Styles.calibrationSpaceReflections);
-                    }
-                }
-                ShaderGUIUtils.EndHeader();
-
-                CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
@@ -198,12 +114,6 @@ namespace HoloToolkit.Unity
 
         public override void AssignNewShaderToMaterial(Material mat, Shader oldShader, Shader newShader)
         {
-            // _Emission property is lost after assigning, transfer it before assigning the new shader
-            if (mat.HasProperty("_Emission"))
-            {
-                mat.SetColor("_EmissionColor", mat.GetColor("_Emission"));
-            }
-
             base.AssignNewShaderToMaterial(mat, oldShader, newShader);
 
             if (oldShader == null)
@@ -232,12 +142,7 @@ namespace HoloToolkit.Unity
                 mat.SetVector("_TextureScaleOffset", scaleOffset);
             }
 
-            if (standard)
-            {
-                //TODO: toggle on albedo if map or color set
-                this.SetMaterialLighting(mat, true, true, mat.TryGetToggle("_SpecularHighlights", true), true, true);
-            } 
-            else if (mobile || legacy)
+           if (mobile || legacy)
             {
                 if (cutout)
                 {
@@ -246,16 +151,6 @@ namespace HoloToolkit.Unity
                 else if (transparent)
                 {
                     blendMode = BlendMode.Transparent;
-                }
-
-                if (unlit)
-                {
-                    this.SetMaterialLighting(mat, false, false, false, false, false);
-                }
-                else
-                {
-                    //TODO: need to handle way more cases
-                    this.SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, vertexLit);
                 }
             }
 
@@ -295,16 +190,6 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
-        {
-            mat.SetFloat("_UseAmbient", ambient ? 1f : 0f);
-            mat.SetFloat("_UseDiffuse", diffuse ? 1f : 0f);
-            mat.SetFloat("_SpecularHighlights", specular ? 1f : 0f);
-            mat.SetFloat("_Shade4", additional ? 1f : 0f);
-
-            mat.SetFloat("_ForcePerPixel", perPixel ? 1f : 0f);
-        }
-
         protected virtual void SetMaterialBlendMode(Material mat, BlendMode blendMode)
         {
             switch (blendMode)
@@ -340,43 +225,13 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected virtual bool MaterialNeedsPerPixel(Material mat)
-        {
-            bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
-            bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-            bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
-            bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
-
-            return (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap);
-        }
-
         protected virtual void SetMaterialAutoPropertiesAndKeywords(Material mat)
         {
-            mat.SetKeyword("_USEMAINTEX_ON", mat.GetTexture("_MainTex") != null);
-            mat.SetKeyword("_USEOCCLUSIONMAP_ON", mat.GetTexture("_OcclusionMap") != null);
-
-            mat.SetKeyword("_USECUSTOMCUBEMAP_ON", mat.GetTexture("_CubeMap") != null);
-
-            bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
-            bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-            bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
-            bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
-
-            mat.SetKeyword("_USEBUMPMAP_ON", usesBumpMap);
-            mat.SetKeyword("_USESPECULARMAP_ON", usesSpecMap);
-            mat.SetKeyword("_USEGLOSSMAP_ON", usesGlossMap);
-            mat.SetKeyword("_USEEMISSIONMAP_ON", usesEmissionMap);
-
-            if (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap)
-            {
-                mat.SetInt("_ForcePerPixel", 1);
-            }
-
             var texScaleOffset = mat.GetVector("_TextureScaleOffset");
             bool usesScale = (texScaleOffset.x != 1f) || (texScaleOffset.y != 1f);
             bool usesOffset = (texScaleOffset.z != 0f) || (texScaleOffset.w != 0f);
 
-            mat.SetKeyword(@"_MainTex_SCALE_ON", usesScale);
+            mat.SetKeyword("_MainTex_SCALE_ON", usesScale);
             mat.SetKeyword("_MainTex_OFFSET_ON", usesOffset);
         }
 
@@ -384,41 +239,9 @@ namespace HoloToolkit.Unity
         {
             this.blendMode = ShaderGUI.FindProperty("_Mode", props);
 
-            this.vertexColorEnabled = ShaderGUI.FindProperty("_UseVertexColor", props);
-            this.mainColorEnabled = ShaderGUI.FindProperty("_UseMainColor", props);
             this.mainColor = ShaderGUI.FindProperty("_Color", props);
             this.mainTexture = ShaderGUI.FindProperty("_MainTex", props);
             this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
-
-            this.occlusionMap = ShaderGUI.FindProperty("_OcclusionMap", props);
-
-            this.ambientLightingEnabled = ShaderGUI.FindProperty("_UseAmbient", props);
-            this.diffuseLightingEnabled = ShaderGUI.FindProperty("_UseDiffuse", props);
-            this.useAdditionalLightingData = ShaderGUI.FindProperty("_Shade4", props);
-            this.perPixelLighting = ShaderGUI.FindProperty("_ForcePerPixel", props);
-
-            this.specularLightingEnabled = ShaderGUI.FindProperty("_SpecularHighlights", props);
-            this.specularColor = ShaderGUI.FindProperty("_SpecColor", props);
-            this.specular = ShaderGUI.FindProperty("_Specular", props);
-            this.specularMap = ShaderGUI.FindProperty("_SpecularMap", props);
-
-            this.gloss = ShaderGUI.FindProperty("_Gloss", props);
-            this.glossMap = ShaderGUI.FindProperty("_GlossMap", props);
-
-            this.normalMap = ShaderGUI.FindProperty("_BumpMap", props);
-
-            this.reflectionsEnabled = ShaderGUI.FindProperty("_UseReflections", props);
-            this.cubeMap = ShaderGUI.FindProperty("_CubeMap", props);
-            this.reflectionScale = ShaderGUI.FindProperty("_ReflectionScale", props);
-            this.calibrationSpaceReflections = ShaderGUI.FindProperty("_CalibrationSpaceReflections", props);
-
-            this.rimLightingEnabled = ShaderGUI.FindProperty("_UseRimLighting", props);
-            this.rimPower = ShaderGUI.FindProperty("_RimPower", props);
-            this.rimColor = ShaderGUI.FindProperty("_RimColor", props);
-
-            this.emissionColorEnabled = ShaderGUI.FindProperty("_UseEmissionColor", props);
-            this.emissionColor = ShaderGUI.FindProperty("_EmissionColor", props);
-            this.emissionMap = ShaderGUI.FindProperty("_EmissionMap", props);
 
             this.textureScaleAndOffset = ShaderGUI.FindProperty("_TextureScaleOffset", props);
 
@@ -441,34 +264,8 @@ namespace HoloToolkit.Unity
 
             public static string renderingMode = "Rendering Mode";
 
-            public static GUIContent vertexColorEnabled = new GUIContent("Vertex Color", "Utilize vertex color from the model?");
             public static GUIContent main = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");
             public static GUIContent alphaCutoffText = new GUIContent("Alpha Cutoff", "Threshold for alpha cutoff");
-
-            public static GUIContent occlusionMap = new GUIContent("Occlusion Map", "Additional texture to be overlayed on the main texture");
-
-            public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
-            public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");
-            public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights (expensive)");
-            public static GUIContent perPixelLighting = new GUIContent("Per-Pixel lighting", "Light objects per-pixel instead of per-vertex - using any lighting affecting map will force this on");
-
-            public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
-            public static GUIContent specularColor = new GUIContent(" Color", "Tint to apply to specular highlights");
-            public static GUIContent specular = new GUIContent("Power", "Specular Power - using a map will turn on per-pixel lighting");
-            public static GUIContent gloss = new GUIContent("Gloss", "Specular Scale - using a map will turn on per-pixel lighting");
-
-            public static GUIContent normalMap = new GUIContent("Normal Map", "Normal Map - will turn on per-pixel lighting");
-
-            public static GUIContent reflectionsEnabled = new GUIContent("Reflections", "Cube map based reflections");
-            public static GUIContent cubeMap = new GUIContent("Cube Map", "Cube map lookup for reflections");
-            public static GUIContent reflectionScale = new GUIContent("Scale", "Reflection strength");
-            public static GUIContent calibrationSpaceReflections = new GUIContent("In calibration space", "Keeps reflections consistent across different calibrations");
-
-            public static GUIContent rimLightingEnabled = new GUIContent("Rim Lighting", "Side lighting");
-            public static GUIContent rimPower = new GUIContent("Power", "Power of rim lighting");
-            public static GUIContent rimColor = new GUIContent("Color", "Color of rim lighting");
-
-            public static GUIContent emission = new GUIContent("Emission", "Emission (RGB)");
 
             public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");
 

@@ -85,6 +85,24 @@ namespace HoloToolkit.Unity
             mat.SetKeyword(offsetKeyword, usesOffset);
         }
 
+        public static Rect TextureWithAutoScaleOffsetSingleLine
+        (
+            MaterialEditor matEditor,
+            GUIContent label,
+            MaterialProperty textureProp,
+            MaterialProperty scaleOffsetProp
+        )
+        {
+            var lineRect = CustomMaterialEditor.GetControlRectForSingleLine();
+
+            //TexturePropertyMiniThumbnail handles begin and end animation checks
+            matEditor.TexturePropertyMiniThumbnail(lineRect, textureProp, label.text, label.tooltip);
+
+            CustomMaterialEditor.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+
+            return lineRect;
+        }
+
         public static Rect TextureWithToggleableColorAutoScaleOffsetSingleLine
         (
             MaterialEditor matEditor,

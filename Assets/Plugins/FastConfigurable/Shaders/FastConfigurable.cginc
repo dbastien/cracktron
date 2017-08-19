@@ -350,8 +350,11 @@ fixed4 frag(v2f IN) : SV_Target
     color.rgb *= lightColorShadowAttenuated;
 
     #if defined(_USEREFLECTIONS_ON)
-    //_CubeMap unity_SpecCube0
-        color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, IN.worldReflection) * _ReflectionScale;
+        #if defined(_USECUSTOMCUBEMAP_ON)
+            color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, IN.worldReflection) * _ReflectionScale;
+        #else
+            color.rgb += UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, IN.worldReflection) * _ReflectionScale;
+        #endif
     #endif
 
     #if defined(_USEEMISSIONMAP_ON)
