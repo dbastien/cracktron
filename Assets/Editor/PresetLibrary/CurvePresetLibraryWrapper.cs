@@ -10,6 +10,7 @@ public static class CurvePresetLibraryWrapper
     private static readonly MethodInfo CountMethod = CurvePresetLibraryWrapper.type.GetMethod("Count");
     private static readonly MethodInfo DrawMethod = CurvePresetLibraryWrapper.type.GetMethod("Draw", new Type[] { typeof(Rect), typeof(int) });
     private static readonly MethodInfo GetPresetMethod = CurvePresetLibraryWrapper.type.GetMethod("GetPreset");
+    private static readonly MethodInfo GetNameMethod = CurvePresetLibraryWrapper.type.GetMethod("GetName");
     private static readonly MethodInfo RemoveMethod = CurvePresetLibraryWrapper.type.GetMethod("Remove");
     private static readonly MethodInfo ReplaceMethod = CurvePresetLibraryWrapper.type.GetMethod("Replace");
 
@@ -36,6 +37,11 @@ public static class CurvePresetLibraryWrapper
     public static AnimationCurve GetPreset(ScriptableObject library, int index)
     {
         return (AnimationCurve)CurvePresetLibraryWrapper.GetPresetMethod.Invoke(library, new object[] { index });
+    }
+
+    public static string GetName(ScriptableObject library, int index)
+    {
+        return (string)CurvePresetLibraryWrapper.GetNameMethod.Invoke(library, new object[] { index });
     }
 
     public static void Remove(ScriptableObject library, int index)

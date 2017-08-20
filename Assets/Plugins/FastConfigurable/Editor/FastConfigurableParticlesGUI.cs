@@ -123,16 +123,11 @@ namespace HoloToolkit.Unity
 
             var blendMode = BlendMode.Opaque;
 
-            bool standard = oldShader.name.Contains("Standard");
             bool legacy = oldShader.name.Contains("Legacy Shaders/");
             bool mobile = oldShader.name.Contains("Mobile/");
 
             bool transparent = oldShader.name.Contains("Transparent/");
             bool cutout = oldShader.name.Contains("Transparent/Cutout/");
-            bool unlit = oldShader.name.Contains("Unlit");
-            bool directionalLightOnly = oldShader.name.Contains("DirectionalLight");
-            bool vertexLit = oldShader.name.Contains("VertexLit");
-            bool spec = !oldShader.name.Contains("Diffuse");
 
             //FastConfigurable uses shared scale and offset
             //pull them from the main texture on the source material if available

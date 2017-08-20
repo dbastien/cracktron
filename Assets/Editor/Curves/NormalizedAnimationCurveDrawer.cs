@@ -53,7 +53,9 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
                                                     GUILayout.Height(curveItemSize.x),
                                                     GUILayout.Width(curveItemSize.y));
 
-                if (GUI.Button(rect, string.Empty))
+                var curveName = CurvePresetLibraryWrapper.GetName(NormalizedAnimationCurveDrawer.presets, p);
+
+                if (GUI.Button(rect, new GUIContent("", curveName)))
                 {
                     var animationCurve = CurvePresetLibraryWrapper.GetPreset(NormalizedAnimationCurveDrawer.presets, p);
                     animationCurve.preWrapMode = (WrapMode)wrapMode;
@@ -79,6 +81,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 
+    //todo: ideally also triggers when asset database refreshes
     [DidReloadScripts]
     private static void LoadPresets()
     {
