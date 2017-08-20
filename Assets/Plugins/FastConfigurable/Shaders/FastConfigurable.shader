@@ -25,7 +25,7 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _ForcePerPixel("Light per-pixel (always on if a map is set)", Float) = 0
         
         _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
-        [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(1.0, 100.0)) = 10.0
+        [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(1.0, 1000.0)) = 50.0
         [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
         [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
 

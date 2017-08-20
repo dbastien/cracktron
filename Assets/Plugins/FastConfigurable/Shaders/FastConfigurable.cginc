@@ -101,14 +101,13 @@ inline float3 FastLightingLambertian(float3 normal, float3 lightDir, float3 ligh
 }
 
 inline float3 FastLightingBlinnPhong(float3 normal, float3 viewDir,
-                                     float3 lightDir, float3 lightCol,
-                                     
+                                     float3 lightDir, float3 lightCol,                                     
                                      float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = saturate(dot(normal, h));
 
-    return (lightCol * specularColor) * (pow(nh, specularPower) * specularScale);
+    return (lightCol * specularColor) * pow(nh, specularPower) * specularScale;
 }
 
 #if defined(_USERIMLIGHTING_ON)
@@ -217,7 +216,6 @@ v2f vert(a2v v)
     #if defined(LIGHTMAP_ON)
         o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
     #else
-        //TODO: use perpixel define instead
         #if defined(_USEAMBIENT_ON) && !defined(_USEBUMPMAP_ON)
             //grab ambient color from Unity's spherical harmonics
             #if UNITY_SHOULD_SAMPLE_SH
@@ -225,7 +223,7 @@ v2f vert(a2v v)
             #endif
         #endif
 
-        #if !(USE_PER_PIXEL)
+        #if !defined(USE_PER_PIXEL)
             #if defined(_USEDIFFUSE_ON)
                 o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
@@ -319,8 +317,9 @@ fixed4 frag(v2f IN) : SV_Target
                     lightColorShadowAttenuated += FastShadeSH9(float4(worldNormal, 1.0));
                 #endif
             #else
-                float3 worldNormal = IN.worldNormal;
-            #endif					
+                //linearly interpolating normals will not produce a normal
+                float3 worldNormal = normalize(IN.worldNormal);
+            #endif
         
             #if defined(_USEDIFFUSE_ON)
                 lightColorShadowAttenuated += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);

@@ -55,7 +55,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
 
                 var curveName = CurvePresetLibraryWrapper.GetName(NormalizedAnimationCurveDrawer.presets, p);
 
-                if (GUI.Button(rect, new GUIContent("", curveName)))
+                if (GUI.Button(rect, new GUIContent(string.Empty, curveName)))
                 {
                     var animationCurve = CurvePresetLibraryWrapper.GetPreset(NormalizedAnimationCurveDrawer.presets, p);
                     animationCurve.preWrapMode = (WrapMode)wrapMode;
