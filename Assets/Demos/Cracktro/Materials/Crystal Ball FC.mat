@@ -79,7 +79,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _ForcePerPixel: 1
-    - _Gloss: 10
+    - _Gloss: 5.5
     - _GlossMapScale: 1
     - _Glossiness: 0.9
     - _GlossyReflections: 1
@@ -91,7 +91,7 @@ Material:
     - _RimPower: 0.7
     - _Shade4: 0
     - _SmoothnessTextureChannel: 0
-    - _Specular: 200
+    - _Specular: 1000
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _UVSec: 0

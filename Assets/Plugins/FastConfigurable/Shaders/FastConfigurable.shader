@@ -60,6 +60,10 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _AlphaTest("Alpha test enabled?", Float) = 0
         _Cutoff("Alpha Cutoff", Range(-0.1, 1.0)) = -0.1
 
+        //shadows
+        [Toggle] _UseNormalOffsetShadows("Normal offset shadows enabled?", Float) = 0
+        [Toggle] _UseTransparentShadows("Transparent shadows enabled?", Float) = 0
+
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2 //"Back"
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 4 //"LessEqual"
         [Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1 //"On"
@@ -193,6 +197,8 @@ Shader "HoloToolkit/Fast Configurable"
                 #pragma target 5.0
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
+
+                //shader features are only compiled if a material uses them
 
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON

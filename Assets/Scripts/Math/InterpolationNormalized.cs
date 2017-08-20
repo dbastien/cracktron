@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// All functions return unclamped progress ~[0,1] based on unclamped time [0,1]
@@ -37,6 +38,12 @@ public static class InterpolationNormalized
         return InterpolationNormalized.SmootherStep(InterpolationNormalized.SmootherStep(t));
     }
 
+    // https://www.wolframalpha.com/input/?i=plot+v%3Dsin(t*PI),+0%3C%3Dt%3C%3D1
+    public static float SineHalf(float t)
+    {
+        return Mathf.Sin(t * MathfConstants.TauDiv2);
+    }
+
     // https://www.wolframalpha.com/input/?i=plot+v%3Dt*t,+0%3C%3Dt%3C%3D1
     public static float QuadraticIn(float t)
     {
@@ -47,6 +54,11 @@ public static class InterpolationNormalized
     public static float QuadraticOut(float t)
     {
         return -(t * (t - 2f));
+    }
+
+    public static float QuadraticInOut(float t)
+    {
+        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.QuadraticIn, InterpolationNormalized.QuadraticOut);
     }
 
     // https://www.wolframalpha.com/input/?i=plot+v%3Dt*t*t,+0%3C%3Dt%3C%3D1
@@ -62,15 +74,14 @@ public static class InterpolationNormalized
         return t * t * t + 1f;
     }
 
-    // https://www.wolframalpha.com/input/?i=plot+v%3Dsin(t*PI),+0%3C%3Dt%3C%3D1
-    public static float SineHalf(float t)
+    public static float CubicInOut(float t)
     {
-        return Mathf.Sin(t * MathfConstants.TauDiv2);
+        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.CubicIn, InterpolationNormalized.CubicOut);
     }
 
     // https://www.wolframalpha.com/input/?i=plot+v%3D1+-+sqrt(1+-+t+*+t),+0%3C%3Dt%3C%3D1
     public static float CircularIn(float t)
-    {
+    { 
         return 1f - Mathf.Sqrt(1f - t * t);
     }
 
@@ -78,6 +89,10 @@ public static class InterpolationNormalized
     public static float CircularOut(float t)
     {
         return Mathf.Sqrt((2f - t) * t);
+    }
+    public static float CircularInOut(float t)
+    {
+        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.CircularIn, InterpolationNormalized.CircularOut);
     }
 
     public static float BounceEaseIn(float t)
@@ -103,5 +118,20 @@ public static class InterpolationNormalized
         }
 
         return ((54f / 5f) * t * t) - ((513f / 25f) * t) + (268f / 25f);
+    }
+
+    public static float BounceEaseInOut(float t)
+    {
+        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.BounceEaseIn, InterpolationNormalized.BounceEaseOut);
+    }
+
+    public static float DoEaseInOut(float t, Func<float, float> f1, Func<float, float> f2)
+    {
+        if (t < 0.5f)
+        {
+            return 0.5f * f1(t*2f);
+        }
+
+        return 0.5f * f2(t * 2f - 1f) + 0.5f;
     }
 }

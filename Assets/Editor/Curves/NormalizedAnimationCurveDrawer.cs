@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
     {
         EditorGUI.PrefixLabel(position, label);
         EditorGUI.BeginProperty(position, label, property);
-        //property.serializedObject.Update();
 
         var oldCurve = property.animationCurveValue;
 
@@ -38,7 +36,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
 
         var presetCount = CurvePresetLibraryWrapper.Count(NormalizedAnimationCurveDrawer.presets);
 
-        //TODO: find size of layotable width - controls are inset
+        //TODO: find size of layoutable width - controls are inset
         var rowItems = Mathf.FloorToInt(Screen.width / (curveItemSize.x + curveItemPadding.x)) - 1;
 
         int p = 0;

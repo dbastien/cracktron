@@ -6,6 +6,7 @@
 struct shadowcast_a2v
 {
     float4 vertex : POSITION;
+    float3 normal : NORMAL;
 //    float4 color : COLOR;
 //    float2 mainUV : TEXCOORD0;
     UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -24,7 +25,10 @@ shadowcast_v2f shadowcast_vert(shadowcast_a2v v)
     shadowcast_v2f o;
     UNITY_SETUP_INSTANCE_ID(v);
     UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
-    TRANSFER_SHADOW_CASTER(o)
+
+    //clip space, shadow bias, normal offset, etc.
+    TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+
     return o;
 }
 
