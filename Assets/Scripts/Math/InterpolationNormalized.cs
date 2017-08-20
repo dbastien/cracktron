@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// All functions return unclamped progress ~[0,1] based on unclamped time [0,1]
+/// All functions return clamped progress [0,1] based on clamped time [0,1]
 /// </summary>
 public static class InterpolationNormalized
 {
@@ -38,11 +38,6 @@ public static class InterpolationNormalized
         return InterpolationNormalized.SmootherStep(InterpolationNormalized.SmootherStep(t));
     }
 
-    // https://www.wolframalpha.com/input/?i=plot+v%3Dsin(t*PI),+0%3C%3Dt%3C%3D1
-    public static float SineHalf(float t)
-    {
-        return Mathf.Sin(t * MathfConstants.TauDiv2);
-    }
 
     // https://www.wolframalpha.com/input/?i=plot+v%3Dt*t,+0%3C%3Dt%3C%3D1
     public static float QuadraticIn(float t)
@@ -123,6 +118,29 @@ public static class InterpolationNormalized
     public static float BounceEaseInOut(float t)
     {
         return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.BounceEaseIn, InterpolationNormalized.BounceEaseOut);
+    }
+
+    // https://www.wolframalpha.com/input/?i=plot+v%3Dsin(t*PI),+0%3C%3Dt%3C%3D1
+    public static float SinHalf(float t)
+    {
+        return Mathf.Sin(t * MathfConstants.TauDiv2);
+    }
+     
+    public static float Square(float t)
+    {
+        return (t < 0.5f) ? 0f : 1f;
+    }
+
+    public static float Triangle(float t)
+    {
+        return Mathf.Abs((((t + .5f) * 2) % 2) - 1);
+    }
+
+    // https://www.wolframalpha.com/input/?i=plot+v%3D(t*2+mod++1),+0%3C%3Dt%3C%3D1
+    public static float Sawtooth(float t)
+    {
+        //tricky - need to generate last point 
+        return (t * 2f) % 1; 
     }
 
     public static float DoEaseInOut(float t, Func<float, float> f1, Func<float, float> f2)

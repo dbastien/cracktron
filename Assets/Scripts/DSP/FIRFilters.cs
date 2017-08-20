@@ -1,4 +1,4 @@
-﻿public static class FilterMath
+﻿public static class FIRFilters
 {
     //https://www.wikiwand.com/en/Low-pass_filter
     //y[i] := y[i-1] + α * (x[i] - y[i-1])
@@ -13,4 +13,7 @@
     {
         return smoothing * (previousOutput + sample - previousInput);
     }
+
+    //band pass
+    //band stop
 }

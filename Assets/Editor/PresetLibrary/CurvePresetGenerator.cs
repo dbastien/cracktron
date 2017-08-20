@@ -12,29 +12,37 @@ public static class CurvePresetGenerator
     public static void GenerateCurvePresets()
     {
         var libraryNormalized = CurvePresetLibraryWrapper.CreateLibrary();
+        //in & out non-piecewise
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Linear), "linear");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStep), "smoothstep");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStepC1), "smoothstep c1");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStep), "smootherstep");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStepC1), "smootherstep c1");
 
+        //in & out piecewise
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticInOut), "quadratic in out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicInOut), "cubic in out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularInOut), "circular in out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseInOut), "bounce in out");
 
+        //in
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularIn), "circular in");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseIn), "bounce in");
         
+        //out
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularOut), "circular out");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseOut), "bounce out");
 
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SineHalf), "sine half");
-
+        //centered (t(.5)=1) waves
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SinHalf), "sine half");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Square), "square");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Triangle), "triangle");
+        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Sawtooth), "sawtooth");
+         
         AssetDatabase.CreateAsset(libraryNormalized, "Assets" + Constants.NormalizedCurvesPath);
 
         var libraryUnnormalized = Object.Instantiate(libraryNormalized);
@@ -46,6 +54,11 @@ public static class CurvePresetGenerator
 
     public static AnimationCurve CreateCurve(NormalizedCurveFunction f)
     {
+        return CurvePresetGenerator.CreateCurve(f, CurvePresetGenerator.StepCount);
+    }
+
+    public static AnimationCurve CreateCurve(NormalizedCurveFunction f, int stepCount)
+    {
         var curve = new AnimationCurve()
         {
             preWrapMode = WrapMode.PingPong,
@@ -53,7 +66,7 @@ public static class CurvePresetGenerator
         };
 
         float t = 0.0f;
-        for (var i = 0; i < CurvePresetGenerator.StepCount; ++i)
+        for (var i = 0; i < stepCount; ++i)
         {
             float clamped = Mathf.Clamp01(t);
             float val = Mathf.Clamp01(f(clamped));
