@@ -12,6 +12,7 @@ public static class CurvePresetGenerator
     public static void GenerateCurvePresets()
     {
         var libraryNormalized = CurvePresetLibraryWrapper.CreateLibrary();
+
         //in & out non-piecewise
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Linear), "linear");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStep), "smoothstep");
@@ -43,10 +44,10 @@ public static class CurvePresetGenerator
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Triangle), "triangle");
         CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Sawtooth), "sawtooth");
          
-        AssetDatabase.CreateAsset(libraryNormalized, "Assets" + Constants.NormalizedCurvesPath);
+        AssetDatabase.CreateAsset(libraryNormalized, "Assets" + EngineConstants.NormalizedCurvesPath);
 
         var libraryUnnormalized = Object.Instantiate(libraryNormalized);
-        AssetDatabase.CreateAsset(libraryUnnormalized, "Assets" + Constants.CurvesPath);
+        AssetDatabase.CreateAsset(libraryUnnormalized, "Assets" + EngineConstants.CurvesPath);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
@@ -65,12 +66,19 @@ public static class CurvePresetGenerator
             postWrapMode = WrapMode.PingPong
         };
 
-        float t = 0.0f;
+        float t = 0f;
         for (var i = 0; i < stepCount; ++i)
         {
-            float clamped = Mathf.Clamp01(t);
-            float val = Mathf.Clamp01(f(clamped));
-            curve.AddKey(new Keyframe(clamped, val));
+            //clamp input to [0,1]
+            var clamped = Mathf.Clamp01(t);
+
+            //execute curve function and clamp output to [0,1]
+            var val = Mathf.Clamp01(f(clamped));
+
+            var keyframe = new Keyframe(clamped, val);
+            //AnimationUtility.SetKeyLeftTangentMode
+            curve.AddKey(keyframe);
+
             t += CurvePresetGenerator.StepSize;
         }
 

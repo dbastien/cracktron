@@ -6,9 +6,9 @@ public static class GUIStyleExtensions
     {
         var s = Vector2.zero;
 
-        for (int i = 0; i < contentItems.Length; ++i)
+        foreach (var contentItem in contentItems)
         {
-            s += style.CalcSize(contentItems[i]);
+            s += style.CalcSize(contentItem);
         }
 
         return s;
