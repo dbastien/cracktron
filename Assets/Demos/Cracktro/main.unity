@@ -4854,8 +4854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00976f0e7e88c1b4795c8946bef3a0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Start: {r: 0.21568626, g: 0.3833671, b: 1, a: 1}
-  End: {r: 0.503, g: 1, b: 0.916504, a: 1}
+  Start: {r: 1, g: 1, b: 1, a: 1}
+  End: {r: 1, g: 0.078431375, b: 1, a: 1}
   Curve:
     serializedVersion: 2
     m_Curve:

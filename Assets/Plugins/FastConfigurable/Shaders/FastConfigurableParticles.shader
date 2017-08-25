@@ -24,6 +24,7 @@ Shader "HoloToolkit/Fast Configurable Particles"
         _Mode("Rendering Mode", Float) = 0.0
 
         _Color("Main Color", Color) = (1,1,1,1)
+        [NoScaleOffset]_MainTex("Main Texture", 2D) = "red" {}
 
         _TextureScaleOffset("Texture Scale (XY) and Offset (ZW)", Vector) = (1, 1, 0, 0)
 
@@ -58,6 +59,8 @@ Shader "HoloToolkit/Fast Configurable Particles"
             Tags{ "LightMode" = "ForwardBase" }
 
             CGPROGRAM
+                #include "Macro.cginc"
+
                 #pragma vertex vert
                 #pragma fragment frag
 
@@ -78,20 +81,39 @@ Shader "HoloToolkit/Fast Configurable Particles"
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON
                 
+                float4 _Color;
+                UNITY_DECLARE_TEX2D(_MainTex);
+                float4 _TextureScaleOffset;
+                float _Cutoff;   
+
                 struct a2v
                 {
                     float4 vertex : POSITION;
+                    float2 mainUV : TEXCOORD0;
                 };
 
                 struct v2f
                 {
                     float4 pos : SV_POSITION;
+
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        float3 tex : TEXCOORD0;
+                    #else
+                        float2 tex : TEXCOORD0;
+                    #endif
                 };
 
                 v2f vert(a2v v)
                 {
                     v2f o;
                     UNITY_INITIALIZE_OUTPUT(v2f, o);
+
+                    o.tex.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
+
+                    //fade away objects closer to the camera
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        o.tex.z = ComputeNearPlaneFadeLinear(v.vertex);
+                    #endif
 
                     o.pos = UnityObjectToClipPos(v.vertex);
 
@@ -100,11 +122,15 @@ Shader "HoloToolkit/Fast Configurable Particles"
                 
                 fixed4 frag(v2f IN) : SV_Target
                 {
-                    float4 color = float4(0,0,0,0);
+                    float4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.tex.xy);
 
                     #if defined(_ALPHATEST_ON)
                         //note execution continues but all writes are disabled
                         clip(color.a - _Cutoff);
+                    #endif
+
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        color.rgb *= IN.tex.z;
                     #endif
 
                     return color;

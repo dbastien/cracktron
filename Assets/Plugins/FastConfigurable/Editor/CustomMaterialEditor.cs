@@ -65,6 +65,50 @@ namespace HoloToolkit.Unity
             return lineRect;
         }
 
+        public static void HandleToggleableColor
+        (
+            MaterialEditor matEditor,
+            GUIContent label,
+            Rect controlRect,
+            Rect lineRect, 
+            MaterialProperty colorToggleProp,
+            MaterialProperty colorProp
+        )
+        {
+            GUIContent toggleTooltip = new GUIContent()
+            {
+                text = string.Empty,
+                tooltip = "Enable/Disable color"
+            };
+
+            //label indent of -1 is the secret sauce to make it aligned with right aligned toggles that come after labels
+            //ShaderProperty handles begin and end animation checks
+            matEditor.ShaderProperty(controlRect, colorToggleProp, toggleTooltip, -1);
+
+            if (colorToggleProp.floatValue != 0.0f)
+            {
+                controlRect.x += EditorStyles.toggle.fixedWidth;
+                controlRect.x += EditorStyles.toggle.padding.right;
+
+                //size it to take up the remainder of the space
+                controlRect.width = lineRect.width - controlRect.x;
+
+                GUIContent tooltipOnly = new GUIContent()
+                {
+                    text = string.Empty,
+                    tooltip = label.tooltip
+                };
+                EditorGUI.showMixedValue = colorProp.hasMixedValue;
+                EditorGUI.BeginChangeCheck();
+                var color = EditorGUI.ColorField(controlRect, tooltipOnly, colorProp.colorValue);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    colorProp.colorValue = color;
+                }
+                EditorGUI.showMixedValue = false;
+            }
+        }
+
         public static void SetScaleOffsetKeywords
         (
             MaterialEditor matEditor,

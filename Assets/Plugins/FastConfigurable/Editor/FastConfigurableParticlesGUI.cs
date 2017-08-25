@@ -45,7 +45,7 @@ namespace HoloToolkit.Unity
             if (this.firstTimeApply)
             {
                 var matTarget = matEditor.target as Material;
-                this.SetMaterialBlendMode(matTarget, (BlendMode)this.blendMode.floatValue);
+                this.SetMaterialBlendMode(matTarget, (ParticleBlendMode)this.blendMode.floatValue);
                 this.SetMaterialAutoPropertiesAndKeywords(matTarget);
                 this.firstTimeApply = false;
             }
@@ -57,7 +57,7 @@ namespace HoloToolkit.Unity
                 this.ShowMainGUI(matEditor);
                 this.ShowOutputConfigurationGUI(matEditor);
 
-                if ((BlendMode)this.blendMode.floatValue == BlendMode.Advanced)
+                if ((ParticleBlendMode)this.blendMode.floatValue == ParticleBlendMode.Advanced)
                 {
                     matEditor.RenderQueueField();
                 }
@@ -67,7 +67,7 @@ namespace HoloToolkit.Unity
                 foreach (var obj in this.blendMode.targets)
                 {
                     var mat = obj as Material;
-                    this.SetMaterialBlendMode(mat, (BlendMode)this.blendMode.floatValue);
+                    this.SetMaterialBlendMode(mat, (ParticleBlendMode)this.blendMode.floatValue);
                     this.SetMaterialAutoPropertiesAndKeywords(mat);
                 }
             }
@@ -77,14 +77,14 @@ namespace HoloToolkit.Unity
         {
             this.ShowBlendModeGUI(matEditor);
 
-            var mode = (BlendMode)this.blendMode.floatValue;
+            var mode = (ParticleBlendMode)this.blendMode.floatValue;
             var mat = matEditor.target as Material;
 
             ShaderGUIUtils.BeginHeader("Base Texture and Color");
             {
                 CustomMaterialEditor.TextureWithAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.textureScaleAndOffset);
 
-                if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
+                if (mode == ParticleBlendMode.Cutout || mode == ParticleBlendMode.Advanced)
                 {
                     matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoffText.text);
                 }
@@ -99,7 +99,7 @@ namespace HoloToolkit.Unity
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
 
-            if (mode == BlendMode.Advanced)
+            if (mode == ParticleBlendMode.Advanced)
             {
                 ShaderGUIUtils.BeginHeader("Alpha Blending");
                 {
@@ -121,7 +121,7 @@ namespace HoloToolkit.Unity
                 return;
             }
 
-            var blendMode = BlendMode.Opaque;
+            var blendMode = ParticleBlendMode.Opaque;
 
             bool legacy = oldShader.name.Contains("Legacy Shaders/");
             bool mobile = oldShader.name.Contains("Mobile/");
@@ -141,11 +141,11 @@ namespace HoloToolkit.Unity
             {
                 if (cutout)
                 {
-                    blendMode = BlendMode.Cutout;
+                    blendMode = ParticleBlendMode.Cutout;
                 }
                 else if (transparent)
                 {
-                    blendMode = BlendMode.Transparent;
+                    blendMode = ParticleBlendMode.Transparent;
                 }
             }
 
@@ -156,10 +156,10 @@ namespace HoloToolkit.Unity
         protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
         {
             EditorGUI.showMixedValue = this.blendMode.hasMixedValue;
-            var mode = (BlendMode)this.blendMode.floatValue;
+            var mode = (ParticleBlendMode)this.blendMode.floatValue;
 
             EditorGUI.BeginChangeCheck();
-            mode = (BlendMode)EditorGUILayout.Popup(Styles.renderingMode, (int)mode, Styles.blendNames);
+            mode = (ParticleBlendMode)EditorGUILayout.Popup(Styles.renderingMode, (int)mode, Styles.blendNames);
             if (EditorGUI.EndChangeCheck())
             {
                 matEditor.RegisterPropertyChangeUndo("Rendering Mode");
@@ -171,8 +171,8 @@ namespace HoloToolkit.Unity
 
         protected virtual void ShowOutputConfigurationGUI(MaterialEditor matEditor)
         {
-            var mode = (BlendMode)this.blendMode.floatValue;
-            if (mode == BlendMode.Advanced)
+            var mode = (ParticleBlendMode)this.blendMode.floatValue;
+            if (mode == ParticleBlendMode.Advanced)
             {
                 ShaderGUIUtils.BeginHeader("Output Configuration");
                 {
@@ -185,11 +185,11 @@ namespace HoloToolkit.Unity
             }
         }
 
-        protected virtual void SetMaterialBlendMode(Material mat, BlendMode blendMode)
+        protected virtual void SetMaterialBlendMode(Material mat, ParticleBlendMode blendMode)
         {
             switch (blendMode)
             {
-                case BlendMode.Opaque:
+                case ParticleBlendMode.Opaque:
                     mat.SetOverrideTag("RenderType", string.Empty);
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
@@ -197,7 +197,7 @@ namespace HoloToolkit.Unity
                     mat.SetKeyword("_ALPHATEST_ON", false);
                     mat.renderQueue = -1;
                     break;
-                case BlendMode.Cutout:
+                case ParticleBlendMode.Cutout:
                     mat.SetOverrideTag("RenderType", "TransparentCutout");
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
@@ -205,7 +205,7 @@ namespace HoloToolkit.Unity
                     mat.SetKeyword("_ALPHATEST_ON", true);
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
                     break;
-                case BlendMode.Transparent:
+                case ParticleBlendMode.Transparent:
                     mat.SetOverrideTag("RenderType", "Transparent");
                     //non pre-multiplied alpha
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -214,7 +214,7 @@ namespace HoloToolkit.Unity
                     mat.SetKeyword("_ALPHATEST_ON", false);
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
                     break;
-                case BlendMode.Advanced:
+                case ParticleBlendMode.Advanced:
                     //user configured
                     break;
             }
@@ -255,7 +255,7 @@ namespace HoloToolkit.Unity
 
         protected static class Styles
         {
-            public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
+            public static readonly string[] blendNames = Enum.GetNames(typeof(ParticleBlendMode));
 
             public static string renderingMode = "Rendering Mode";
 
@@ -274,7 +274,7 @@ namespace HoloToolkit.Unity
             public static GUIContent colorWriteMask = new GUIContent("Color Write Mask", "Restricts output to specified color channels only");
         }
 
-        public enum BlendMode
+        public enum ParticleBlendMode
         {
             Opaque,
             Cutout,

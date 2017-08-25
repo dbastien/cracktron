@@ -15,8 +15,10 @@ inline float ComputeNearPlaneFadeLinear(float4 vertex)
 }
 
 // normal should be normalized, w=1.0
+// linear + constant terms
 inline float3 FastSHEvalLinearL0L1(float4 normal)
 {
+    // TODO: pass up sh data in srgb as well and switch on UNITY_COLORSPACE_GAMMA for perf
     return float3(dot(unity_SHAr, normal), dot(unity_SHAg, normal), dot(unity_SHAb, normal));
 }
 
@@ -25,7 +27,8 @@ float3 FastSHEvalLinearL2(float3 normal)
     // 4 of the quadratic (L2) polynomials
     float4 vB = normal.xyzz * normal.yzzx;
 
-    //TODO: normal guaranteed to be normalized so some extraneous work here, would a dp3 and add be better?
+    // TODO: normal guaranteed to be normalized so some extraneous work here, maybe switch to dp3 and add or something more clever?
+    // TODO: pass up sh data in srgb as well and switch on UNITY_COLORSPACE_GAMMA for perf
     float3 x1 = float3(dot(unity_SHBr, vB), dot(unity_SHBg, vB), dot(unity_SHBb, vB));
 
     // Final (5th) quadratic (L2) polynomial
@@ -34,19 +37,22 @@ float3 FastSHEvalLinearL2(float3 normal)
     return mad(unity_SHC.rgb, vC, x1);
 }
 
+// http://www.ppsloan.org/publications/StupidSH36.pdf
 inline float3 FastShadeSH9(float4 normal)
 {
     float3 res = saturate(FastSHEvalLinearL0L1(normal) + FastSHEvalLinearL2(normal));
 
 #ifdef UNITY_COLORSPACE_GAMMA
+    // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
+    // linear to srgb
     res = saturate(mad(1.055, pow(res, 0.416666667), -0.055));
 #endif
 
     return res;
 }
 
-//note that spot lights will behave as point lights with this approach
-//TODO some vectors could be 3 component perhaps
+// note that spot lights will behave as point lights, LIGHT_ATTENUATION() is key
+// TODO: some vectors could be 3 component perhaps
 float3 FastShade4PointLights(float3 pos, float3 normal)
 {
     // to light vectors
@@ -75,8 +81,8 @@ inline float3 FastLightingLambertian(float3 normal, float3 lightDir, float3 ligh
 }
 
 inline float3 FastLightingBlinnPhong(float3 normal, float3 viewDir,
-    float3 lightDir, float3 lightCol,
-    float specularPower, float specularScale, float3 specularColor)
+                                     float3 lightDir, float3 lightCol,
+                                     float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = saturate(dot(normal, h));

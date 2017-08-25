@@ -486,8 +486,9 @@ namespace HoloToolkit.Unity
         {
             Opaque,
             Cutout,
-            Transparent,
-            Advanced
+            Fade,
+            Advanced,
+            Transparent
         }
     }
 }

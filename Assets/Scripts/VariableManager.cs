@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameConstants : MonoBehaviour 
+public class VariableManager : MonoBehaviour 
 {
     void Awake()
     {

@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-//TODO: check/add vs add passes
-//TODO: support reflections from unity_SpecCube0 ?
-
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
@@ -96,7 +93,7 @@ struct v2f
 };
 
 #if defined(_USERIMLIGHTING_ON)
-inline float3 RimLight(float3 worldNormal, float3 worldPos)
+inline float RimLight(float3 worldNormal, float3 worldPos)
 {
     //TODO: optimize whole function
     float rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
@@ -178,7 +175,6 @@ v2f vert(a2v v)
         float3 vertexToCamera = _WorldSpaceCameraPos - worldPos;	
 
         #if defined(_CALIBRATIONSPACEREFLECTIONS_ON)
-            //todo: skip normalize?
             float3 normalReflection = normalize(mul((float3x3)CalibrationSpaceWorldToLocal, flipCorrectedNormal));
             vertexToCamera = mul((float3x3)CalibrationSpaceWorldToLocal, vertexToCamera);
         #else
