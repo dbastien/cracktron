@@ -98,16 +98,20 @@ Material:
     - _UVSec: 0
     - _UseAmbient: 1
     - _UseBumpMap: 0
+    - _UseCustomCubeMap: 1
     - _UseDiffuse: 1
     - _UseEmissionColor: 0
     - _UseEmissionMap: 0
     - _UseGlossMap: 0
     - _UseMainColor: 1
     - _UseMainTex: 0
+    - _UseNormalOffsetShadows: 0
     - _UseOcclusionMap: 0
     - _UseReflections: 0
     - _UseRimLighting: 1
+    - _UseSemiTransparentShadows: 0
     - _UseSpecularMap: 0
+    - _UseTransparentShadows: 0
     - _UseVertexColor: 0
     - _ZTest: 4
     - _ZWrite: 1

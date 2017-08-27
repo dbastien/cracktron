@@ -9,7 +9,7 @@ Material:
   m_Name: Crystal Ball FC
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
   m_ShaderKeywords: _ALPHABLEND_ON _FORCEPERPIXEL_ON _SPECULARHIGHLIGHTS_ON _USEMAINCOLOR_ON
-    _USEREFLECTIONS_ON
+    _USENORMALOFFSETSHADOWS_ON _USEREFLECTIONS_ON _USESEMITRANSPARENTSHADOWS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -104,17 +104,18 @@ Material:
     - _UseGlossMap: 0
     - _UseMainColor: 1
     - _UseMainTex: 0
-    - _UseNormalOffsetShadows: 0
+    - _UseNormalOffsetShadows: 1
     - _UseOcclusionMap: 0
     - _UseReflections: 1
     - _UseRimLighting: 0
+    - _UseSemiTransparentShadows: 1
     - _UseSpecularMap: 0
     - _UseTransparentShadows: 0
     - _UseVertexColor: 0
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0.184}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.29411766}
     - _EmissionColor: {r: 0.05, g: 0.05, b: 0.05, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}

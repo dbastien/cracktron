@@ -21,7 +21,6 @@ namespace HoloToolkit.Unity
         protected MaterialProperty mainColorEnabled;
         protected MaterialProperty mainColor;
         protected MaterialProperty mainTexture;
-        protected MaterialProperty alphaCutoff;
         protected MaterialProperty occlusionMap;
 
         protected MaterialProperty ambientLightingEnabled;
@@ -55,6 +54,9 @@ namespace HoloToolkit.Unity
         protected MaterialProperty useTextureOffset;
         protected MaterialProperty textureScaleAndOffset;
 
+        protected MaterialProperty alphaTestEnabled;
+        protected MaterialProperty alphaCutoff;
+
         protected MaterialProperty srcBlend;
         protected MaterialProperty dstBlend;
         protected MaterialProperty blendOp;
@@ -63,6 +65,9 @@ namespace HoloToolkit.Unity
         protected MaterialProperty zTest;
         protected MaterialProperty zWrite;
         protected MaterialProperty colorWriteMask;
+
+        protected MaterialProperty normalOffsetShadowsEnabled;
+        protected MaterialProperty transparentShadowsEnabled;
 
         public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
         {
@@ -183,10 +188,25 @@ namespace HoloToolkit.Unity
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
 
-            if (mode == BlendMode.Advanced)
+            ShaderGUIUtils.BeginHeader("Shadows");
+            {
+                matEditor.ShaderProperty(this.normalOffsetShadowsEnabled, Styles.normalOffsetShadowsEnabled);
+                matEditor.ShaderProperty(this.transparentShadowsEnabled, Styles.transparentShadowsEnabled);
+            }
+            ShaderGUIUtils.EndHeader();
+            ShaderGUIUtils.HeaderSeparator();              
+           
+
+            if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
             {
                 ShaderGUIUtils.BeginHeader("Alpha Blending");
                 {
+                    if (mode == BlendMode.Advanced)
+                    {
+                        matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);                       
+                    }
+                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
+
                     matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
                     matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
                     matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
@@ -293,6 +313,8 @@ namespace HoloToolkit.Unity
                 }
                 ShaderGUIUtils.EndHeader();
             }
+
+            EditorGUILayout.Separator();
         }
 
         protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
@@ -376,7 +398,7 @@ namespace HoloToolkit.Unity
             bool usesScale = (texScaleOffset.x != 1f) || (texScaleOffset.y != 1f);
             bool usesOffset = (texScaleOffset.z != 0f) || (texScaleOffset.w != 0f);
 
-            mat.SetKeyword(@"_MainTex_SCALE_ON", usesScale);
+            mat.SetKeyword("_MainTex_SCALE_ON", usesScale);
             mat.SetKeyword("_MainTex_OFFSET_ON", usesOffset);
         }
 
@@ -388,7 +410,6 @@ namespace HoloToolkit.Unity
             this.mainColorEnabled = ShaderGUI.FindProperty("_UseMainColor", props);
             this.mainColor = ShaderGUI.FindProperty("_Color", props);
             this.mainTexture = ShaderGUI.FindProperty("_MainTex", props);
-            this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
 
             this.occlusionMap = ShaderGUI.FindProperty("_OcclusionMap", props);
 
@@ -421,6 +442,12 @@ namespace HoloToolkit.Unity
             this.emissionMap = ShaderGUI.FindProperty("_EmissionMap", props);
 
             this.textureScaleAndOffset = ShaderGUI.FindProperty("_TextureScaleOffset", props);
+
+            this.normalOffsetShadowsEnabled = ShaderGUI.FindProperty("_UseNormalOffsetShadows", props);
+            this.transparentShadowsEnabled = ShaderGUI.FindProperty("_UseSemiTransparentShadows", props);
+
+            this.alphaTestEnabled = ShaderGUI.FindProperty("_AlphaTest", props);
+            this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
 
             this.srcBlend = ShaderGUI.FindProperty("_SrcBlend", props);
             this.dstBlend = ShaderGUI.FindProperty("_DstBlend", props);
@@ -471,6 +498,15 @@ namespace HoloToolkit.Unity
             public static GUIContent emission = new GUIContent("Emission", "Emission (RGB)");
 
             public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");
+           
+            //shadows
+            //http://c0de517e.blogspot.com/2011/05/shadowmap-bias-notes.html
+            public static GUIContent normalOffsetShadowsEnabled = new GUIContent("Normal Offset Shadows", "Offset along normal before projecting into shadow space");           
+            public static GUIContent transparentShadowsEnabled = new GUIContent("Semi-Transparent Shadows", "Enables dithered shadow transparency based on object alpha");
+
+            //alpha test
+            public static GUIContent alphaTestEnabled = new GUIContent("Alpha Test", "Enables rejection of pixels based on alpha and cutoff");
+            public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Pixels with alpha below this value will be rejected");
 
             public static GUIContent srcBlend = new GUIContent("Source Blend", "Blend factor for transparency, etc.");
             public static GUIContent dstBlend = new GUIContent("Destination Blend", "Blend factor for transparency, etc.");

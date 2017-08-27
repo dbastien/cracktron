@@ -19,11 +19,13 @@ namespace HoloToolkit.Unity
 
         protected MaterialProperty mainColor;
         protected MaterialProperty mainTexture;
-        protected MaterialProperty alphaCutoff;
 
         protected MaterialProperty useTextureScale;
         protected MaterialProperty useTextureOffset;
         protected MaterialProperty textureScaleAndOffset;
+
+        protected MaterialProperty alphaTestEnabled;
+        protected MaterialProperty alphaCutoff;
 
         protected MaterialProperty srcBlend;
         protected MaterialProperty dstBlend;
@@ -83,11 +85,6 @@ namespace HoloToolkit.Unity
             ShaderGUIUtils.BeginHeader("Base Texture and Color");
             {
                 CustomMaterialEditor.TextureWithAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.textureScaleAndOffset);
-
-                if (mode == ParticleBlendMode.Cutout || mode == ParticleBlendMode.Advanced)
-                {
-                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoffText.text);
-                }
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
@@ -99,10 +96,16 @@ namespace HoloToolkit.Unity
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
 
-            if (mode == ParticleBlendMode.Advanced)
+            if (mode == ParticleBlendMode.Cutout || mode == ParticleBlendMode.Advanced)
             {
                 ShaderGUIUtils.BeginHeader("Alpha Blending");
                 {
+                    if (mode == ParticleBlendMode.Advanced)
+                    {
+                        matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);                       
+                    }
+                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff.text);
+
                     matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
                     matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
                     matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
@@ -260,9 +263,12 @@ namespace HoloToolkit.Unity
             public static string renderingMode = "Rendering Mode";
 
             public static GUIContent main = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");
-            public static GUIContent alphaCutoffText = new GUIContent("Alpha Cutoff", "Threshold for alpha cutoff");
 
             public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");
+
+            //alpha test
+            public static GUIContent alphaTestEnabled = new GUIContent("Alpha Test", "Enables rejection of pixels based on alpha and cutoff");
+            public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Pixels with alpha below this value will be rejected");
 
             public static GUIContent srcBlend = new GUIContent("Source Blend", "Blend factor for transparency, etc.");
             public static GUIContent dstBlend = new GUIContent("Destination Blend", "Blend factor for transparency, etc.");

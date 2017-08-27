@@ -53,16 +53,17 @@ Shader "HoloToolkit/Fast Configurable"
 
         _TextureScaleOffset("Texture Scale (XY) and Offset (ZW)", Vector) = (1, 1, 0, 0)
 
-        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("SrcBlend", Float) = 1 //"One"
-        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("DestBlend", Float) = 0 //"Zero"
-        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("BlendOp", Float) = 0 //"Add"
-
+        //set from gui automatically based on blend mode
         [Toggle] _AlphaTest("Alpha test enabled?", Float) = 0
         _Cutoff("Alpha Cutoff", Range(-0.1, 1.0)) = -0.1
 
         //shadows
         [Toggle] _UseNormalOffsetShadows("Normal offset shadows enabled?", Float) = 0
-        [Toggle] _UseTransparentShadows("Transparent shadows enabled?", Float) = 0
+        [Toggle] _UseSemiTransparentShadows("Semi-transparent shadows enabled?", Float) = 0        
+
+        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("SrcBlend", Float) = 1 //"One"
+        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("DestBlend", Float) = 0 //"Zero"
+        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("BlendOp", Float) = 0 //"Add"
 
         [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2 //"Back"
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 4 //"LessEqual"
@@ -208,8 +209,8 @@ Shader "HoloToolkit/Fast Configurable"
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
 
-                #pragma shader_feature _SHADOWS_NORMALOFFSET_ON
-                #pragma shader_feature _SHADOWS_ALPHA_ON
+                #pragma shader_feature _USENORMALOFFSETSHADOWS_ON
+                #pragma shader_feature _USESEMITRANSPARENTSHADOWS_ON
 
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON
