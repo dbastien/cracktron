@@ -199,6 +199,17 @@ Shader "HoloToolkit/Fast Configurable"
                 #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
+                #pragma shader_feature _USEVERTEXCOLOR_ON
+                #pragma shader_feature _USEMAINCOLOR_ON
+                #pragma shader_feature _USEMAINTEX_ON
+                #pragma shader_feature _ALPHATEST_ON
+
+                //scale and offset will apply to all
+                #pragma shader_feature _MainTex_SCALE_ON
+                #pragma shader_feature _MainTex_OFFSET_ON
+
+                #pragma shader_feature _SHADOWS_NORMALOFFSET_ON
+                #pragma shader_feature _SHADOWS_ALPHA_ON
 
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON

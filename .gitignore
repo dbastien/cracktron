@@ -15,6 +15,3 @@ sysinfo.txt
 /*.pdb
 /StyleCop.Cache
 /uwp
-
-# vs code
-.vscode/

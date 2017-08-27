@@ -104,10 +104,12 @@ Material:
     - _UseGlossMap: 0
     - _UseMainColor: 1
     - _UseMainTex: 0
+    - _UseNormalOffsetShadows: 0
     - _UseOcclusionMap: 0
     - _UseReflections: 1
     - _UseRimLighting: 0
     - _UseSpecularMap: 0
+    - _UseTransparentShadows: 0
     - _UseVertexColor: 0
     - _ZTest: 4
     - _ZWrite: 1
