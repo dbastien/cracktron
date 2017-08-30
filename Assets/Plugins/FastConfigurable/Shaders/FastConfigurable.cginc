@@ -5,12 +5,15 @@
 #include "AutoLight.cginc"
 
 #include "ShaderCommon.cginc"
-#include "Macro.cginc"
+#include "TextureMacro.cginc"
 
 #define USE_PER_PIXEL (_USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _FORCEPERPIXEL_ON)
 #define PIXEL_SHADER_USES_WORLDPOS  (USE_PER_PIXEL && (_SPECULARHIGHLIGHTS_ON || _SHADE4_ON || _USERIMLIGHTING_ON))
 #define PIXEL_SHADER_USES_NORMAL (_FORCEPERPIXEL_ON || (USE_PER_PIXEL && !_USEBUMPMAP_ON))
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
+
+//_ALPHAPREMULTIPLY_ON
+//_ALPHABLEND_ON
 
 float4 _Color;
 UNITY_DECLARE_TEX2D(_MainTex);
@@ -26,7 +29,6 @@ UNITY_DECLARE_TEX2D(_GlossMap);
 
 UNITY_DECLARE_TEXCUBE(_CubeMap);
 float _ReflectionScale;
-float4x4 CalibrationSpaceWorldToLocal;
 
 float _RimPower;
 float4 _RimColor;
@@ -93,14 +95,14 @@ struct v2f
 };
 
 #if defined(_USERIMLIGHTING_ON)
-inline float RimLight(float3 worldNormal, float3 worldPos)
-{
-    //TODO: optimize whole function
-    float rim = 1.0 - saturate(dot(worldNormal, UnityWorldSpaceViewDir(worldPos)));
+    inline float RimLight(float3 worldNormal, float3 worldPos)
+    {
+        //TODO: optimize whole function
+        float rim = 1.0 - dot_sat(worldNormal, UnityWorldSpaceViewDir(worldPos));
 
-    //boost to the dot product to allow for a greater max effect - .25 is the boost factor
-    return smoothstep(0.25, 1.0, mad(rim, _RimPower, 0.25)) * _RimColor.rgb;
-}
+        //boost to the dot product to allow for a greater max effect - .25 is the boost factor
+        return smoothstep(0.25, 1.0, mad(rim, _RimPower, 0.25)) * _RimColor.rgb;
+    }
 #endif
 
 v2f vert(a2v v)
@@ -132,13 +134,7 @@ v2f vert(a2v v)
         o.texXYFadeZ.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
     #endif
 
-    #if FLIP_NORMALS
-        float3 flipCorrectedNormal = -v.normal;
-    #else
-        float3 flipCorrectedNormal = v.normal;
-    #endif
-
-    float3 worldNormal = UnityObjectToWorldNormal(flipCorrectedNormal);
+    float3 worldNormal = UnityObjectToWorldNormal(v.normal);
 
     #if defined(LIGHTMAP_ON)
         o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
@@ -164,6 +160,8 @@ v2f vert(a2v v)
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
             #endif
+
+            FastConfigurablePreMultiplyAlpha
         #endif
     #endif
 
@@ -172,16 +170,9 @@ v2f vert(a2v v)
     #endif
     
     #if defined(_USEREFLECTIONS_ON)
-        float3 vertexToCamera = _WorldSpaceCameraPos - worldPos;	
-
-        #if defined(_CALIBRATIONSPACEREFLECTIONS_ON)
-            float3 normalReflection = normalize(mul((float3x3)CalibrationSpaceWorldToLocal, flipCorrectedNormal));
-            vertexToCamera = mul((float3x3)CalibrationSpaceWorldToLocal, vertexToCamera);
-        #else
-            float3 normalReflection = flipCorrectedNormal;
-        #endif
+        float3 worldViewDir = _WorldSpaceCameraPos - worldPos;
         //incident vector need not be normalized
-        o.worldReflection = reflect(vertexToCamera, normalReflection);
+        o.worldReflection = reflect(-worldViewDir, worldNormal);
    #endif
 
     //fade away objects closer to the camera

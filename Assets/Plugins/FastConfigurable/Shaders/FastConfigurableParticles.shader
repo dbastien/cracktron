@@ -59,7 +59,7 @@ Shader "HoloToolkit/Fast Configurable Particles"
             Tags{ "LightMode" = "ForwardBase" }
 
             CGPROGRAM
-                #include "Macro.cginc"
+                #include "TextureMacro.cginc"
 
                 #pragma vertex vert
                 #pragma fragment frag

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-#ifndef MACRO
-#define MACRO
+#ifndef TEXTUREMACRO
+#define TEXTUREMACRO
 
 //bootleg ternary operator - no __VA_ARGS__
 #define IIF(cond) IIF_ ## cond
@@ -10,6 +10,10 @@
 #define IIF_1(t, f) t
 
 #define CONCAT(arg1, arg2) arg1 ## arg2
+
+//todo: test if simplifies expansion
+#define JOIN2(a, b) a##b
+#define JOIN(a, b) JOIN2(a,b)
 
 #define TRANSFORM_TEX_00(uv, st) uv
 #define TRANSFORM_TEX_10(uv, st) uv * st.xy
@@ -67,4 +71,4 @@
 #define OCCLUSIONMAP_TYPE_SO CONCAT(OCCLUSIONMAP_TYPE_S, _OcclusionMap_OFFSET_TOGGLE)
 #define TRANSFORM_TEX_OCCLUSIONMAP(uv, st) OCCLUSIONMAP_TYPE_SO ## (uv, st)
 
-#endif //MACRO
+#endif //TEXTUREMACRO

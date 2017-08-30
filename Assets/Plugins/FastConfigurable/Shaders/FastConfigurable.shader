@@ -5,7 +5,7 @@ Shader "HoloToolkit/Fast Configurable"
 {
     Properties
     {
-        _Mode("Rendering Mode", Float) = 0.0
+        _Mode("Rendering Mode", Float) = 0
 
         [Toggle] _UseVertexColor("Vertex Color Enabled?", Float) = 0
         [Toggle] _UseMainColor("Main Color Enabled?", Float) = 0
@@ -40,7 +40,6 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
         [NoScaleOffset]_CubeMap("CubeMap", Cube) = "" {}
         _ReflectionScale("Reflection Scale", Range(0.01, 3.0)) = 2.0
-        [Toggle]_CalibrationSpaceReflections("Reflect in calibration space?", Float) = 0
 
         [Toggle] _UseRimLighting("Rim Lighting Enabled?", Float) = 0
         [PowerSlider(.6)]_RimPower("Power", Range(0.1, 1.0)) = 0.7

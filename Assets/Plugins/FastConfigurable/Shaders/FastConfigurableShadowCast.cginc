@@ -2,7 +2,7 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 #include "UnityCG.cginc"
-#include "Macro.cginc"
+#include "TextureMacro.cginc"
 
 #define USES_TEX_XY ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEMAINTEX_ON)
 #define USES_VERTEX_COLOR ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEVERTEXCOLOR_ON)
@@ -45,10 +45,11 @@ struct shadowcast_v2f
     #endif
 
     #if USES_TEX_XY || defined(_NEAR_PLANE_FADE_ON)
-        float3 texXYFadeZ : TEXCOORD0;
+        float3 texXYFadeZ : TEXCOORD1;
     #endif
 
     //V2F_SHADOW_CASTER_NOPOS + UNITY_POSITION(pos)
+    //uses texcoord0
     V2F_SHADOW_CASTER;
     UNITY_VERTEX_OUTPUT_STEREO
 };

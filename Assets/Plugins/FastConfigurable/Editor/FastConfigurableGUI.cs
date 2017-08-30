@@ -40,7 +40,6 @@ namespace HoloToolkit.Unity
         protected MaterialProperty reflectionsEnabled;
         protected MaterialProperty cubeMap;
         protected MaterialProperty reflectionScale;
-        protected MaterialProperty calibrationSpaceReflections;
 
         protected MaterialProperty rimLightingEnabled;
         protected MaterialProperty rimPower;
@@ -171,7 +170,6 @@ namespace HoloToolkit.Unity
                     {
                         matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
                         matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
-                        matEditor.ShaderProperty(this.calibrationSpaceReflections, Styles.calibrationSpaceReflections);
                     }
                 }
                 ShaderGUIUtils.EndHeader();
@@ -194,7 +192,7 @@ namespace HoloToolkit.Unity
                 matEditor.ShaderProperty(this.transparentShadowsEnabled, Styles.transparentShadowsEnabled);
             }
             ShaderGUIUtils.EndHeader();
-            ShaderGUIUtils.HeaderSeparator();              
+            ShaderGUIUtils.HeaderSeparator();
            
 
             if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
@@ -205,7 +203,14 @@ namespace HoloToolkit.Unity
                     {
                         matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);                       
                     }
-                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
+
+                    if (
+                           (mode == BlendMode.Cutout) ||
+                          ((mode == BlendMode.Advanced) && (this.alphaTestEnabled.floatValue >= 0f))
+                       )
+                    {
+                        matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
+                    }
 
                     matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
                     matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
@@ -337,6 +342,7 @@ namespace HoloToolkit.Unity
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
                     mat.SetKeyword("_ALPHATEST_ON", false);
+                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);                    
                     mat.renderQueue = -1;
                     break;
                 case BlendMode.Cutout:
@@ -345,15 +351,25 @@ namespace HoloToolkit.Unity
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
                     mat.SetKeyword("_ALPHATEST_ON", true);
+                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);                   
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
                     break;
-                case BlendMode.Transparent:
+                case BlendMode.Fade:
                     mat.SetOverrideTag("RenderType", "Transparent");
-                    //non pre-multiplied alpha
                     mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                    mat.SetInt("_ZWrite", 1);
+                    mat.SetInt("_ZWrite", 0);
                     mat.SetKeyword("_ALPHATEST_ON", false);
+                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);
+                    mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+                    break;                    
+                case BlendMode.Transparent:
+                    mat.SetOverrideTag("RenderType", "Transparent");
+                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    mat.SetInt("_ZWrite", 0);
+                    mat.SetKeyword("_ALPHATEST_ON", false);
+                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", true);                    
                     mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
                     break;
                 case BlendMode.Advanced:
@@ -391,7 +407,7 @@ namespace HoloToolkit.Unity
 
             if (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap)
             {
-                mat.SetInt("_ForcePerPixel", 1);
+                mat.SetFloat("_ForcePerPixel", 1f);
             }
 
             var texScaleOffset = mat.GetVector("_TextureScaleOffset");
@@ -424,14 +440,13 @@ namespace HoloToolkit.Unity
             this.specularMap = ShaderGUI.FindProperty("_SpecularMap", props);
 
             this.gloss = ShaderGUI.FindProperty("_Gloss", props);
-            this.glossMap = ShaderGUI.FindProperty("_GlossMap", props);
+            this.glossMap = ShaderGUI.FindProperty("_GlossMap", props); 
 
             this.normalMap = ShaderGUI.FindProperty("_BumpMap", props);
 
             this.reflectionsEnabled = ShaderGUI.FindProperty("_UseReflections", props);
             this.cubeMap = ShaderGUI.FindProperty("_CubeMap", props);
             this.reflectionScale = ShaderGUI.FindProperty("_ReflectionScale", props);
-            this.calibrationSpaceReflections = ShaderGUI.FindProperty("_CalibrationSpaceReflections", props);
 
             this.rimLightingEnabled = ShaderGUI.FindProperty("_UseRimLighting", props);
             this.rimPower = ShaderGUI.FindProperty("_RimPower", props);
@@ -489,7 +504,6 @@ namespace HoloToolkit.Unity
             public static GUIContent reflectionsEnabled = new GUIContent("Reflections", "Cube map based reflections");
             public static GUIContent cubeMap = new GUIContent("Cube Map", "Cube map lookup for reflections");
             public static GUIContent reflectionScale = new GUIContent("Scale", "Reflection strength");
-            public static GUIContent calibrationSpaceReflections = new GUIContent("In calibration space", "Keeps reflections consistent across different calibrations");
 
             public static GUIContent rimLightingEnabled = new GUIContent("Rim Lighting", "Side lighting");
             public static GUIContent rimPower = new GUIContent("Power", "Power of rim lighting");
