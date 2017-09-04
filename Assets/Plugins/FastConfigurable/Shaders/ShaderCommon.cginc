@@ -56,57 +56,73 @@ float3 FastSHEvalLinearL2(float3 normal)
 // http://www.ppsloan.org/publications/StupidSH36.pdf
 inline float3 FastShadeSH9(float4 normal)
 {
-    float3 res = saturate(FastSHEvalLinearL0L1(normal) + FastSHEvalLinearL2(normal));
+    #if defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
+        float3 res = saturate(FastSHEvalLinearL0L1(normal) + FastSHEvalLinearL2(normal));
 
-#ifdef UNITY_COLORSPACE_GAMMA
-    // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
-    // linear to srgb    
-    res = mad_sat(1.055, pow(res, 0.416666667), -0.055);
-#endif
+        #ifdef UNITY_COLORSPACE_GAMMA
+            // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
+            // linear to srgb    
+            res = mad_sat(1.055, pow(res, 0.416666667), -0.055);
+        #endif
 
-    return res;
+        return res;
+    #else
+        return float3(0, 0, 0);
+    #endif
 }
 
 // note that spot lights will behave as point lights, LIGHT_ATTENUATION() is key
 // TODO: some vectors could be 3 component perhaps
 float3 FastShade4PointLights(float3 pos, float3 normal)
 {
-    // to light vectors
-    float4 toLightX = unity_4LightPosX0 - pos.x;
-    float4 toLightY = unity_4LightPosY0 - pos.y;
-    float4 toLightZ = unity_4LightPosZ0 - pos.z;
+    #if defined(_SHADE4_ON)
+        // to light vectors
+        float4 toLightX = unity_4LightPosX0 - pos.x;
+        float4 toLightY = unity_4LightPosY0 - pos.y;
+        float4 toLightZ = unity_4LightPosZ0 - pos.z;
 
-    //TODO: verify generates mad instructions
-    float4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
-    float4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
+        //TODO: verify generates mad instructions
+        float4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
+        float4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
 
-    // correct NdotL
-    ndotl = saturate(ndotl * rsqrt(lengthSq));
+        // correct NdotL
+        ndotl = saturate(ndotl * rsqrt(lengthSq));
 
-    // attenuation
-    float4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1.0));
-    float4 diff = ndotl * atten;
+        // attenuation
+        float4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1.0));
+        float4 diff = ndotl * atten;
 
-    // final color
-    return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
+        // final color
+        return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
+    #else
+        return float3(0, 0, 0);
+    #endif
 }
 
 inline float3 FastLightingLambertian(float3 normal, float3 lightDir, float3 lightCol)
 {
-    return lightCol * saturate(dot(normal, lightDir));
+    #if defined(_USEDIFFUSE_ON)
+        return lightCol * saturate(dot(normal, lightDir));
+    #else
+        return float3(0, 0, 0);
+    #endif        
 }
 
 inline float3 FastLightingBlinnPhong(float3 normal, float3 viewDir,
                                      float3 lightDir, float3 lightCol,
                                      float specularPower, float specularScale, float3 specularColor)
 {
-    float3 h = normalize(lightDir + viewDir);
-    float nh = saturate(dot(normal, h));
+    #if defined(_SPECULARHIGHLIGHTS_ON)
+        float3 h = normalize(lightDir + viewDir);
+        float nh = saturate(dot(normal, h));
 
-    return (lightCol * specularColor) * pow(nh, specularPower) * specularScale;
+        return (lightCol * specularColor) * pow(nh, specularPower) * specularScale;
+    #else
+        return float3(0, 0, 0);
+    #endif
 }
 
-inline float4 FastConfigurablePreMultiplyAlpha(float4 color)
+inline float4 FastPreMultiplyAlpha(float4 color)
 {
 #if defined(_ALPHAPREMULTIPLY_ON)
     //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
@@ -115,7 +131,7 @@ inline float4 FastConfigurablePreMultiplyAlpha(float4 color)
     return color;
 }
 
-inline float3 FastConfigurablePreMultiplyAlphaWithReflectivity(float3 diffColor, float alpha, float oneMinusReflectivity, out float outModifiedAlpha)
+inline float3 FastPreMultiplyAlphaWithReflectivity(float3 diffColor, float alpha, float oneMinusReflectivity, out float outModifiedAlpha)
 {
 #if defined(_ALPHAPREMULTIPLY_ON)
     //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)

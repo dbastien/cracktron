@@ -95,7 +95,7 @@ struct v2f
 };
 
 #if defined(_USERIMLIGHTING_ON)
-    inline float RimLight(float3 worldNormal, float3 worldPos)
+    inline float3 RimLight(float3 worldNormal, float3 worldPos)
     {
         //TODO: optimize whole function
         float rim = 1.0 - dot_sat(worldNormal, UnityWorldSpaceViewDir(worldPos));
@@ -139,24 +139,14 @@ v2f vert(a2v v)
     #if defined(LIGHTMAP_ON)
         o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
     #else
-        #if defined(_USEAMBIENT_ON) && !defined(_USEBUMPMAP_ON)
-            //grab ambient color from Unity's spherical harmonics
-            #if UNITY_SHOULD_SAMPLE_SH
-                o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
-            #endif
+        #if !defined(_USEBUMPMAP_ON)
+            o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
         #endif
 
         #if !defined(USE_PER_PIXEL)
-            #if defined(_USEDIFFUSE_ON)
-                o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-            #endif
-            #if defined(_SPECULARHIGHLIGHTS_ON)
-                o.vertexLighting += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, _Gloss, _SpecColor);
-            #endif
-            #if defined(_SHADE4_ON)
-                //handle point and spot lights
-                o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
-            #endif
+            o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+            o.vertexLighting += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, _Gloss, _SpecColor);
+            o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
             #endif
@@ -215,31 +205,26 @@ fixed4 frag(v2f IN) : SV_Target
     
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
-        float3 lightmapResult = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+        float3 lightColor = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
         #if defined(SHADOWS_SCREEN)
-            float3 lightColorShadowAttenuated = min(lightmapResult, lightAttenuation * 2.0);
-        #else
-            float3 lightColorShadowAttenuated = lightmapResult;
+            lightColor = min(lightColor, lightAttenuation * 2.0);
         #endif	
     #else
-        float3 lightColorShadowAttenuated = IN.vertexLighting;
+        float3 lightColor = IN.vertexLighting;
         #if USE_PER_PIXEL
-            //if a normal map is on, it makes sense to do most calculations per-pixel
             #if defined(_USEBUMPMAP_ON)
                 //unpack can be expensive if normal map is dxt5
                 float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
-                //grab ambient color from Unity's spherical harmonics
-                #if UNITY_SHOULD_SAMPLE_SH
-                    lightColorShadowAttenuated += FastShadeSH9(float4(worldNormal, 1.0));
-                #endif
+
+                //sampled only if bump-map even if per-pixel - not much quality benefit
+                lightColor += FastShadeSH9(float4(worldNormal, 1.0));
             #else
                 //linearly interpolating normals will not produce a normal
                 float3 worldNormal = normalize(IN.worldNormal);
             #endif
         
-            #if defined(_USEDIFFUSE_ON)
-                lightColorShadowAttenuated += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-            #endif
+            lightColor += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+
             #if defined(_SPECULARHIGHLIGHTS_ON)
                 float gloss = _Gloss;
                 #if defined(_USEGLOSSMAP_ON)
@@ -249,20 +234,17 @@ fixed4 frag(v2f IN) : SV_Target
                 #if defined(_USESPECULARMAP_ON)
                     specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
                 #endif
-                lightColorShadowAttenuated += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
+                lightColor += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
             #endif
-            #if defined(_SHADE4_ON)
-                //handle point and spot lights
-                lightColorShadowAttenuated += FastShade4PointLights(IN.worldPos, worldNormal);
-            #endif
+            lightColor += FastShade4PointLights(IN.worldPos, worldNormal);
             #if defined(_USERIMLIGHTING_ON)
-                lightColorShadowAttenuated += RimLight(worldNormal, IN.worldPos);
+                lightColor += RimLight(worldNormal, IN.worldPos);
             #endif
         #endif
-        lightColorShadowAttenuated *= lightAttenuation;
+        lightColor *= lightAttenuation;
     #endif
     
-    color.rgb *= lightColorShadowAttenuated;
+    color.rgb *= lightColor;
 
     #if defined(_USEREFLECTIONS_ON)
         #if defined(_USECUSTOMCUBEMAP_ON)

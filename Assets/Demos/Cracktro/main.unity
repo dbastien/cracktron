@@ -2401,29 +2401,46 @@ Prefab:
     - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: m_text
-      value: freeks like us... anyway a fucking great game ! stay in and you know
-        where you can chat the craziest sysop & get the oldskool wares first! just
-        give a ring to zombie world....
+      value: TRSI SALUTS ALL TRUSTY TRSI FROM THE NORTHERN SNOW COVERED LAND OF CANADA
+        TO THE AMIGA GODS OF EUROPE, ALL THE WAY TO PC KIDS IN THE STATES AND, ALL
+        THE REST ALL OVER THE WORLD / SPACE.  FOR THE NEXT YEAR, THE GOAL IS SIMPLE
+        TO TRANSITION TO OTHER SECTIONS AND SOLIDIFY OUR PLACE IN THIS WORLD. WE HAVE
+        ALREADY DONE A LOT, BUT THERE IS MORE TO BE DONE.  REMEMBER WHEN CHOOSING
+        WHO YOU WANT TO MAKE HISTORY WITH, THERE IS A BIG DIFFERENCE CONTRIBUTING
+        TO A BLIP AND A DYNASTY THAT TRANSCENDS GENERATIONS, RACE, SEX, PLATFORM,
+        AND THE PETTY BS OF "NOW", TRSI IS MORE THAN "NOW", IT IS THE PAST, THE FUTURE
+        AND WHAT IS ALL IN ONE, CONTRIBUTE TO SOMETHING THAT WILL BE REMEMBERED 100-200
+        YEARS FROM NOW..  WE ALREADY HAVE A GOOD CHUNK OF THE WAY TO THAT....  ITS
+        A PRIVLEDGE TO BE IN TRSI, NOT JUST BEING PART OF A GROUP, YOU BECOME A PART
+        OF A FAMILY FOREVER.....  IF YOU WOULD LIKE TO BE IN TRSI, GRAB A BEER WALK
+        OUTSIDE AND SCREAM   "AMIIIIIIIGA!" AT THE TOP OF YOUR LUNGS or AT A PARTY
+        OF YOUR CHOICE OR WITH THAT SAME SPIRIT FIND US, WE ARE LOOKING FOR YOU....  WE
+        ARE ESPECIALLY LOOKING FOR BI-LINGUAL ASIAN MEMBERS WHO CAN SUPPLY KOREAN/JAPANEESE/CHINEESE
+        GAMES AND HELP DO TRANSLATIONS AND OTHER FUN STUFF....  THANK YOU TO THE EXISTING
+        TRSI ASIA FANS / FAMILY! WE ARE JUST STARTING! IF YOU WANT TO SEE MORE OF
+        THIS TYPE OF GROUP AND SPIRIT YOU NEED TO CONTRIBUTE AND BUILD TRSI UP FOR
+        THE FUTURE...   "THE SLEEPING GODS" - "LEGENDS NEVER DIE, JUST SLEEP" - "THE
+        COOL KIDS"  -+-][*] TRiSTAR & RED SECTOR iNC 2017 [*][-+-
       objectReference: {fileID: 0}
     - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: m_textInfo.characterCount
-      value: 175
+      value: 1525
       objectReference: {fileID: 0}
     - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: m_textInfo.spaceCount
-      value: 33
+      value: 298
       objectReference: {fileID: 0}
     - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: m_textInfo.wordCount
-      value: 32
+      value: 288
       objectReference: {fileID: 0}
     - target: {fileID: 114742065616173078, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: ScrollSpeed
-      value: 0.039
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114222947105813636, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
@@ -3188,6 +3205,21 @@ Prefab:
         type: 2}
       propertyPath: VertexCurve.m_PostInfinity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114233728110260778, guid: a5a86f957c795944a917dd168669df42,
+        type: 2}
+      propertyPath: m_horizontalMapping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5a86f957c795944a917dd168669df42, type: 2}
@@ -9417,8 +9449,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: 9, y: 2, z: 0}
-  End: {x: -9, y: 2, z: 0}
+  Start: {x: 10, y: 2, z: 0}
+  End: {x: -10, y: 2, z: 0}
   LengthScale: 0.35
   CurveTargetName: position
 --- !u!4 &1917303272

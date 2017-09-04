@@ -10,14 +10,13 @@ public class TextMeshCurve : MonoBehaviour
     [FloatIncremental(.1f)] public float AnimationSpeed = 1.0f;
 
     public bool RotateLetters;
-    [Range(0.01f, 10.0f)] public float RotationScale = 1.0f;
-    [Range(0.0f, 1.0f)] public float RotationSmoothing = 0.5f;
+    [NormalizedAnimationCurve] public AnimationCurve RotationCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(0.25f, 1.0f), new Keyframe(0.5f, 0), new Keyframe(0.75f, 1.0f), new Keyframe(1, 0f));   
+    [Range(0.001f, .25f)] public float RotationScale = 0.05f;
 
     private float timeElapsed;
+
     private TMP_Text textComponent;
     private TMP_MeshInfo[] initialMeshInfo;
-
-    private Quaternion lastLetterRotation = Quaternion.identity;
 
     public void Update()
     {
@@ -39,6 +38,9 @@ public class TextMeshCurve : MonoBehaviour
 
         var boundsMinX = this.textComponent.bounds.min.x;
         var boundsMaxX = this.textComponent.bounds.max.x;
+        float boundsDelta = (boundsMaxX - boundsMinX);
+
+        float animScaledTime = this.timeElapsed * this.AnimationSpeed;
 
         for (var i = 0; i < characterCount; ++i)
         {
@@ -52,29 +54,24 @@ public class TextMeshCurve : MonoBehaviour
             var targetVertices = textInfo.meshInfo[materialIndex].vertices;
             var initialVertices = this.initialMeshInfo[materialIndex].vertices;
 
-            // Compute the baseline mid point for each character
-            var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * 0.5f,
+            // character baseline mid point
+            var offsetToMidBaseline = new Vector3((initialVertices[vertexIndex].x + initialVertices[vertexIndex + 2].x) * .5f,
                                                    textInfo.characterInfo[i].baseLine,
-                                                   0.0f);
+                                                   0f);
 
-            // Compute the angle of rotation for each character based on the animation curve
-            var x0 = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX); // Character's position relative to the bounds of the mesh.
+            // character position along curve
+            var x0 = (offsetToMidBaseline.x - boundsMinX) / boundsDelta; // Character's position relative to the bounds of the mesh.
             var x1 = x0 + 0.0001f;
-            var y0 = this.VertexCurve.Evaluate(x0 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
-            var y1 = this.VertexCurve.Evaluate(x1 + (this.timeElapsed * this.AnimationSpeed)) * this.CurveScale;
+            var y0 = this.VertexCurve.Evaluate(x0 + animScaledTime) * this.CurveScale;
+            var y1 = this.VertexCurve.Evaluate(x1 + animScaledTime) * this.CurveScale;
 
             Matrix4x4 matrix;
             if (this.RotateLetters)
             {
-                var tangent = new Vector3(x1 * (boundsMaxX - boundsMinX) + boundsMinX, y1) - new Vector3(offsetToMidBaseline.x, y0);
+                // animScaledTime so synced with the translation motion
+                var angle = (-.5f + this.RotationCurve.Evaluate(animScaledTime)) * this.RotationScale * 360f;
 
-                var dot = Mathf.Acos(Vector3.Dot(Vector3.right, tangent.normalized)) * Mathf.Rad2Deg * this.RotationScale;
-                var cross = Vector3.Cross(Vector3.right, tangent);
-                var angle = cross.z > 0 ? dot : 360 - dot;
-
-                var curLetterRotation = Quaternion.Euler(0, 0, angle);
-                var q = Quaternion.Slerp(this.lastLetterRotation, curLetterRotation, (Time.deltaTime * 100f * (1f - this.RotationSmoothing)));
-                this.lastLetterRotation = q;
+                var q = Quaternion.Euler(0, 0, angle);
 
                 matrix = Matrix4x4.Translate(offsetToMidBaseline) *
                          Matrix4x4.TRS(new Vector3(0, y0, 0), q, Vector3.one) *

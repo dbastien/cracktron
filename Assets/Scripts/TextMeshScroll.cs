@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TextMeshScroll : MonoBehaviour
 {
-    [Range(0.01f, 1.0f)] public float ScrollSpeed = 0.08f;
+    [Range(.1f, 20.0f)] public float ScrollSpeed = 10f;
 
     private TMP_Text textComponent;
     private RectTransform rectComponent;
@@ -20,11 +20,11 @@ public class TextMeshScroll : MonoBehaviour
         }
 
         if (this.rectComponent == null)
-        {
+        {            
             this.rectComponent = this.gameObject.GetComponent<RectTransform>();
         }
 
-        this.scrollPosition += this.ScrollSpeed * Time.deltaTime;
+        this.scrollPosition += (this.ScrollSpeed / this.textComponent.preferredWidth) * Time.deltaTime;
         this.scrollPosition %= 1.0f;
 
         var xPos = -Mathf.Lerp(-this.rectComponent.rect.width, this.textComponent.preferredWidth + this.rectComponent.rect.width, this.scrollPosition);
