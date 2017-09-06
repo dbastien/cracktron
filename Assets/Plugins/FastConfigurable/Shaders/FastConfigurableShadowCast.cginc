@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 #include "UnityCG.cginc"
 #include "TextureMacro.cginc"
 
@@ -14,10 +11,8 @@ float _Cutoff;
 
 float4 _TextureScaleOffset;
 
-#if defined(_USESEMITRANSPARENTSHADOWS_ON)
-    //sampler2D _DitherMaskLOD2D;
-    sampler3D _DitherMaskLOD;
-#endif
+//sampler2D _DitherMaskLOD2D;
+sampler3D _DitherMaskLOD;
 
 struct shadowcast_a2v
 {

@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 Shader "HoloToolkit/Fast Configurable"
 {
     Properties
@@ -25,7 +22,7 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _ForcePerPixel("Light per-pixel (always on if a map is set)", Float) = 0
         
         _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
-        [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(1.0, 1000.0)) = 50.0
+        [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(0.01, 1000.0)) = 50.0
         [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
         [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
 
@@ -39,7 +36,7 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _UseReflections("Reflections Enabled?", Float) = 0
         [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
         [NoScaleOffset]_CubeMap("CubeMap", Cube) = "" {}
-        _ReflectionScale("Reflection Scale", Range(0.01, 3.0)) = 2.0
+        _ReflectionScale("Reflection Scale", Range(0.01, 1.5)) = 1.0
 
         [Toggle] _UseRimLighting("Rim Lighting Enabled?", Float) = 0
         [PowerSlider(.6)]_RimPower("Power", Range(0.1, 1.0)) = 0.7

@@ -1,7 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-namespace HoloToolkit.Unity
+﻿namespace HoloToolkit.Unity
 {
     using System;
     using UnityEditor;
@@ -405,7 +402,7 @@ namespace HoloToolkit.Unity
             mat.SetKeyword("_USEGLOSSMAP_ON", usesGlossMap);
             mat.SetKeyword("_USEEMISSIONMAP_ON", usesEmissionMap);
 
-            if (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap)
+            if (usesBumpMap)
             {
                 mat.SetFloat("_ForcePerPixel", 1f);
             }
@@ -492,7 +489,7 @@ namespace HoloToolkit.Unity
             public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
             public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");
             public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights (expensive)");
-            public static GUIContent perPixelLighting = new GUIContent("Per-Pixel lighting", "Light objects per-pixel instead of per-vertex - using any lighting affecting map will force this on");
+            public static GUIContent perPixelLighting = new GUIContent("Per-Pixel diffuse", "Do diffuse lighting per-pixel instead of per-vertex - using a bump map will force this on");
 
             public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
             public static GUIContent specularColor = new GUIContent(" Color", "Tint to apply to specular highlights");

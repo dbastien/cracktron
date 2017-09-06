@@ -3,6 +3,7 @@
     "editor.fontFamily": "Fira Code, Consolas, 'Courier New', monospace",
     "editor.fontLigatures": true,
 
+    "files.autoSave": "onFocusChange",    
     "files.defaultLanguage": "csharp",
 
     "files.exclude":

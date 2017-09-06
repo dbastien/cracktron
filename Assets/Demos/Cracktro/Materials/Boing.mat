@@ -8,9 +8,9 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Boing
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _ALPHATEST_ON _CALIBRATIONSPACEREFLECTIONS_ON
-    _FORCEPERPIXEL_ON _MainTex_SCALE_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON
-    _USEDIFFUSE_ON _USEMAINCOLOR_ON _USEMAINTEX_ON _USERIMLIGHTING_ON
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _CALIBRATIONSPACEREFLECTIONS_ON _FORCEPERPIXEL_ON
+    _MainTex_SCALE_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USEDIFFUSE_ON
+    _USEMAINCOLOR_ON _USEMAINTEX_ON _USERIMLIGHTING_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -76,11 +76,11 @@ Material:
     - _CalibrationSpaceReflections: 1
     - _ColorWriteMask: 15
     - _Cull: 0
-    - _Cutoff: 0.85
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 10
     - _ForcePerPixel: 1
-    - _Gloss: 1
+    - _Gloss: 8.01
     - _GlossMapScale: 1
     - _Glossiness: 0.25
     - _GlossyReflections: 1
@@ -92,7 +92,7 @@ Material:
     - _RimPower: 1
     - _Shade4: 1
     - _SmoothnessTextureChannel: 0
-    - _Specular: 2.9
+    - _Specular: 588
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _UVSec: 0

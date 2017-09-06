@@ -1,17 +1,17 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
 #include "ShaderCommon.cginc"
+#include "FastMath.cginc"
+#include "FastLighting.cginc"
 #include "TextureMacro.cginc"
 
-#define USE_PER_PIXEL (_USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _FORCEPERPIXEL_ON)
-#define PIXEL_SHADER_USES_WORLDPOS  (USE_PER_PIXEL && (_SPECULARHIGHLIGHTS_ON || _SHADE4_ON || _USERIMLIGHTING_ON))
-#define PIXEL_SHADER_USES_NORMAL (_FORCEPERPIXEL_ON || (USE_PER_PIXEL && !_USEBUMPMAP_ON))
+#define USE_PER_PIXEL _FORCEPERPIXEL_ON
+#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || (USE_PER_PIXEL && (_SHADE4_ON || _USERIMLIGHTING_ON)))
+#define PIXEL_SHADER_USES_NORMAL (_FORCEPERPIXEL_ON || (USE_PER_PIXEL && !_USEBUMPMAP_ON) || _SPECULARHIGHLIGHTS_ON)
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
+//todo: share world view dir
 //_ALPHAPREMULTIPLY_ON
 //_ALPHABLEND_ON
 
@@ -139,19 +139,24 @@ v2f vert(a2v v)
     #if defined(LIGHTMAP_ON)
         o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
     #else
-        #if !defined(_USEBUMPMAP_ON)
+        #if !defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
+            //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
+            //not much quality benefit for the cost
             o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
         #endif
 
-        #if !defined(USE_PER_PIXEL)
-            o.vertexLighting += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-            o.vertexLighting += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, _Gloss, _SpecColor);
-            o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
+        #if !USE_PER_PIXEL
+            #if defined(_USEDIFFUSE_ON)
+                o.vertexLighting += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+            #endif
+            #if defined(_SHADE4_ON)
+                o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
+            #endif
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
             #endif
 
-            FastConfigurablePreMultiplyAlpha
+//            FastConfigurablePreMultiplyAlpha
         #endif
     #endif
 
@@ -205,47 +210,60 @@ fixed4 frag(v2f IN) : SV_Target
     
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
-        float3 lightColor = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+        float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
         #if defined(SHADOWS_SCREEN)
-            lightColor = min(lightColor, lightAttenuation * 2.0);
-        #endif	
+            diffuseContrib = min(lightColor, lightAttenuation * 2.0);
+        #endif
+        color.rgb += lightColor;
     #else
-        float3 lightColor = IN.vertexLighting;
-        #if USE_PER_PIXEL
-            #if defined(_USEBUMPMAP_ON)
-                //unpack can be expensive if normal map is dxt5
-                float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
+        float3 diffuseContrib = IN.vertexLighting;
+        float3 specContrib = 0;
 
-                //sampled only if bump-map even if per-pixel - not much quality benefit
-                lightColor += FastShadeSH9(float4(worldNormal, 1.0));
-            #else
-                //linearly interpolating normals will not produce a normal
-                float3 worldNormal = normalize(IN.worldNormal);
+        #if defined(_USEBUMPMAP_ON)
+            //unpack can be expensive if normal map is dxt5
+            float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
+        #elif PIXEL_SHADER_USES_NORMAL
+            //linearly interpolating normals will not produce a normal
+            float3 worldNormal = normalize(IN.worldNormal);
+        #endif 
+
+        #if USE_PER_PIXEL               
+            #if defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
+                //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
+                //not much quality benefit for the cost
+                diffuseContrib += FastShadeSH9(float4(worldNormal, 1.0));
             #endif
         
-            lightColor += FastLightingLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-
-            #if defined(_SPECULARHIGHLIGHTS_ON)
-                float gloss = _Gloss;
-                #if defined(_USEGLOSSMAP_ON)
-                    gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
-                #endif
-                float specular = _Specular;
-                #if defined(_USESPECULARMAP_ON)
-                    specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
-                #endif
-                lightColor += FastLightingBlinnPhong(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
+            #if defined(_USEDIFFUSE_ON)
+                diffuseContrib += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
-            lightColor += FastShade4PointLights(IN.worldPos, worldNormal);
+            #if defined(_SHADE4_ON)
+                diffuseContrib += FastShade4PointLights(IN.worldPos, worldNormal);
+            #endif
             #if defined(_USERIMLIGHTING_ON)
-                lightColor += RimLight(worldNormal, IN.worldPos);
-            #endif
+                diffuseContrib += RimLight(worldNormal, IN.worldPos);
+            #endif         
         #endif
-        lightColor *= lightAttenuation;
-    #endif
-    
-    color.rgb *= lightColor;
 
+        #if defined(_SPECULARHIGHLIGHTS_ON)
+            float gloss = _Gloss;
+            #if defined(_USEGLOSSMAP_ON)
+                gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
+            #endif
+            float specular = _Specular;
+            #if defined(_USESPECULARMAP_ON)
+                specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
+            #endif
+            #if defined(_SPECULARHIGHLIGHTS_ON)
+                specContrib += FastLightingSpecularSchlick(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
+            #endif
+        #endif   
+
+//FastPreMultiplyAlpha
+        color.rgb = color.rgb * diffuseContrib + specContrib;
+        color.rgb *= lightAttenuation;
+    #endif
+   
     #if defined(_USEREFLECTIONS_ON)
         #if defined(_USECUSTOMCUBEMAP_ON)
             color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, IN.worldReflection) * _ReflectionScale;

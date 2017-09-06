@@ -61,15 +61,13 @@ public class TextMeshCurve : MonoBehaviour
 
             // character position along curve
             var x0 = (offsetToMidBaseline.x - boundsMinX) / boundsDelta; // Character's position relative to the bounds of the mesh.
-            var x1 = x0 + 0.0001f;
             var y0 = this.VertexCurve.Evaluate(x0 + animScaledTime) * this.CurveScale;
-            var y1 = this.VertexCurve.Evaluate(x1 + animScaledTime) * this.CurveScale;
 
             Matrix4x4 matrix;
             if (this.RotateLetters)
             {
                 // animScaledTime so synced with the translation motion
-                var angle = (-.5f + this.RotationCurve.Evaluate(animScaledTime)) * this.RotationScale * 360f;
+                var angle = (-.5f + this.RotationCurve.Evaluate(x0 + animScaledTime)) * this.RotationScale * 360f;
 
                 var q = Quaternion.Euler(0, 0, angle);
 

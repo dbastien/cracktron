@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
 #ifndef TEXTUREMACRO
 #define TEXTUREMACRO
 
@@ -20,7 +17,7 @@
 #define TRANSFORM_TEX_01(uv, st) uv + st.zw
 #define TRANSFORM_TEX_11(uv, st) uv * st.xy + st.zw
 
-// main tex
+//main tex
 #ifdef _MainTex_SCALE_ON
     #define _MainTex_SCALE_TOGGLE 1
 #else

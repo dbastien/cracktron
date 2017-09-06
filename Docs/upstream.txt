@@ -1,0 +1,4 @@
+git remote add upstream ORIGINAL_REPOSITORY_URL
+git fetch upstream      
+git merge upstream/master
+git push
