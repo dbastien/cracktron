@@ -151,12 +151,11 @@ v2f vert(a2v v)
             #if defined(_SHADE4_ON)
                 o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
             #endif
-            
+
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
             #endif
-
-//            FastConfigurablePreMultiplyAlpha
+            //todo: if no pixel work being performed, could premul alpha here
         #endif
     #endif
 
