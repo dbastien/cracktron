@@ -31,6 +31,7 @@ inline float3 FastShadeSH9(float4 normal)
 
     #ifdef UNITY_COLORSPACE_GAMMA
         res = LinearToSRGBTaylor(res);
+        //res = LinearToSRGBChilliant(res);
     #endif
 
     return res;

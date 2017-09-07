@@ -49,9 +49,9 @@ Shader "HoloToolkit/Fast Configurable"
 
         _TextureScaleOffset("Texture Scale (XY) and Offset (ZW)", Vector) = (1, 1, 0, 0)
 
-        //set from gui automatically based on blend mode
         [Toggle] _AlphaTest("Alpha test enabled?", Float) = 0
         _Cutoff("Alpha Cutoff", Range(-0.1, 1.0)) = -0.1
+        [Toggle] _AlphaPremultiply("Pre-multiply alpha?", Float) = 0
 
         //shadows
         [Toggle] _UseNormalOffsetShadows("Normal offset shadows enabled?", Float) = 0
@@ -69,14 +69,14 @@ Shader "HoloToolkit/Fast Configurable"
 
     SubShader
     {
-        Tags { "RenderType"="Opaque" "PerformanceChecks"="False" }
+        Tags { "RenderType"="Opaque" }
         LOD 100
-        Blend[_SrcBlend][_DstBlend]
-        BlendOp[_BlendOp]
-        ZTest[_ZTest]
-        ZWrite[_ZWrite]
-        Cull[_Cull]
-        ColorMask[_ColorWriteMask]
+        Blend [_SrcBlend] [_DstBlend]
+        BlendOp [_BlendOp]
+        ZTest [_ZTest]
+        ZWrite [_ZWrite]
+        Cull [_Cull]
+        ColorMask [_ColorWriteMask]
 
         Pass
         {
@@ -111,11 +111,12 @@ Shader "HoloToolkit/Fast Configurable"
                 #pragma shader_feature _USEGLOSSMAP_ON
                 #pragma shader_feature _SHADE4_ON
                 #pragma shader_feature _USEREFLECTIONS_ON
+                #pragma shader_feature _USECUSTOMCUBEMAP_ON               
                 #pragma shader_feature _USERIMLIGHTING_ON
                 #pragma shader_feature _USEEMISSIONCOLOR_ON
                 #pragma shader_feature _USEEMISSIONMAP_ON
                 #pragma shader_feature _ALPHATEST_ON
-                #pragma shader_feature _USECUSTOMCUBEMAP_ON
+                #pragma shader_feature _ALPHAPREMULTIPLY_ON               
 
                 //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
@@ -132,7 +133,7 @@ Shader "HoloToolkit/Fast Configurable"
         {
             Name "FORWARD_DELTA"
             Tags{ "LightMode" = "ForwardAdd" }
-            Blend[_SrcBlend] One
+            Blend [_SrcBlend] One
             ZWrite Off
             ZTest LEqual
 
@@ -155,18 +156,12 @@ Shader "HoloToolkit/Fast Configurable"
                 #pragma shader_feature _USEMAINTEX_ON
                 #pragma shader_feature _USEOCCLUSIONMAP_ON
                 #pragma shader_feature _USEBUMPMAP_ON
-                #pragma shader_feature _USEAMBIENT_ON
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
                 #pragma shader_feature _FORCEPERPIXEL_ON
                 #pragma shader_feature _USEGLOSSMAP_ON
-                #pragma shader_feature _SHADE4_ON
-                #pragma shader_feature _USEREFLECTIONS_ON
-                #pragma shader_feature _USERIMLIGHTING_ON
-                #pragma shader_feature _USEEMISSIONCOLOR_ON
-                #pragma shader_feature _USEEMISSIONMAP_ON
                 #pragma shader_feature _ALPHATEST_ON
-                #pragma shader_feature _USECUSTOMCUBEMAP_ON
+                #pragma shader_feature _ALPHAPREMULTIPLY_ON               
 
                 //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
@@ -183,7 +178,7 @@ Shader "HoloToolkit/Fast Configurable"
         {
             Name "ShadowCaster"
             Tags{ "LightMode" = "ShadowCaster" }
-            Blend[_SrcBlend] One
+            Blend [_SrcBlend] One
 
             CGPROGRAM
                 #pragma vertex shadowcast_vert

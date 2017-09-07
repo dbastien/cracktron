@@ -52,6 +52,7 @@
 
         protected MaterialProperty alphaTestEnabled;
         protected MaterialProperty alphaCutoff;
+        protected MaterialProperty alphaPremultiplyEnabled;
 
         protected MaterialProperty srcBlend;
         protected MaterialProperty dstBlend;
@@ -118,11 +119,6 @@
                 CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
 
                 matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
-
-                if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
-                {
-                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoffText.text);
-                }
             }
             ShaderGUIUtils.EndHeader();
             ShaderGUIUtils.HeaderSeparator();
@@ -133,7 +129,9 @@
                 matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
                 matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
                 EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
-                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
+                {
+                    matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
+                }
                 EditorGUI.EndDisabledGroup();
 
                 ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
@@ -198,7 +196,8 @@
                 {
                     if (mode == BlendMode.Advanced)
                     {
-                        matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);                       
+                        matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);
+                        matEditor.ShaderProperty(this.alphaPremultiplyEnabled, Styles.alphaPremultiplyEnabled.text);
                     }
 
                     if (
@@ -339,7 +338,7 @@
                     mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
                     mat.SetInt("_ZWrite", 1);
                     mat.SetKeyword("_ALPHATEST_ON", false);
-                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);                    
+                    mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);     
                     mat.renderQueue = -1;
                     break;
                 case BlendMode.Cutout:
@@ -460,6 +459,7 @@
 
             this.alphaTestEnabled = ShaderGUI.FindProperty("_AlphaTest", props);
             this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
+            this.alphaPremultiplyEnabled = ShaderGUI.FindProperty("_AlphaPremultiply", props);
 
             this.srcBlend = ShaderGUI.FindProperty("_SrcBlend", props);
             this.dstBlend = ShaderGUI.FindProperty("_DstBlend", props);
@@ -488,7 +488,7 @@
 
             public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
             public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");
-            public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights (expensive)");
+            public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights that don't get a fwdadd pass");
             public static GUIContent perPixelLighting = new GUIContent("Per-Pixel diffuse", "Do diffuse lighting per-pixel instead of per-vertex - using a bump map will force this on");
 
             public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
@@ -515,9 +515,10 @@
             public static GUIContent normalOffsetShadowsEnabled = new GUIContent("Normal Offset Shadows", "Offset along normal before projecting into shadow space");           
             public static GUIContent transparentShadowsEnabled = new GUIContent("Semi-Transparent Shadows", "Enables dithered shadow transparency based on object alpha");
 
-            //alpha test
+            //alpha
             public static GUIContent alphaTestEnabled = new GUIContent("Alpha Test", "Enables rejection of pixels based on alpha and cutoff");
             public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Pixels with alpha below this value will be rejected");
+            public static GUIContent alphaPremultiplyEnabled = new GUIContent("Premultiply Alpha", "Premultiply RGB by alpha");
 
             public static GUIContent srcBlend = new GUIContent("Source Blend", "Blend factor for transparency, etc.");
             public static GUIContent dstBlend = new GUIContent("Destination Blend", "Blend factor for transparency, etc.");

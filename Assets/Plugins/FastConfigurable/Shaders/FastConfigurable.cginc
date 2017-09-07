@@ -12,8 +12,6 @@
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 //todo: share world view dir
-//_ALPHAPREMULTIPLY_ON
-//_ALPHABLEND_ON
 
 float4 _Color;
 UNITY_DECLARE_TEX2D(_MainTex);
@@ -149,9 +147,11 @@ v2f vert(a2v v)
             #if defined(_USEDIFFUSE_ON)
                 o.vertexLighting += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
+
             #if defined(_SHADE4_ON)
                 o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
             #endif
+            
             #if defined(_USERIMLIGHTING_ON)
                 o.vertexLighting += RimLight(worldNormal, worldPos);
             #endif
@@ -211,9 +211,11 @@ fixed4 frag(v2f IN) : SV_Target
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
         float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+
         #if defined(SHADOWS_SCREEN)
             diffuseContrib = min(lightColor, lightAttenuation * 2.0);
         #endif
+
         color.rgb += lightColor;
     #else
         float3 diffuseContrib = IN.vertexLighting;
@@ -237,9 +239,11 @@ fixed4 frag(v2f IN) : SV_Target
             #if defined(_USEDIFFUSE_ON)
                 diffuseContrib += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
+
             #if defined(_SHADE4_ON)
                 diffuseContrib += FastShade4PointLights(IN.worldPos, worldNormal);
             #endif
+
             #if defined(_USERIMLIGHTING_ON)
                 diffuseContrib += RimLight(worldNormal, IN.worldPos);
             #endif         
@@ -247,20 +251,23 @@ fixed4 frag(v2f IN) : SV_Target
 
         #if defined(_SPECULARHIGHLIGHTS_ON)
             float gloss = _Gloss;
+            float specular = _Specular;
+
             #if defined(_USEGLOSSMAP_ON)
                 gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
             #endif
-            float specular = _Specular;
+
             #if defined(_USESPECULARMAP_ON)
                 specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
             #endif
+
             #if defined(_SPECULARHIGHLIGHTS_ON)
                 specContrib += FastLightingSpecularSchlick(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
             #endif
         #endif   
 
-//FastPreMultiplyAlpha
-        color.rgb = color.rgb * diffuseContrib + specContrib;
+        color = FastPreMultiplyAlpha(color * float4(diffuseContrib,1));
+        color.rgb += specContrib;
         color.rgb *= lightAttenuation;
     #endif
    

@@ -69,6 +69,7 @@ shadowcast_v2f shadowcast_vert(shadowcast_a2v v)
     #endif
 
     //TRANSFER_SHADOW_CASTER_NOPOS
+    //UnityClipSpaceShadowCasterPos has a sqrt   
     #if defined(_USENORMALOFFSETSHADOWS_ON)
         //clip space, linear bias, normal offset
         TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)

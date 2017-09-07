@@ -22,18 +22,13 @@ inline float4 FastPreMultiplyAlpha(float4 color)
     return color;
 }
 
-inline float3 FastPreMultiplyAlphaWithReflectivity(float3 diffColor, float alpha, float oneMinusReflectivity, out float outModifiedAlpha)
+inline float4 FastPreMultiplyAlphaWithReflectivity(float4 color, float oneMinusReflectivity)
 {
 #if defined(_ALPHAPREMULTIPLY_ON)
     //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
-    diffColor *= alpha;
-
-    //reflectivity is removed from the rest of components, including transparency
-    outModifiedAlpha = 1 - oneMinusReflectivity + alpha*oneMinusReflectivity;
-#else
-    outModifiedAlpha = alpha;
+    return float4(color.rgb * color.a, 1 - oneMinusReflectivity + color.a * oneMinusReflectivity);
 #endif
-    return diffColor;
+    return color;
 }
 
 #endif //SHADER_COMMON

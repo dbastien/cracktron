@@ -9,6 +9,8 @@
 
 #define pow2(x) ( (x)*(x) )
 #define pow3(x) ( (x)*(x)*(x) )
+
+//todo: verify compiler optimizes to putting x*x into a temp register then further multiplies using that
 #define pow4(x) ( (x)*(x)*(x)*(x) )
 #define pow5(x) ( (x)*(x)*(x)*(x)*(x) )
 
@@ -34,7 +36,7 @@ float random(float2 seed)
     return frac(sin(dot(seed, float2(12.9898, 78.233))) * 43758.5453);
 }
 
-//https://www.wolframalpha.com/input/?i=Plot%5B%7B1.055+*+x+%5E+0.416666667+-+0.055),+x*(1%2Fsqrt(x))),+1.055*(x+%5E+0.416666667)-0.055%7D,%7Bx,0,1%7D%5D
+//https://www.wolframalpha.com/input/?i=Plot%5B%7B(1.055+*+x+%5E+0.416666667+-+0.055),+(x*(1%2Fsqrt(x))),+(1.055*(x+%5E+0.416666667)-0.055)%7D,%7Bx,0,1%7D%5D
 inline float3 LinearToSRGBTaylor(float3 color)
 {
     return color * taylorrsqrt(color);
@@ -45,7 +47,20 @@ inline float3 LinearToSRGBChilliant(float3 color)
     // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
     // linear to srgb
     // this is the method unity uses (although not explicitly in mad() form)
-    return mad_sat(1.055, pow(color, 0.416666667), -0.055);
+    // essentially the official conversion but non-piecewise and omits the small linear component
+    return mad_sat(1.055, pow(color, 1.0 / 2.4), -0.055);
+}
+
+inline float3 LinearToSRGBOfficial(float3 color)
+{
+    //sometimes incorrectly implemented as col < instead of <=
+	return (color <= 0.0031308) ? 12.92 * color : 1.055 * pow(color, 1.0 / 2.4) - 0.055;
+}
+
+//http://entropymine.com/imageworsener/srgbformula/
+inline float3 LinearToSRGBImproved(float3 color)
+{
+	return (color <= 0.00313066844250063) ? 12.92 * color : 1.055 * pow(color, 1.0 / 2.4) - 0.055;
 }
 
 #endif //FAST_MATH
