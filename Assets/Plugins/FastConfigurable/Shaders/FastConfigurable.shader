@@ -12,7 +12,7 @@ Shader "HoloToolkit/Fast Configurable"
 
         [Toggle] _UseOcclusionMap("Occlusion/Detail Texture Enabled?", Float) = 0
         [NoScaleOffset]_OcclusionMap("Occlusion/Detail Texture", 2D) = "blue" {}
-       
+        
         [Toggle] _UseAmbient("Ambient Lighting Enabled?", Float) = 1
         [Toggle] _UseDiffuse("Diffuse Lighting Enabled?", Float) = 1
 
@@ -41,7 +41,7 @@ Shader "HoloToolkit/Fast Configurable"
         [Toggle] _UseRimLighting("Rim Lighting Enabled?", Float) = 0
         [PowerSlider(.6)]_RimPower("Power", Range(0.1, 1.0)) = 0.7
         _RimColor("Color", Color) = (1,1,1,1)
-    
+
         [Toggle] _UseEmissionColor("Emission Color Enabled?", Float) = 0
         _EmissionColor("Emission Color", Color) = (1,1,1,1)
         [Toggle] _UseEmissionMap("Emission Map Enabled?", Float) = 0
@@ -210,6 +210,5 @@ Shader "HoloToolkit/Fast Configurable"
             ENDCG
         }
     } 
-    
-    CustomEditor "HoloToolkit.Unity.FastConfigurableGUI"
+    CustomEditor "FastConfigurableGUI"
 }

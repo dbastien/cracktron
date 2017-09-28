@@ -16,6 +16,7 @@
 
 //taylor inverse square root in mad() form
 //mileage varies, but half the latency of rsqrt on some platforms
+//https://www.wolframalpha.com/input/?i=Plot%5B+%7B(1.055+*+x+%5E+0.416666667+-+0.055),+(x*(1%2Fsqrt(x)))%7D,+%7Bx,0,1%7D+%5D
 #define taylorrsqrt(x) ( mad(-0.85373472095314, (x), 1.79284291400159) )
 
 #define remap01(x, minX, maxX) ( ((x) - (minX)) / ((maxX) - (minX)) )
@@ -47,7 +48,7 @@ inline float3 LinearToSRGBChilliant(float3 color)
     // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
     // linear to srgb
     // this is the method unity uses (although not explicitly in mad() form)
-    // essentially the official conversion but non-piecewise and omits the small linear component
+    // essentially the official conversion but non-piecewise - omitting the small linear component
     return mad_sat(1.055, pow(color, 1.0 / 2.4), -0.055);
 }
 

@@ -7,14 +7,15 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Floor
-  m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
-  m_ShaderKeywords: _FORCEPERPIXEL_ON _MainTex_SCALE_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON
-    _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINTEX_ON
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _MainTex_SCALE_ON _SPECULARHIGHLIGHTS_OFF
+    _USEAMBIENT_ON _USEDIFFUSE_ON _USEMAINCOLOR_ON _USEMAINTEX_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -68,30 +69,31 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaPremultiply: 0
     - _AlphaTest: 0
     - _BlendOp: 0
     - _BumpScale: 1
     - _CalibrationSpaceReflections: 0
     - _ColorWriteMask: 15
     - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cutoff: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _ForcePerPixel: 1
+    - _DstBlend: 10
+    - _ForcePerPixel: 0
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
-    - _Mode: 0
+    - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _ReflectionScale: 2
     - _RimPower: 0.7
-    - _Shade4: 1
+    - _Shade4: 0
     - _SmoothnessTextureChannel: 0
     - _Specular: 10
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SrcBlend: 1
     - _UVSec: 0
     - _UseAmbient: 1
@@ -101,7 +103,7 @@ Material:
     - _UseEmissionColor: 0
     - _UseEmissionMap: 0
     - _UseGlossMap: 0
-    - _UseMainColor: 0
+    - _UseMainColor: 1
     - _UseMainTex: 0
     - _UseNormalOffsetShadows: 0
     - _UseOcclusionMap: 0
@@ -111,10 +113,10 @@ Material:
     - _UseSpecularMap: 0
     - _UseVertexColor: 0
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.39511245, g: 0.8605089, b: 0.9264706, a: 1}
     - _TextureScaleOffset: {r: 10, g: 10, b: 0, a: 0}

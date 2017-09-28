@@ -93,7 +93,7 @@ Material:
     - _Mode: 3
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ReflectionScale: 0.25
+    - _ReflectionScale: 0.5
     - _RimPower: 0.7
     - _Shade4: 1
     - _Shininess: 0.074

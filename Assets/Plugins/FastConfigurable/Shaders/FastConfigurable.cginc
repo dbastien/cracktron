@@ -6,9 +6,9 @@
 #include "FastLighting.cginc"
 #include "TextureMacro.cginc"
 
-#define USE_PER_PIXEL _FORCEPERPIXEL_ON
-#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || (USE_PER_PIXEL && (_SHADE4_ON || _USERIMLIGHTING_ON)))
-#define PIXEL_SHADER_USES_NORMAL (_FORCEPERPIXEL_ON || (USE_PER_PIXEL && !_USEBUMPMAP_ON) || _SPECULARHIGHLIGHTS_ON)
+//todo: reassess these
+#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || (_FORCEPERPIXEL_ON && (_SHADE4_ON || _USERIMLIGHTING_ON)))
+#define PIXEL_SHADER_USES_NORMAL (!_USEBUMPMAP_ON && (_FORCEPERPIXEL_ON || _SPECULARHIGHLIGHTS_ON))
 #define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 //todo: share world view dir
@@ -65,7 +65,7 @@ struct v2f
         float4 color : COLOR;
     #endif
 
-    #if !defined(_USEBUMPMAP_ON) && PIXEL_SHADER_USES_NORMAL
+    #if PIXEL_SHADER_USES_NORMAL
         float3 worldNormal : NORMAL;
     #endif
 
@@ -132,6 +132,7 @@ v2f vert(a2v v)
         o.texXYFadeZ.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
     #endif
 
+    //todo: not always needed
     float3 worldNormal = UnityObjectToWorldNormal(v.normal);
 
     #if defined(LIGHTMAP_ON)
@@ -143,7 +144,7 @@ v2f vert(a2v v)
             o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
         #endif
 
-        #if !USE_PER_PIXEL
+        #if !defined(_FORCEPERPIXEL_ON)
             #if defined(_USEDIFFUSE_ON)
                 o.vertexLighting += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
@@ -159,7 +160,7 @@ v2f vert(a2v v)
         #endif
     #endif
 
-    #if !defined(_USEBUMPMAP_ON) && PIXEL_SHADER_USES_NORMAL
+    #if PIXEL_SHADER_USES_NORMAL
         o.worldNormal = worldNormal;
     #endif
     
@@ -214,8 +215,6 @@ fixed4 frag(v2f IN) : SV_Target
         #if defined(SHADOWS_SCREEN)
             diffuseContrib = min(lightColor, lightAttenuation * 2.0);
         #endif
-
-        color.rgb += lightColor;
     #else
         float3 diffuseContrib = IN.vertexLighting;
         float3 specContrib = 0;
@@ -228,7 +227,7 @@ fixed4 frag(v2f IN) : SV_Target
             float3 worldNormal = normalize(IN.worldNormal);
         #endif 
 
-        #if USE_PER_PIXEL               
+        #if defined(_FORCEPERPIXEL_ON)               
             #if defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
                 //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
                 //not much quality benefit for the cost
@@ -250,12 +249,11 @@ fixed4 frag(v2f IN) : SV_Target
 
         #if defined(_SPECULARHIGHLIGHTS_ON)
             float gloss = _Gloss;
-            float specular = _Specular;
-
             #if defined(_USEGLOSSMAP_ON)
                 gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
             #endif
 
+            float specular = _Specular;
             #if defined(_USESPECULARMAP_ON)
                 specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
             #endif
