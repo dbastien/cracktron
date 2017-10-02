@@ -1,10 +1,10 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
-#include "ShaderCommon.cginc"
-#include "FastMath.cginc"
-#include "FastLighting.cginc"
-#include "TextureMacro.cginc"
+#include "./ShaderCommon.cginc"
+#include "./FastMath.cginc"
+#include "./FastLighting.cginc"
+#include "./TextureMacro.cginc"
 
 //todo: reassess these
 #define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || (_FORCEPERPIXEL_ON && (_SHADE4_ON || _USERIMLIGHTING_ON)))

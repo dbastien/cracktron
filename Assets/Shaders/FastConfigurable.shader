@@ -1,4 +1,4 @@
-Shader "HoloToolkit/Fast Configurable"
+Shader "Cracktron/Fast Configurable"
 {
     Properties
     {

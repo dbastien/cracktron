@@ -1,8 +1,9 @@
-﻿Shader "Debug/Normals"
+﻿Shader "Cracktron/Debug/Normals"
 {
     Properties
     {
     }
+    
     SubShader
     {
         Tags { "RenderType"="Opaque" }

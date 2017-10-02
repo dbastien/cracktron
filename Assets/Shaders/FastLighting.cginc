@@ -1,7 +1,7 @@
 #ifndef FAST_LIGHTING
 #define FAST_LIGHTING
 
-#include "GammaCorrection.cginc"
+#include "./GammaCorrection.cginc"
 
 // normal should be normalized, w=1.0
 // linear + constant terms

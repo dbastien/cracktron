@@ -1,7 +1,7 @@
 #ifndef SHADER_COMMON
 #define SHADER_COMMON
 
-#include "FastMath.cginc"
+#include "./FastMath.cginc"
 
 float4 _NearPlaneFadeDistance;
 

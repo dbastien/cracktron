@@ -1,6 +1,8 @@
 #ifndef NOISE
 #define NOISE
 
+#include "./FastMath.cginc"
+
 #define Mod289(x) ( mad(-floor((x) * (1.0 / 289.0)), 289.0, (x)) )
 
 //TODO: consider switching more functionss to macros

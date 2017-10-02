@@ -1,5 +1,5 @@
-#include "UnityCG.cginc"
-#include "TextureMacro.cginc"
+#include "./UnityCG.cginc"
+#include "./TextureMacro.cginc"
 
 #define USES_TEX_XY ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEMAINTEX_ON)
 #define USES_VERTEX_COLOR ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEVERTEXCOLOR_ON)
