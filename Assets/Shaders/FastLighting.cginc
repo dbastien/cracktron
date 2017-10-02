@@ -1,6 +1,8 @@
 #ifndef FAST_LIGHTING
 #define FAST_LIGHTING
 
+#include "GammaCorrection.cginc"
+
 // normal should be normalized, w=1.0
 // linear + constant terms
 inline float3 FastSHEvalLinearL0L1(float4 normal)
@@ -52,7 +54,7 @@ float3 FastShade4PointLights(float3 pos, float3 normal)
 
     // correct NdotL
     // use taylor multiplicative inverse square root approximation
-    ndotl = sat(ndotl * taylorrsqrt(lengthSq));
+    ndotl = sat(ndotl * TaylorRsqrt(lengthSq));
     //ndotl = sat(ndotl * rsqrt(lengthSq));
 
     // attenuation

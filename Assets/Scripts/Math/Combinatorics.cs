@@ -4,7 +4,7 @@ public static class Combinatorics
 {
     public static IEnumerable<List<T>> PermutationWithDuplication<T>(List<T> set, int k)
     {       
-        var n = set.Count;       
+        var n = set.Count; 
         var resultCount = Mathi.Pow(n, k);
 
         var resultSet = new List<List<T>>(resultCount);
