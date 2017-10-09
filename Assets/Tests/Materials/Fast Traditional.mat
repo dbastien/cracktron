@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New Material
+  m_Name: Fast Traditional
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
   m_ShaderKeywords: _FORCEPERPIXEL_ON _SHADE4_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON
     _USEDIFFUSE_ON

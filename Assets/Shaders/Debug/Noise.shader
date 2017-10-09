@@ -68,7 +68,7 @@
  
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv; 
-                
+                 
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }

@@ -8,9 +8,11 @@
 //http://entropymine.com/imageworsener/srgbformula/
 #define LTSI_OFFICIAL 0.00031308
 #define LTSI_IMPROVED 0.00313066844250063
-#define LTSI LTSI_IMPROVED
+
 #define STLI_OFFICIAL 0.04045
 #define STLI_IMPROVED 0.0404482362771082
+
+#define LTSI LTSI_IMPROVED
 #define STLI STLI_IMPROVED
 
 //https://www.wolframalpha.com/input/?i=Plot%5B%7B(1.055+*+x+%5E+0.416666667+-+0.055),+(x*(1%2Fsqrt(x))),+(1.055*(x+%5E+0.416666667)-0.055)%7D,%7Bx,0,1%7D%5D

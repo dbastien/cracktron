@@ -12,7 +12,13 @@ UNITY_DECLARE_TEX2D(_RandomTex);
 #define HASH_C2 2747636419u
 
 #define Mod289(x) ( mad(-floor((x) * (1.0 / 289.0)), 289.0, (x)) )
-#define RAND_FUNC(x) ( RandFromTex((x)) )
+
+//#define RAND_FUNC(x) ( RandFromTex((x)) )
+#define RAND_FUNC(x) ( RandFracSin((x)) )
+
+//TODO: consider using hack-y interfaces/function pointers
+//      http://code4k.blogspot.com/2011/11/advanced-hlsl-using-closures-and.html
+#define NOISE2D_FUNC(x) ( QuadraticNoise((x)) )
 
 // goo.gl/RXiKaH
 uint HashSchechterBridson(uint s)
@@ -113,10 +119,6 @@ float QuadraticNoise(float2 v)
 
     return Bilinear(c, t);
 }
-
-//TODO: consider using hack-y interfaces/function pointers
-//      http://code4k.blogspot.com/2011/11/advanced-hlsl-using-closures-and.html
-#define NOISE2D_FUNC(x) ( QuadraticNoise((x)) )
 
 inline float FBMNoiseStep
 (
