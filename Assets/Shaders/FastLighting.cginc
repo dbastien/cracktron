@@ -88,7 +88,9 @@ inline float3 FastLightingSpecularSchlick(float3 normal, float3 viewDir,
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);
+    //float schlickTerm = rcp((specularPower/nh)-specularPower+1);    
     float schlickTerm = nh / (specularPower - (specularPower * nh) + nh);
+    
 
     return (lightCol * specularColor) * schlickTerm * specularScale;
 }

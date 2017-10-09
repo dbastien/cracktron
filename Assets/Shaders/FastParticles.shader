@@ -136,5 +136,5 @@ Shader "Cracktron/Fast Configurable Particles"
         }
     }
 
-    CustomEditor "FastConfigurableParticlesGUI"
+    CustomEditor "FastParticlesGUI"
 }

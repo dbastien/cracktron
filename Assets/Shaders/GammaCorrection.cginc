@@ -3,6 +3,16 @@
 
 #include "FastMath.cginc"
 
+//linear to srgb space intersection points
+//of the linear and curved components of the function
+//http://entropymine.com/imageworsener/srgbformula/
+#define LTSI_OFFICIAL 0.00031308
+#define LTSI_IMPROVED 0.00313066844250063
+#define LTSI LTSI_IMPROVED
+#define STLI_OFFICIAL 0.04045
+#define STLI_IMPROVED 0.0404482362771082
+#define STLI STLI_IMPROVED
+
 //https://www.wolframalpha.com/input/?i=Plot%5B%7B(1.055+*+x+%5E+0.416666667+-+0.055),+(x*(1%2Fsqrt(x))),+(1.055*(x+%5E+0.416666667)-0.055)%7D,%7Bx,0,1%7D%5D
 inline float3 LinearToSRGBTaylor(float3 color)
 {
@@ -20,14 +30,7 @@ inline float3 LinearToSRGBChilliant(float3 color)
 
 inline float3 LinearToSRGBOfficial(float3 color)
 {
-    //sometimes incorrectly implemented as col < instead of <=
-	return (color <= 0.0031308) ? 12.92 * color : 1.055 * pow(color, 1.0 / 2.4) - 0.055;
-}
-
-//http://entropymine.com/imageworsener/srgbformula/
-inline float3 LinearToSRGBImproved(float3 color)
-{
-	return (color <= 0.00313066844250063) ? 12.92 * color : 1.055 * pow(color, 1.0 / 2.4) - 0.055;
+	return (color <= LTSI) ? 12.92 * color : 1.055 * pow(color, 1.0 / 2.4) - 0.055;
 }
 
 #endif //GAMMA_CORRECTION

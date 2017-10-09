@@ -3,7 +3,28 @@
 
 #include "./FastMath.cginc"
 
+UNITY_DECLARE_TEX2D(_RandomTex);
+
+//(2^32)/(GOLDENRATIO) - common cryptological hash constant
+#define HASH_C1 2654435769u
+
+//HASH_C1 % (2^32)     - semi-common cryptological hash constant
+#define HASH_C2 2747636419u
+
 #define Mod289(x) ( mad(-floor((x) * (1.0 / 289.0)), 289.0, (x)) )
+#define RAND_FUNC(x) ( RandFromTex((x)) )
+
+// goo.gl/RXiKaH
+uint HashSchechterBridson(uint s)
+{
+    s ^= HASH_C2;
+    s *= HASH_C1;
+    s ^= s >> 16;
+    s *= HASH_C1;
+    s ^= s >> 16;
+    s *= HASH_C1;
+    return s;
+}
 
 //TODO: consider switching more functionss to macros
 //      to easily perfomantly support half, min16float, etc.
@@ -29,35 +50,53 @@ inline float Permute4D(float4 v)
 
 //TODO: rand functions relying on trig may run into hardware implementation variability
 
+//domain ~[-10000, 10000], range [0,1)
+//everyone's favorite psuedo-random number generator
+//fairly uniformly distributed
+//http://www.wolframalpha.com/input/?i=plot(+mod(+sin(x*12.9898+%2B+y*78.233)+*+43758.5453123,1)x%3D0..1,+y%3D0..1)
+inline float RandFracSin(float2 seed)
+{
+    return frac(sin(dot(seed, float2(12.9898, 78.233))) * 43758.5453123);
+} 
+
 //range [0,1)
-inline float Rand(float seed)
+inline float RandFracSin(float seed)
 {
     return frac(sin(seed) * 43758.5453123);
 }
 
-//range [0,1)
-//everyone's favorite psuedo-random number generator
-//http://www.wolframalpha.com/input/?i=plot(+mod(+sin(x*12.9898+%2B+y*78.233)+*+43758.5453123,1)x%3D0..1,+y%3D0..1)
+inline float RandFromTex(float2 seed)
+{
+    return UNITY_SAMPLE_TEX2D(_RandomTex, seed).r;
+}
+
+inline float Rand(float seed)
+{
+    return RandFracSin(seed);
+}
+
 inline float Rand(float2 seed)
 {
-    return frac(sin(dot(seed, float2(12.9898, 78.233))) * 43758.5453123);
+    return RAND_FUNC(seed);
 }
 
 //range [0,1)
 inline float2 Rand2D(float2 seed)
 {
-    return float2(Rand(seed), Rand(seed*2));
+    return float2(RAND_FUNC(seed), RAND_FUNC(seed*2));
 }
 
 float4 QuadraticGrad(float2 v)
 {
+    float offset = 1.0;
+
     //gather 4 samples - 1 at each point of the quad   
     return float4
     (
         Rand(v),
-        Rand(v + float2(1.0, 0.0)),
-        Rand(v + float2(0.0, 1.0)),
-        Rand(v + float2(1.0, 1.0))
+        Rand(v + float2(offset, 0.0)),
+        Rand(v + float2(0.0   , offset)),
+        Rand(v + float2(offset, offset))
     );
 }
 
@@ -77,7 +116,7 @@ float QuadraticNoise(float2 v)
 
 //TODO: consider using hack-y interfaces/function pointers
 //      http://code4k.blogspot.com/2011/11/advanced-hlsl-using-closures-and.html
-#define NOISE2D_FUNC(x) QuadraticNoise((x))
+#define NOISE2D_FUNC(x) ( QuadraticNoise((x)) )
 
 inline float FBMNoiseStep
 (

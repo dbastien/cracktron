@@ -6,13 +6,7 @@ using UnityEngine;
 /// </summary>
 public static class InterpolationNormalized
 {    
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dt+%7D,+%7Bt,0,1%7D+%5D
-    public static float Linear(float t)
-    {
-        return t;
-    }
-
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dt*t*(3-2*t)+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5Bt*t*(3-2*t),+0..1%5D
     public static float SmoothStep(float t)
     {
         //3rd order
@@ -25,7 +19,6 @@ public static class InterpolationNormalized
         return InterpolationNormalized.SmoothStep(InterpolationNormalized.SmoothStep(t));
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dt+*+t+*+t+*+(t+*+(t+*+6+-+15)+%2B+10)+%7D,+%7Bt,0,1%7D+%5D
     public static float SmootherStep(float t)
     {
         //5th order
@@ -38,14 +31,19 @@ public static class InterpolationNormalized
         return InterpolationNormalized.SmootherStep(InterpolationNormalized.SmootherStep(t));
     }
 
+    // https://www.wolframalpha.com/input/?i=Plot%5Bt,+0..1%5D
+    public static float Linear(float t)
+    {
+        return t;
+    }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dt+*+t+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5Bt+*+t,+0..1%5D
     public static float QuadraticIn(float t)
     {
         return t * t;
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3D-(t+*+(t+-+2))+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5B-(t+*+(t+-+2)),+0..1%5D
     public static float QuadraticOut(float t)
     {
         return -(t * (t - 2f));
@@ -53,16 +51,18 @@ public static class InterpolationNormalized
 
     public static float QuadraticInOut(float t)
     {
-        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.QuadraticIn, InterpolationNormalized.QuadraticOut);
+        return InterpolationNormalized.DoEaseInOut(t,
+                                                   InterpolationNormalized.QuadraticIn,
+                                                   InterpolationNormalized.QuadraticOut);
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dt+*+t+*+t+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5Bt+*+t+*+t,+0..1%5D
     public static float CubicIn(float t)
     {
         return t * t * t;
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3D(t-1)%5E3+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5B(t-1)%5E3+%2B+1,+0..1%5D
     public static float CubicOut(float t)
     {
         t -= 1f;
@@ -71,23 +71,27 @@ public static class InterpolationNormalized
 
     public static float CubicInOut(float t)
     {
-        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.CubicIn, InterpolationNormalized.CubicOut);
+        return InterpolationNormalized.DoEaseInOut(t, 
+                                                   InterpolationNormalized.CubicIn,
+                                                   InterpolationNormalized.CubicOut);
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3D1+-+sqrt(1+-+t+*+t)+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5B1+-+sqrt(1+-+t+*+t),+0..1%5D
     public static float CircularIn(float t)
     { 
         return 1f - Mathf.Sqrt(1f - t * t);
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dsqrt((2+-+t)+*+t)+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5Bsqrt((2+-+t)+*+t),+0..1%5D
     public static float CircularOut(float t)
     {
         return Mathf.Sqrt((2f - t) * t);
     }
     public static float CircularInOut(float t)
     {
-        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.CircularIn, InterpolationNormalized.CircularOut);
+        return InterpolationNormalized.DoEaseInOut(t,
+                                                   InterpolationNormalized.CircularIn,
+                                                   InterpolationNormalized.CircularOut);
     }
 
     public static float BounceEaseIn(float t)
@@ -117,10 +121,12 @@ public static class InterpolationNormalized
 
     public static float BounceEaseInOut(float t)
     {
-        return InterpolationNormalized.DoEaseInOut(t, InterpolationNormalized.BounceEaseIn, InterpolationNormalized.BounceEaseOut);
+        return InterpolationNormalized.DoEaseInOut(t,
+                                                   InterpolationNormalized.BounceEaseIn,
+                                                   InterpolationNormalized.BounceEaseOut);
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3Dsin(t*PI)+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5Bsin(t*PI),+0..1%5D
     public static float SinHalf(float t)
     {
         return Mathf.Sin(t * MathfConstants.TauDiv2);
@@ -136,7 +142,7 @@ public static class InterpolationNormalized
         return Mathf.Abs((((t + .5f) * 2f) % 2) - 1f);
     }
 
-    // https://www.wolframalpha.com/input/?i=Plot%5B+%7B+v%3D(t+*+2)+mod+1+%7D,+%7Bt,0,1%7D+%5D
+    // https://www.wolframalpha.com/input/?i=Plot%5B(t+*+2)+mod+1,+0..1%5D
     public static float Sawtooth(float t)
     {
         //tricky - need to generate last point 

@@ -3,9 +3,9 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Editor for FastConfigurable shader
+/// Editor for FastTraditional shader
 /// </summary>
-public class FastConfigurableGUI : ShaderGUI
+public class FastTraditionalGUI : ShaderGUI
 {
     protected bool firstTimeApply = true;
 

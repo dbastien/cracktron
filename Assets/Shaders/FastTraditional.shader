@@ -1,4 +1,4 @@
-Shader "Cracktron/Fast Configurable"
+Shader "Cracktron/Fast Traditional"
 {
     Properties
     {
@@ -96,7 +96,7 @@ Shader "Cracktron/Fast Configurable"
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                #pragma enable_d3d11_debug_symbols
+                //#pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
@@ -125,7 +125,7 @@ Shader "Cracktron/Fast Configurable"
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON
 
-                #include "FastConfigurable.cginc"
+                #include "FastTraditional.cginc"
             ENDCG
         }
 
@@ -148,7 +148,7 @@ Shader "Cracktron/Fast Configurable"
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                #pragma enable_d3d11_debug_symbols
+                //#pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
@@ -170,7 +170,7 @@ Shader "Cracktron/Fast Configurable"
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON
 
-                #include "FastConfigurable.cginc"
+                #include "FastTraditional.cginc"
             ENDCG
         }
 
@@ -188,7 +188,7 @@ Shader "Cracktron/Fast Configurable"
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                #pragma enable_d3d11_debug_symbols
+                //#pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
@@ -206,9 +206,9 @@ Shader "Cracktron/Fast Configurable"
                 //may be set from script so generate both paths
                 #pragma multi_compile __ _NEAR_PLANE_FADE_ON
 
-                #include "FastConfigurableShadowCast.cginc" 
+                #include "FastShadowCast.cginc" 
             ENDCG
         }
     } 
-    CustomEditor "FastConfigurableGUI"
+    CustomEditor "FastTraditionalGUI"
 }

@@ -3,9 +3,9 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// Editor for FastConfigurable shader
+/// Editor for FastParticles shader
 /// </summary>
-public class FastConfigurableParticlesGUI : ShaderGUI
+public class FastParticlesGUI : ShaderGUI
 {
     protected bool firstTimeApply = true;
 
