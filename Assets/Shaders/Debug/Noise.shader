@@ -67,8 +67,8 @@
                 UNITY_INITIALIZE_OUTPUT(v2f, o);
  
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv; 
-                 
+                o.uv = v.uv;
+                
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
             }

@@ -75,7 +75,7 @@ public class FastParticlesGUI : ShaderGUI
         this.ShowBlendModeGUI(matEditor);
 
         var mode = (ParticleBlendMode)this.blendMode.floatValue;
-        var mat = matEditor.target as Material;
+//        var mat = matEditor.target as Material;
 
         ShaderGUIUtils.BeginHeader("Base Texture and Color");
         {

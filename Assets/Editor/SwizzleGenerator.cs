@@ -20,7 +20,7 @@ public class SwizzleGenerator : EditorWindow
         var window = GetWindow<SwizzleGenerator>();
         window.minSize = new Vector2(200f, 100f);
         window.maxSize = new Vector2(200f, 100f);
-        window.title = "Swizzle";
+        window.titleContent = new GUIContent("Swizzle");
         window.Show();
     }
 

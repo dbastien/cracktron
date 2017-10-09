@@ -69,6 +69,9 @@
 #define Remap01(x, minX, maxX) ( ((x) - (minX)) / ((maxX) - (minX)) )
 #define Remap(x, minIn, maxIn, minOut, maxOut) ( (minOut) + ((maxOut) - (minOut)) * Remap01((x), (minIn), maxIn)) )
 
+#define RemapNormF32ToU32(x) ( uint((x)*U32_MAX) )
+#define RemapU32ToNormF32(x) ( float((x))/U32_MAX ) 
+
 // maps from [0,1] to [-1,1]
 #define Remap01Center(x) ( ((x) - 0.5) * 2.0 )
 

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class SnapTarget : MonoBehaviour
 {
-    private List<GameObject> lineObjects;
+//    private List<GameObject> lineObjects;
 
     public void Awake()
     {
         var snapPoints = this.GetSnapPoints();
 
-        this.lineObjects = new List<GameObject>(snapPoints.Length);
+//        this.lineObjects = new List<GameObject>(snapPoints.Length);
 
         foreach (var snapPoint in snapPoints)
         {
@@ -24,7 +24,8 @@ public class SnapTarget : MonoBehaviour
                 //todo: pull material from snapmanager
                 //todo: custom shader that fades lines further away from you
                 lr.material = new Material(Shader.Find("Unlit/Color"));
-                lr.SetWidth(SnapManager.Instance.GridLineWidth, SnapManager.Instance.GridLineWidth);
+                lr.startWidth = SnapManager.Instance.GridLineWidth;
+                lr.endWidth = SnapManager.Instance.GridLineWidth;
 
                 Vector3 offset = Vector3.zero;
                 offset[d] = SnapManager.Instance.GridLineLength * 0.5f;

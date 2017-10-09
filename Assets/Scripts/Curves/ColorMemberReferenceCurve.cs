@@ -9,7 +9,7 @@ public class ColorMemberReferenceCurve : MonoBehaviour
     [NormalizedAnimationCurve] public AnimationCurve Curve;
 
     private float timeElapsed;
-    private Renderer render;
+//    private Renderer render;
 
     public void Reset()
     {
@@ -28,7 +28,7 @@ public class ColorMemberReferenceCurve : MonoBehaviour
 
     void OnEnable()
     {
-        this.render = this.GetComponent<Renderer>();
+//        this.render = this.GetComponent<Renderer>();
     }
 
     void Start()
