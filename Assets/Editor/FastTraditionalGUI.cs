@@ -114,7 +114,8 @@ public class FastTraditionalGUI : ShaderGUI
         {
             matEditor.ShaderProperty(this.vertexColorEnabled, Styles.vertexColorEnabled);
 
-            CustomMaterialEditor.TextureWithToggleableColorAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
+            CustomMaterialEditorUtils.TextureWithToggleableColorAutoScaleOffsetSingleLine(
+                matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
 
             matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
         }
@@ -167,14 +168,16 @@ public class FastTraditionalGUI : ShaderGUI
             }
             ShaderGUIUtils.EndHeader();
 
-            CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
+            CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(
+                matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
         }
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();
 
         ShaderGUIUtils.BeginHeader("Global");
         {
-            CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
+            CustomMaterialEditorUtils.TextureScaleOffsetVector4Property(
+                matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
         }
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();

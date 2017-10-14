@@ -130,7 +130,7 @@ inline float FBMNoiseStep
     inout float range
 )
 {
-    float stepResult = NOISE2D_FUNC(v*freq) * amplitude;    
+    float stepResult = NOISE2D_FUNC(v * freq) * amplitude;    
     freq *= lacunarity;
     range += amplitude;
     amplitude *= gain;

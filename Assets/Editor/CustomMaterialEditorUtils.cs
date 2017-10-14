@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Helper class for custom material editors
 /// </summary>
-public static class CustomMaterialEditor
+public static class CustomMaterialEditorUtils
 {
     public static Rect TextureWithToggleableColorSingleLine
     (
@@ -15,7 +15,7 @@ public static class CustomMaterialEditor
         MaterialProperty colorProp
     )
     {
-        var lineRect = CustomMaterialEditor.GetControlRectForSingleLine();
+        var lineRect = CustomMaterialEditorUtils.GetControlRectForSingleLine();
         var controlRect = lineRect;
 
         //TexturePropertyMiniThumbnail handles begin and end animation checks
@@ -132,12 +132,12 @@ public static class CustomMaterialEditor
         MaterialProperty scaleOffsetProp
     )
     {
-        var lineRect = CustomMaterialEditor.GetControlRectForSingleLine();
+        var lineRect = CustomMaterialEditorUtils.GetControlRectForSingleLine();
 
         //TexturePropertyMiniThumbnail handles begin and end animation checks
         matEditor.TexturePropertyMiniThumbnail(lineRect, textureProp, label.text, label.tooltip);
 
-        CustomMaterialEditor.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+        CustomMaterialEditorUtils.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
 
         return lineRect;
     }
@@ -151,9 +151,9 @@ public static class CustomMaterialEditor
         MaterialProperty scaleOffsetProp
     )
     {
-        var rect = CustomMaterialEditor.TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
+        var rect = CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
 
-        CustomMaterialEditor.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+        CustomMaterialEditorUtils.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
 
         return rect;
     }

@@ -79,14 +79,16 @@ public class FastParticlesGUI : ShaderGUI
 
         ShaderGUIUtils.BeginHeader("Base Texture and Color");
         {
-            CustomMaterialEditor.TextureWithAutoScaleOffsetSingleLine(matEditor, Styles.main, this.mainTexture, this.textureScaleAndOffset);
+            CustomMaterialEditorUtils.TextureWithAutoScaleOffsetSingleLine(
+                matEditor, Styles.main, this.mainTexture, this.textureScaleAndOffset);
         }
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();
 
         ShaderGUIUtils.BeginHeader("Global");
         {
-            CustomMaterialEditor.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
+            CustomMaterialEditorUtils.TextureScaleOffsetVector4Property(
+                matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
         }
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();

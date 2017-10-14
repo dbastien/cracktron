@@ -9,9 +9,18 @@ public static class Steering
         return result;
     }
 
-    // public static Vector3 Random()
-    // {
-    //     var result = Random.onUnitSphere;
-    //     return result; 
-    // }
+    public static Vector3 Pursue
+    (
+        Transform source, Transform target, float timeToLookAhead
+    )
+    {
+ //       var targetPos = target.position + targetVelocity * timeToLookAhead;
+         return Vector3.one; 
+    }
+
+    public static Vector3 Random()
+    {
+//        Vector3 result = Random.onUnitSphere;
+        return Vector3.one; 
+    }
 }
