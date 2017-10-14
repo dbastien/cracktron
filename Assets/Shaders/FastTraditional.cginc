@@ -263,10 +263,12 @@ fixed4 frag(v2f IN) : SV_Target
     #endif
    
     #if defined(_USEREFLECTIONS_ON)
+        float3 worldReflection = normalize(IN.worldReflection);
+
         #if defined(_USECUSTOMCUBEMAP_ON)
-            color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, IN.worldReflection) * _ReflectionScale;
+            color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, worldReflection) * _ReflectionScale;
         #else
-            color.rgb += UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, IN.worldReflection) * _ReflectionScale;
+            color.rgb += UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, worldReflection) * _ReflectionScale;
         #endif
     #endif
 

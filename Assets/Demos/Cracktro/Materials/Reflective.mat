@@ -6,10 +6,9 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Shiny
+  m_Name: Reflective
   m_Shader: {fileID: 4800000, guid: f1f3948b20c230044bda31b620ddd37f, type: 3}
-  m_ShaderKeywords: _FORCEPERPIXEL_ON _SPECULARHIGHLIGHTS_ON _USEAMBIENT_ON _USEDIFFUSE_ON
-    _USEMAINCOLOR_ON _USEREFLECTIONS_ON
+  m_ShaderKeywords: _USEREFLECTIONS_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -77,7 +76,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _ForcePerPixel: 1
+    - _ForcePerPixel: 0
     - _Gloss: 1
     - _GlossMapScale: 1
     - _Glossiness: 1
@@ -91,17 +90,17 @@ Material:
     - _Shade4: 0
     - _SmoothnessTextureChannel: 0
     - _Specular: 50
-    - _SpecularHighlights: 1
+    - _SpecularHighlights: 0
     - _SrcBlend: 1
     - _UVSec: 0
-    - _UseAmbient: 1
+    - _UseAmbient: 0
     - _UseBumpMap: 0
     - _UseCustomCubeMap: 1
-    - _UseDiffuse: 1
+    - _UseDiffuse: 0
     - _UseEmissionColor: 0
     - _UseEmissionMap: 0
     - _UseGlossMap: 0
-    - _UseMainColor: 1
+    - _UseMainColor: 0
     - _UseMainTex: 0
     - _UseNormalOffsetShadows: 0
     - _UseOcclusionMap: 0
@@ -113,7 +112,7 @@ Material:
     - _ZTest: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.1397059, g: 0.1397059, b: 0.1397059, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.23529412, g: 0.20588237, b: 0.20588237, a: 1}
