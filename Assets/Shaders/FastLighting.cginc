@@ -3,6 +3,24 @@
 
 #include "./GammaCorrection.cginc"
 
+inline float4 FastPreMultiplyAlpha(float4 color)
+{
+#if defined(_ALPHAPREMULTIPLY_ON)
+    //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
+    return float4(color.rgb * color.a, color.a);
+#endif
+    return color;
+}
+
+inline float4 FastPreMultiplyAlphaWithReflectivity(float4 color, float oneMinusReflectivity)
+{
+#if defined(_ALPHAPREMULTIPLY_ON)
+    //relies on pre-multiply alpha-blend (_SrcBlend = One, _DstBlend = OneMinusSrcAlpha)
+    return float4(color.rgb * color.a, 1 - oneMinusReflectivity + color.a * oneMinusReflectivity);
+#endif
+    return color;
+}
+
 // normal should be normalized, w=1.0
 // linear + constant terms
 inline float3 FastSHEvalLinearL0L1(float4 normal)

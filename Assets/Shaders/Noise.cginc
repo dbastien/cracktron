@@ -1,4 +1,4 @@
-#ifndef NOISE
+ #ifndef NOISE
 #define NOISE
 
 #include "./FastMath.cginc"
@@ -73,7 +73,7 @@ inline float RandFracSin(float seed)
 
 inline float RandFromTex(float2 seed)
 {
-    return UNITY_SAMPLE_TEX2D(_RandomTex, seed).r;
+    return UNITY_SAMPLE_TEX2D(_RandomTex, frac(seed * 43758.5453123)).r;
 }
 
 inline float Rand(float seed)

@@ -55,7 +55,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RandomTex:
-        m_Texture: {fileID: 2800000, guid: 2a79aa6b7f992b547babb4c3f5ece9f1, type: 3}
+        m_Texture: {fileID: 2800000, guid: e408ddd6fd9680844b090bba408c1c91, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -71,10 +71,10 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseFrequency: 12
-    - _NoiseGain: 0.37
-    - _NoiseLacunarity: 1.763
-    - _NoiseWhirl: 0.339
+    - _NoiseFrequency: 15.2
+    - _NoiseGain: 0.51
+    - _NoiseLacunarity: 2.115
+    - _NoiseWhirl: 0.062
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0

@@ -1,7 +1,7 @@
 Shader "Cracktron/Fast Traditional"
 {
     Properties
-    {
+    { 
         _Mode("Rendering Mode", Float) = 0
 
         [Toggle] _UseVertexColor("Vertex Color Enabled?", Float) = 0
@@ -167,9 +167,6 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
 
-                //may be set from script so generate both paths
-                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
-
                 #include "FastTraditional.cginc"
             ENDCG
         }
@@ -202,9 +199,6 @@ Shader "Cracktron/Fast Traditional"
 
                 #pragma shader_feature _USENORMALOFFSETSHADOWS_ON
                 #pragma shader_feature _USESEMITRANSPARENTSHADOWS_ON
-
-                //may be set from script so generate both paths
-                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
 
                 #include "FastShadowCast.cginc" 
             ENDCG

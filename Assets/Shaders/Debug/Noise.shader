@@ -1,7 +1,7 @@
 ﻿Shader "Cracktron/Debug/Noise"
 {
     Properties
-    {
+    { 
         [PowerSlider(3.0)] _NoiseFrequency  ("Frequency", Range(5, 200)) = 73.0
         [PowerSlider(3.0)] _NoiseGain       ("Gain", Range(0.1, 3.0)) = .5
         [PowerSlider(2.0)] _NoiseLacunarity ("Lacunarity", Range(1.0, 3.0)) = 1.93485736
@@ -20,7 +20,7 @@
         [Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1 //"On"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("ColorWriteMask", Float) = 15 //"All"
     }
-
+ 
     SubShader
     {
         Tags { "RenderType"="Opaque" }
@@ -38,7 +38,8 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-             
+//            #pragma target 5.0
+          
             #include "UnityCG.cginc"
             #include "HLSLSupport.cginc"            
             #include "AutoLight.cginc"
@@ -57,17 +58,17 @@
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
+                float2 seed : TEXCOORD0;
                 float4 vertex : SV_POSITION;
             };     
-           
+  
             v2f vert (a2v v)
             { 
                 v2f o;		
                 UNITY_INITIALIZE_OUTPUT(v2f, o);
  
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
+                o.seed = v.uv;
                 
                 TRANSFER_VERTEX_TO_FRAGMENT(o);
                 return o;
@@ -76,9 +77,9 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 float noise; 
-                //noise = NOISE2D_FUNC(i.uv * _NoiseFrequency);
-                //noise = FBMNoise(i.uv, _NoiseFrequency, _NoiseGain, _NoiseLacunarity, 3.0);
-                noise = Turbulence(i.uv, _NoiseFrequency, _NoiseGain, _NoiseLacunarity, _NoiseWhirl, 4.0);
+                //    noise = NOISE2D_FUNC(i.seed * _NoiseFrequency);
+                //noise = FBMNoise(i.seed, _NoiseFrequency, _NoiseGain, _NoiseLacunarity, 3.0);
+                noise = Turbulence(i.seed, _NoiseFrequency, _NoiseGain, _NoiseLacunarity, _NoiseWhirl, 3.0);
 
                 return float4(noise, noise, noise, 1.0);
             }

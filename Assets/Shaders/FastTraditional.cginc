@@ -1,7 +1,6 @@
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
-#include "./ShaderCommon.cginc"
 #include "./FastMath.cginc"
 #include "./FastLighting.cginc"
 #include "./TextureMacro.cginc"
@@ -69,7 +68,7 @@ struct v2f
         float3 worldNormal : NORMAL;
     #endif
 
-    #if USES_TEX_XY || defined(_NEAR_PLANE_FADE_ON)
+    #if USES_TEX_XY
         float3 texXYFadeZ : TEXCOORD0;
     #endif
 
@@ -169,11 +168,6 @@ v2f vert(a2v v)
         //incident vector need not be normalized
         o.worldReflection = reflect(-worldViewDir, worldNormal);
    #endif
-
-    //fade away objects closer to the camera
-    #if defined(_NEAR_PLANE_FADE_ON)
-        o.texXYFadeZ.z = ComputeNearPlaneFadeLinear(v.vertex);
-    #endif
 
     //transfer shadow and lightmap info
     TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -282,10 +276,6 @@ fixed4 frag(v2f IN) : SV_Target
 
     #if defined(_USEEMISSIONCOLOR_ON)
         color.rgb += _EmissionColor;
-    #endif
-
-    #if defined(_NEAR_PLANE_FADE_ON)
-        color.rgb *= IN.texXYFadeZ.z;
     #endif
 
     UNITY_APPLY_FOG(IN.fogCoord, color);
