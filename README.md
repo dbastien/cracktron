@@ -2,7 +2,7 @@
 cracktro style effects for unity
 
 ## Dependencies
-Unity 2017.1.0f3
+[Unity](http://www.unity3d.com) 2017.1.0f3
 
 ## Getting Started
 Open the root folder of the project in Unity.
