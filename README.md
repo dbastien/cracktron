@@ -1,3 +1,7 @@
+<p align="center">
+!(http://img.shields.io/badge/contributions-closed-red.svg)
+</p>
+
 # Cracktron
 cracktro style effects for unity
 
