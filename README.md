@@ -1,5 +1,5 @@
 <p align="center">
-!(http://img.shields.io/badge/contributions-closed-red.svg)
+<img src="http://img.shields.io/badge/contributions-closed-red.svg">
 </p>
 
 # Cracktron
