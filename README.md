@@ -8,7 +8,7 @@
 Cracktro style effects for unity!
 
 <p align="center">
-<img src="/Docs/screenshot.png">
+<img src="/Docs/screenshot.jpg">
 </p>
 
 ## Dependencies
