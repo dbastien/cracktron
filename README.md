@@ -12,8 +12,10 @@ Cracktro style effects for unity!
 
 ## Getting Started
 Open the root folder of the project in Unity.
-Pick a demo folder from one in Assets/Demos.
-Open main.scene and play around!
+
+Pick a demo folder from one in [Assets/Demos](/Assets/Demos).
+
+Open the main.scene in that folder and play around!
 
 ## Additional Items
 ### [Mathematica](/Mathematica)
