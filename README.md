@@ -16,13 +16,13 @@ Pick a demo folder from one in Assets/Demos.
 Open main.scene and play around!
 
 ## Additional Items
-### Mathematica
+### [Mathematica](/Mathematica)
 Mathematica workbooks I use to estimate error in approximation functions, etc.
 
-### Notepad++ Language Definitions
+### [Notepad++ Language Definitions](/Notepad%2B%2B%20Language%20Definitions)
 Language definition for hlsl/cg that also understands Unity specific shader syntax.
 I personally now use VSCode which has excellent built-in syntax highlighting.
 
-### Templates
+### [Templates](/Templates)
 Replacement starter script (C# only)/shader templates for Unity
 
