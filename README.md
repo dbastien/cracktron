@@ -7,9 +7,7 @@
 # Cracktron
 Cracktro style effects for unity!
 
-<p align="center">
-<img src="/Docs/screenshot.jpg">
-</p>
+<p align="center"><img src="/Docs/screenshot.jpg"></p>
 
 ## Dependencies
 [Unity](http://www.unity3d.com) 2017.1.0f3
@@ -20,6 +18,13 @@ Open the root folder of the project in Unity.
 Pick a demo folder from one in [Assets/Demos](/Assets/Demos).
 
 Open the main.scene in that folder and play around!
+
+## Areas of Notable Interest
+### Transform Curves
+<p align="center"><img src="/Docs/transformcurve.jpg"></p>
+
+### Noise
+<p align="center"><img src="/Docs/noise.jpg"></p>
 
 ## Additional Items
 ### [Mathematica](/Mathematica)
