@@ -108,47 +108,6 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &101599965 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_PrefabInternal: {fileID: 752469955}
---- !u!4 &101599966 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_PrefabInternal: {fileID: 752469955}
---- !u!114 &101599967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 101599965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37cbf3b87d1fe840ab0e9ffc409936d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  Start: {x: 5, y: 1.5, z: -6}
-  End: {x: 5, y: 1.5, z: 6}
-  LengthScale: 5
-  CurveTargetName: position
 --- !u!1 &264148440
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +565,7 @@ GameObject:
   m_Component:
   - component: {fileID: 364530789}
   m_Layer: 0
-  m_Name: Basic Sample Objects
+  m_Name: Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -623,8 +582,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 654965284}
-  - {fileID: 1678471681}
-  - {fileID: 101599966}
   - {fileID: 747591437}
   - {fileID: 578477999}
   - {fileID: 1331984118}
@@ -1148,85 +1105,6 @@ MonoBehaviour:
   End: {x: -2, y: -1, z: 0}
   LengthScale: 1
   CurveTargetName: forward
---- !u!1 &493424975
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 493424976}
-  - component: {fileID: 493424977}
-  m_Layer: 0
-  m_Name: Point light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &493424976
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 493424975}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 1678471681}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &493424977
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 493424975}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 2
-  m_Color: {r: 1, g: 0.6827586, b: 0, a: 1}
-  m_Intensity: 100
-  m_Range: 5
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1 &493622004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2063,7 +1941,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 364530789}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &578478000
 MonoBehaviour:
@@ -2400,7 +2278,7 @@ GameObject:
   - component: {fileID: 654965289}
   - component: {fileID: 654965288}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Distorting Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2413,7 +2291,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 654965283}
   m_LocalRotation: {x: 0, y: 0, z: 0.2588191, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 1.5, z: -1}
+  m_LocalPosition: {x: 0, y: 1.5, z: -4}
   m_LocalScale: {x: 2, y: 3, z: 2}
   m_Children: []
   m_Father: {fileID: 364530789}
@@ -2884,7 +2762,7 @@ Prefab:
     - target: {fileID: 224617781409709430, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224617781409709430, guid: a5a86f957c795944a917dd168669df42,
         type: 2}
@@ -5436,7 +5314,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 364530789}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &747591438
 MonoBehaviour:
@@ -5790,76 +5668,6 @@ MonoBehaviour:
   End: {x: 0, y: 360, z: 0}
   LengthScale: 1.5
   CurveTargetName: eulerAngles
---- !u!1001 &752469955
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 364530789}
-    m_Modifications:
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_Name
-      value: monkey 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9d0cde4b60639bf4293e9933a51665eb, type: 2}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_IsPrefabParent: 0
 --- !u!1 &787354360
 GameObject:
   m_ObjectHideFlags: 0
@@ -6729,85 +6537,6 @@ Transform:
   m_Father: {fileID: 1331984118}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &996264076
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 996264077}
-  - component: {fileID: 996264078}
-  m_Layer: 0
-  m_Name: Point light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &996264077
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 996264076}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 101599966}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &996264078
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 996264076}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 2
-  m_Color: {r: 1, g: 0.6827586, b: 0, a: 1}
-  m_Intensity: 100
-  m_Range: 5
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_FalloffTable:
-    m_Table[0]: 0
-    m_Table[1]: 0
-    m_Table[2]: 0
-    m_Table[3]: 0
-    m_Table[4]: 0
-    m_Table[5]: 0
-    m_Table[6]: 0
-    m_Table[7]: 0
-    m_Table[8]: 0
-    m_Table[9]: 0
-    m_Table[10]: 0
-    m_Table[11]: 0
-    m_Table[12]: 0
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
 --- !u!1 &1301333548
 GameObject:
   m_ObjectHideFlags: 0
@@ -7360,7 +7089,7 @@ Transform:
   - {fileID: 391498443}
   - {fileID: 787354361}
   m_Father: {fileID: 364530789}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1360968994
 GameObject:
@@ -11247,47 +10976,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1678471680 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_PrefabInternal: {fileID: 1785581202}
---- !u!4 &1678471681 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_PrefabInternal: {fileID: 1785581202}
---- !u!114 &1678471682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1678471680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37cbf3b87d1fe840ab0e9ffc409936d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Curve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 0
-    m_PostInfinity: 0
-    m_RotationOrder: 0
-  Start: {x: -5, y: 1.5, z: -6}
-  End: {x: -5, y: 1.5, z: 6}
-  LengthScale: 5
-  CurveTargetName: position
 --- !u!1 &1722112550
 GameObject:
   m_ObjectHideFlags: 0
@@ -11337,7 +11025,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.31617647, g: 0.31617647, b: 0.31617647, a: 0}
+  m_BackGroundColor: {r: 0.1102941, g: 0.11110509, b: 0.11110509, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -11370,13 +11058,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1722112550}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: 5, z: -13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
 --- !u!1 &1755920797
 GameObject:
   m_ObjectHideFlags: 0
@@ -11408,64 +11096,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1785581202
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 364530789}
-    m_Modifications:
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_Name
-      value: monkey 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2300000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 9d0cde4b60639bf4293e9933a51665eb, type: 2}
-    - target: {fileID: 100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: eda4b4dfacfbb0b4da686041d40b9761, type: 3}
-  m_IsPrefabParent: 0
 --- !u!1 &1917303269
 GameObject:
   m_ObjectHideFlags: 0
@@ -11477,7 +11107,7 @@ GameObject:
   - component: {fileID: 1917303271}
   - component: {fileID: 1917303270}
   m_Layer: 0
-  m_Name: Trail 2
+  m_Name: Trail Bot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11516,10 +11146,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 0.35
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.2
+    widthMultiplier: 0.25
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -11534,37 +11164,37 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 1}
-      key1: {r: 1, g: 0, b: 0.972414, a: 1}
-      key2: {r: 0.4796182, g: 0.3140422, b: 1, a: 1}
-      key3: {r: 0.737931, g: 1, b: 0, a: 0}
-      key4: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 1, g: 1, b: 1, a: 0.071165785}
+      key1: {r: 1, g: 0.8482759, b: 0, a: 0.76862746}
+      key2: {r: 1, g: 0.5269257, b: 0.3140422, a: 0.76862746}
+      key3: {r: 1, g: 1, b: 1, a: 0.0627451}
+      key4: {r: 1, g: 1, b: 1, a: 0.0627451}
       key5: {r: 1, g: 1, b: 1, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 20817
-      ctime2: 43562
+      ctime1: 18890
+      ctime2: 46646
       ctime3: 65535
       ctime4: 65535
       ctime5: 65535
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
-      atime2: 65535
-      atime3: 0
-      atime4: 0
+      atime1: 9830
+      atime2: 55705
+      atime3: 65535
+      atime4: 65535
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 4
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 3
     generateLightingData: 0
   m_MinVertexDistance: 0.01
   m_Autodestruct: 0
@@ -11585,21 +11215,309 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 0.020416647
+      outSlope: 0.020416647
+      tangentMode: 34
     - serializedVersion: 2
-      time: 1
+      time: 0.020408163
+      value: 0.00041666627
+      inSlope: 0.040884405
+      outSlope: 0.040884405
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.040816326
+      value: 0.0016687512
+      inSlope: 0.081975445
+      outSlope: 0.081975445
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.06122449
+      value: 0.0037626028
+      inSlope: 0.123483405
+      outSlope: 0.123483405
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.08163265
+      value: 0.00670889
+      inSlope: 0.165631
+      outSlope: 0.165631
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.10204081
+      value: 0.010523051
+      inSlope: 0.20865914
+      outSlope: 0.20865914
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.12244897
+      value: 0.015225589
+      inSlope: 0.25282782
+      outSlope: 0.25282782
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.14285713
+      value: 0.020842552
+      inSlope: 0.298437
+      outSlope: 0.298437
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.1632653
+      value: 0.027406693
+      inSlope: 0.3458285
+      outSlope: 0.3458285
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.18367347
+      value: 0.034958005
+      inSlope: 0.39540103
+      outSlope: 0.39540103
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.20408164
+      value: 0.043545514
+      inSlope: 0.44763935
+      outSlope: 0.44763935
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.22448981
+      value: 0.053229004
+      inSlope: 0.50312984
+      outSlope: 0.50312984
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.24489798
+      value: 0.06408143
+      inSlope: 0.5626098
+      outSlope: 0.5626098
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.26530614
+      value: 0.07619268
+      inSlope: 0.62702084
+      outSlope: 0.62702084
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.2857143
+      value: 0.089674115
+      inSlope: 0.6975944
+      outSlope: 0.6975944
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.30612245
+      value: 0.104665905
+      inSlope: 0.7759965
+      outSlope: 0.7759965
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3265306
+      value: 0.12134743
+      inSlope: 0.8645456
+      outSlope: 0.8645456
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.34693876
+      value: 0.13995346
+      inSlope: 0.96660256
+      outSlope: 0.96660256
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3673469
+      value: 0.16080058
+      inSlope: 1.0872852
+      outSlope: 1.0872852
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.38775507
+      value: 0.18433243
+      inSlope: 1.2348988
+      outSlope: 1.2348988
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.40816322
+      value: 0.21120459
+      inSlope: 1.4241388
+      outSlope: 1.4241388
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.42857137
+      value: 0.24246052
+      inSlope: 1.6845202
+      outSlope: 1.6845202
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.44897953
+      value: 0.27996048
+      inSlope: 2.0892274
+      outSlope: 2.0892274
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.46938768
+      value: 0.32773507
+      inSlope: 2.9287448
+      outSlope: 2.9287448
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.48979583
+      value: 0.39950103
+      inSlope: 6.6826944
+      outSlope: 6.6826944
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.510204
+      value: 0.60049826
+      inSlope: 6.6827016
+      outSlope: 6.6827016
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5306122
+      value: 0.6722645
+      inSlope: 2.9287543
+      outSlope: 2.9287543
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5510203
+      value: 0.7200392
+      inSlope: 2.089231
+      outSlope: 2.089231
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5714285
+      value: 0.7575392
+      inSlope: 1.6845238
+      outSlope: 1.6845238
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.59183663
+      value: 0.78879523
+      inSlope: 1.424141
+      outSlope: 1.424141
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6122448
+      value: 0.8156674
+      inSlope: 1.2348988
+      outSlope: 1.2348988
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.63265294
+      value: 0.83919924
+      inSlope: 1.087286
+      outSlope: 1.087286
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6530611
+      value: 0.8600464
+      inSlope: 0.9666041
+      outSlope: 0.9666041
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.67346925
+      value: 0.87865245
+      inSlope: 0.8645471
+      outSlope: 0.8645471
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6938774
+      value: 0.895334
+      inSlope: 0.77599657
+      outSlope: 0.77599657
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.71428555
+      value: 0.91032577
+      inSlope: 0.6975951
+      outSlope: 0.6975951
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.7346937
+      value: 0.92380726
+      inSlope: 0.6270211
+      outSlope: 0.6270211
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.75510186
+      value: 0.93591845
+      inSlope: 0.56260955
+      outSlope: 0.56260955
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.77551
+      value: 0.9467709
+      inSlope: 0.5031309
+      outSlope: 0.5031309
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.79591817
+      value: 0.9564544
+      inSlope: 0.447639
+      outSlope: 0.447639
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8163263
+      value: 0.9650419
+      inSlope: 0.39540207
+      outSlope: 0.39540207
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8367345
+      value: 0.97259325
+      inSlope: 0.34582877
+      outSlope: 0.34582877
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8571426
+      value: 0.9791573
+      inSlope: 0.29843718
+      outSlope: 0.29843718
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8775508
+      value: 0.98477435
+      inSlope: 0.2528301
+      outSlope: 0.2528301
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.89795893
+      value: 0.9894769
+      inSlope: 0.20865849
+      outSlope: 0.20865849
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9183671
+      value: 0.993291
+      inSlope: 0.1656318
+      outSlope: 0.1656318
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.93877524
+      value: 0.9962374
+      inSlope: 0.123484194
+      outSlope: 0.123484194
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9591834
+      value: 0.9983312
+      inSlope: 0.08197622
+      outSlope: 0.08197622
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.97959155
+      value: 0.99958336
+      inSlope: 0.040885884
+      outSlope: 0.040885884
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9999997
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 0.020415196
+      outSlope: 0.020415196
+      tangentMode: 34
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: 10, y: 2, z: 0}
-  End: {x: -10, y: 2, z: 0}
-  LengthScale: 0.35
+  Start: {x: 10, y: 3, z: 0}
+  End: {x: -10, y: 3, z: 0}
+  LengthScale: 1
   CurveTargetName: position
 --- !u!4 &1917303272
 Transform:
@@ -11608,7 +11526,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1917303269}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -11711,7 +11629,7 @@ GameObject:
   - component: {fileID: 2130195373}
   - component: {fileID: 2130195374}
   m_Layer: 0
-  m_Name: Trail 1
+  m_Name: Trail Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11734,21 +11652,309 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 3.139441
+      outSlope: 3.139441
+      tangentMode: 34
     - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      time: 0.020408163
+      value: 0.064070225
+      inSlope: 3.1329904
+      outSlope: 3.1329904
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.040816326
+      value: 0.12787716
+      inSlope: 3.113666
+      outSlope: 3.113666
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.06122449
+      value: 0.19115864
+      inSlope: 3.0815473
+      outSlope: 3.0815473
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.08163265
+      value: 0.2536546
+      inSlope: 3.0367649
+      outSlope: 3.0367649
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.10204081
+      value: 0.3151082
+      inSlope: 2.979504
+      outSlope: 2.979504
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.12244897
+      value: 0.375267
+      inSlope: 2.9100006
+      outSlope: 2.9100006
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.14285713
+      value: 0.43388373
+      inSlope: 2.8285384
+      outSlope: 2.8285384
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.1632653
+      value: 0.49071756
+      inSlope: 2.7354531
+      outSlope: 2.7354531
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.18367347
+      value: 0.5455349
+      inSlope: 2.6311278
+      outSlope: 2.6311278
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.20408164
+      value: 0.59811056
+      inSlope: 2.5159917
+      outSlope: 2.5159917
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.22448981
+      value: 0.64822847
+      inSlope: 2.3905156
+      outSlope: 2.3905156
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.24489798
+      value: 0.69568264
+      inSlope: 2.2552147
+      outSlope: 2.2552147
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.26530614
+      value: 0.74027807
+      inSlope: 2.1106472
+      outSlope: 2.1106472
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.2857143
+      value: 0.7818315
+      inSlope: 1.9574084
+      outSlope: 1.9574084
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.30612245
+      value: 0.82017225
+      inSlope: 1.796127
+      outSlope: 1.796127
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3265306
+      value: 0.8551428
+      inSlope: 1.6274636
+      outSlope: 1.6274636
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.34693876
+      value: 0.8865993
+      inSlope: 1.452112
+      outSlope: 1.452112
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.3673469
+      value: 0.9144126
+      inSlope: 1.2707934
+      outSlope: 1.2707934
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.38775507
+      value: 0.9384684
+      inSlope: 1.0842528
+      outSlope: 1.0842528
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.40816322
+      value: 0.9586678
+      inSlope: 0.89325833
+      outSlope: 0.89325833
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.42857137
+      value: 0.9749279
+      inSlope: 0.6985911
+      outSlope: 0.6985911
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.44897953
+      value: 0.9871817
+      inSlope: 0.50105435
+      outSlope: 0.50105435
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.46938768
+      value: 0.9953791
+      inSlope: 0.30146003
+      outSlope: 0.30146003
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.48979583
+      value: 0.9994862
+      inSlope: 0.10062443
+      outSlope: 0.10062443
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.510204
+      value: 0.9994862
+      inSlope: -0.10062297
+      outSlope: -0.10062297
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5306122
+      value: 0.99537915
+      inSlope: -0.30145854
+      outSlope: -0.30145854
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5510203
+      value: 0.9871818
+      inSlope: -0.50105435
+      outSlope: -0.50105435
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.5714285
+      value: 0.97492796
+      inSlope: -0.6985896
+      outSlope: -0.6985896
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.59183663
+      value: 0.95866793
+      inSlope: -0.89325684
+      outSlope: -0.89325684
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6122448
+      value: 0.9384685
+      inSlope: -1.0842528
+      outSlope: -1.0842528
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.63265294
+      value: 0.91441274
+      inSlope: -1.270792
+      outSlope: -1.270792
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6530611
+      value: 0.8865995
+      inSlope: -1.452109
+      outSlope: -1.452109
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.67346925
+      value: 0.855143
+      inSlope: -1.6274606
+      outSlope: -1.6274606
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.6938774
+      value: 0.82017255
+      inSlope: -1.7961254
+      outSlope: -1.7961254
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.71428555
+      value: 0.7818318
+      inSlope: -1.9574084
+      outSlope: -1.9574084
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.7346937
+      value: 0.74027836
+      inSlope: -2.1106467
+      outSlope: -2.1106467
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.75510186
+      value: 0.695683
+      inSlope: -2.2552133
+      outSlope: -2.2552133
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.77551
+      value: 0.6482289
+      inSlope: -2.3905172
+      outSlope: -2.3905172
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.79591817
+      value: 0.5981109
+      inSlope: -2.5159934
+      outSlope: -2.5159934
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8163263
+      value: 0.5455353
+      inSlope: -2.6311274
+      outSlope: -2.6311274
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8367345
+      value: 0.490718
+      inSlope: -2.7354524
+      outSlope: -2.7354524
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8571426
+      value: 0.43388426
+      inSlope: -2.8285372
+      outSlope: -2.8285372
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.8775508
+      value: 0.37526757
+      inSlope: -2.9099994
+      outSlope: -2.9099994
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.89795893
+      value: 0.31510884
+      inSlope: -2.9795032
+      outSlope: -2.9795032
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9183671
+      value: 0.25365525
+      inSlope: -3.0367637
+      outSlope: -3.0367637
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.93877524
+      value: 0.19115935
+      inSlope: -3.0815458
+      outSlope: -3.0815458
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9591834
+      value: 0.12787794
+      inSlope: -3.113665
+      outSlope: -3.113665
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.97959155
+      value: 0.064071044
+      inSlope: -3.13299
+      outSlope: -3.13299
+      tangentMode: 34
+    - serializedVersion: 2
+      time: 0.9999997
+      value: 0.0000008662515
+      inSlope: -3.1394403
+      outSlope: -3.1394403
+      tangentMode: 34
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  Start: {x: -10, y: 6, z: 0}
-  End: {x: 10, y: 6, z: 0}
-  LengthScale: 0.5
+  Start: {x: -10, y: 7, z: 0}
+  End: {x: 10, y: 7, z: 0}
+  LengthScale: 2
   CurveTargetName: position
 --- !u!96 &2130195374
 TrailRenderer:
@@ -11783,10 +11989,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 1
+  m_Time: 0.35
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.2
+    widthMultiplier: 0.25
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -11801,37 +12007,37 @@ TrailRenderer:
       m_RotationOrder: 0
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 1}
-      key1: {r: 1, g: 0, b: 0.972414, a: 1}
-      key2: {r: 0.4796182, g: 0.3140422, b: 1, a: 1}
-      key3: {r: 0.737931, g: 1, b: 0, a: 0}
-      key4: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 1, g: 1, b: 1, a: 0.071165785}
+      key1: {r: 1, g: 0.8482759, b: 0, a: 0.76862746}
+      key2: {r: 1, g: 0.5269257, b: 0.3140422, a: 0.76862746}
+      key3: {r: 1, g: 1, b: 1, a: 0.0627451}
+      key4: {r: 1, g: 1, b: 1, a: 0.0627451}
       key5: {r: 1, g: 1, b: 1, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
       ctime0: 0
-      ctime1: 20817
-      ctime2: 43562
+      ctime1: 18890
+      ctime2: 46646
       ctime3: 65535
       ctime4: 65535
       ctime5: 65535
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
-      atime2: 65535
-      atime3: 0
-      atime4: 0
+      atime1: 9830
+      atime2: 55705
+      atime3: 65535
+      atime4: 65535
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 4
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 3
     generateLightingData: 0
   m_MinVertexDistance: 0.01
   m_Autodestruct: 0
@@ -11842,7 +12048,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2130195372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 6, z: 2}
+  m_LocalPosition: {x: 5, y: 7, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
