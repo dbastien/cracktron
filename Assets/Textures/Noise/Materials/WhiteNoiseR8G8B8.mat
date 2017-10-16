@@ -72,9 +72,9 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _NoiseFrequency: 15.2
-    - _NoiseGain: 0.51
-    - _NoiseLacunarity: 2.115
-    - _NoiseWhirl: 0.062
+    - _NoiseGain: 1.25
+    - _NoiseLacunarity: 1.352
+    - _NoiseWhirl: 0.322
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
