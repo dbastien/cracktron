@@ -7,6 +7,10 @@
 # Cracktron
 Cracktro style effects for unity!
 
+<p align="center">
+<img src="/Docs/screenshot.png">
+</p>
+
 ## Dependencies
 [Unity](http://www.unity3d.com) 2017.1.0f3
 
