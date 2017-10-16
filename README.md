@@ -21,7 +21,7 @@ Open the main.scene in that folder and play around!
 
 ## Areas of Notable Interest
 ### Transform Curves
-<p align="center"><img src="/Docs/transformcurve.jpg"></p>
+<p align="center"><img src="/Docs/transformcurve.png"></p>
 
 ### Noise
 <p align="center"><img src="/Docs/noise.jpg"></p>
