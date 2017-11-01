@@ -12,6 +12,9 @@ public class TransformCurve : MonoBehaviour
 
     [NormalizedAnimationCurve] public AnimationCurve Curve;
 
+    public bool RelativeMode;
+
+    //curve start is offset in relative mode
     public Vector3 CurveStart;
     public Vector3 CurveEnd;
 
@@ -41,7 +44,10 @@ public class TransformCurve : MonoBehaviour
     public void ResetStartEnd()
     {
         this.UpdateTarget();
-        this.CurveStart = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
+
+        var currentPos = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
+        
+        this.CurveStart = currentPos;
 
         if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.CurveEnd))
         {
@@ -56,6 +62,14 @@ public class TransformCurve : MonoBehaviour
     public void Awake()
     {
         this.UpdateTarget();
+
+        if (RelativeMode)
+        {
+            var currentPos = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
+            var offset = this.CurveStart;
+            this.CurveStart = currentPos;
+            this.CurveEnd = currentPos + offset;        
+        }
     }
 
     public void Update()

@@ -501,6 +501,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -937,6 +938,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -1101,6 +1103,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 1
@@ -1151,6 +1154,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 1
@@ -1875,7 +1879,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  CurveStart: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveStart: {x: 0, y: 0, z: 15}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 3.33
   CurveTargetName: position
@@ -1937,7 +1942,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 578477993}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6, y: 5, z: 0}
+  m_LocalPosition: {x: 6, y: 5, z: -9}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 364530789}
@@ -2260,7 +2265,8 @@ MonoBehaviour:
     m_PreInfinity: 1
     m_PostInfinity: 1
     m_RotationOrder: 0
-  CurveStart: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveStart: {x: 0, y: 360, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 1.5
   CurveTargetName: eulerAngles
@@ -2665,6 +2671,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.8
@@ -2698,6 +2705,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 0.8
@@ -5248,7 +5256,8 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  CurveStart: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveStart: {x: 0, y: 0, z: 15}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 3.33
   CurveTargetName: position
@@ -5310,7 +5319,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 747591432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 5, z: 0}
+  m_LocalPosition: {x: -6, y: 5, z: -9}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 364530789}
@@ -5664,7 +5673,8 @@ MonoBehaviour:
     m_PreInfinity: 1
     m_PostInfinity: 1
     m_RotationOrder: 0
-  CurveStart: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveStart: {x: 0, y: 360, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 1.5
   CurveTargetName: eulerAngles
@@ -6017,6 +6027,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -6469,6 +6480,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -6989,6 +7001,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -10784,6 +10797,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2.1
@@ -11822,6 +11836,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 1
@@ -12259,6 +12274,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
+  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
   LengthScale: 2

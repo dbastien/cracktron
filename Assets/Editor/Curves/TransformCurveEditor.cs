@@ -58,8 +58,19 @@ public class TransformCurveEditor : Editor
                     targetCurve.ResetStartEnd();
                 }
                 EditorGUIUtility.labelWidth = 90f;
-                targetCurve.CurveStart = EditorGUILayout.Vector3Field("start", targetCurve.CurveStart);
-                targetCurve.CurveEnd = EditorGUILayout.Vector3Field("end", targetCurve.CurveEnd);
+
+                targetCurve.RelativeMode = EditorGUILayout.Toggle("Relative Mode", targetCurve.RelativeMode);
+
+                if (targetCurve.RelativeMode)
+                {
+                    targetCurve.CurveStart = EditorGUILayout.Vector3Field("offset", targetCurve.CurveStart);
+                }
+                else
+                {
+                    targetCurve.CurveStart = EditorGUILayout.Vector3Field("start", targetCurve.CurveStart);
+                    targetCurve.CurveEnd = EditorGUILayout.Vector3Field("end", targetCurve.CurveEnd);
+                }
+
                 targetCurve.LengthScale = EditorGUILayout.FloatField("length scale", targetCurve.LengthScale);
             }
             EditorGUILayout.EndVertical();
