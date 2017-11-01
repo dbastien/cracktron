@@ -48,7 +48,7 @@
 //       half is float on desktop, etc.
 //       min16float always behaves as expected,
 //       but not all desktop GPUs support and perf is crippled to 1/64th rate on others
-//       half would be save, however for mobile ogl es3+ targets half will be float as well
+//       half would be safe, however for mobile ogl es3+ targets half will be float as well
 
 // shorthand
 #define sat(x)         ( saturate((x)) )

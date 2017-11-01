@@ -8,11 +8,7 @@
 
     "files.exclude":
     {
-        "**/.vs":true,
-        "**/Debug":true,
-        "**/Library":true,         
-        "**/uwp":true,
-       
+        "**/.vs":true,      
         "**/.DS_Store":true,
         "**/.git":true,
         "**/.gitignore":true,
@@ -57,13 +53,16 @@
         "**/*.prefab":true,
         "**/*.unity":true,
 
+        "Debug":true,
+        "Library":true,         
+        "uwp":true,        
         "build/":true,
         "Build/":true,
         "Library/":true,
         "library/":true,
         "obj/":true,
         "Obj/":true,
-        "ProjectSettings/":true,
+//        "ProjectSettings/":true,
         "temp/":true,
         "Temp/":true
     }

@@ -12,8 +12,8 @@ public class TransformCurve : MonoBehaviour
 
     [NormalizedAnimationCurve] public AnimationCurve Curve;
 
-    public Vector3 Start;
-    public Vector3 End;
+    public Vector3 CurveStart;
+    public Vector3 CurveEnd;
 
     [FloatIncremental(.1f)] public float LengthScale = 1.0f;
 
@@ -41,15 +41,15 @@ public class TransformCurve : MonoBehaviour
     public void ResetStartEnd()
     {
         this.UpdateTarget();
-        this.Start = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
+        this.CurveStart = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
 
-        if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.End))
+        if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.CurveEnd))
         {
-            this.End += this.Start;
+            this.CurveEnd += this.CurveStart;
         }
         else
         {
-            this.End = this.Start + Vector3.up;
+            this.CurveEnd = this.CurveStart + Vector3.up;
         }
     }
 
@@ -64,7 +64,8 @@ public class TransformCurve : MonoBehaviour
 
         if (this.CurveTarget != null)
         {
-            this.CurveTarget.SetValue(this.transform, this.Start.LerpUnclamped(this.End, this.Curve.Evaluate(this.timeElapsed)), null);
+            var interpolatedValue = this.CurveStart.LerpUnclamped(this.CurveEnd, this.Curve.Evaluate(this.timeElapsed));
+            this.CurveTarget.SetValue(this.transform, interpolatedValue, null);
         }
     }
 }

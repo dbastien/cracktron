@@ -18,8 +18,15 @@ public static class Vector2Extensions
         return l.x * r.y - l.y * r.x;
     }
 
+    //TODO: write this
     public static Vector2 RotateTowards(Vector2 current, Vector2 target, float maxRadiansDelta, float maxMagnitudeDelta)
     {
+        //get angle between
+
+        //clamp to max delta
+
+        //rotate
+
         return Vector2.zero;
     }
 }
