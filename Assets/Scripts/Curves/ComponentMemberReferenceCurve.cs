@@ -18,7 +18,7 @@ public class ComponentMemberReferenceCurve : MonoBehaviour
     {
         this.Curve = AnimationCurve.EaseInOut(0.0f, 0.0f, 1.0f, 1.0f);
         this.Curve.preWrapMode = WrapMode.PingPong;
-        this.Curve.postWrapMode = WrapMode.PingPong;        
+        this.Curve.postWrapMode = WrapMode.PingPong;
     }
 
     void Awake()

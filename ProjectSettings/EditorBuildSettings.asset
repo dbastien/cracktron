@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Demos/Cracktro/main.unity
     guid: 26ef4b9f88291ae40ac9ea8c8abcb740
-  - enabled: 1
+  - enabled: 0
     path: Assets/Tests/Specular.unity
     guid: c6e94f6331eb9e344bcf1940affe00e7

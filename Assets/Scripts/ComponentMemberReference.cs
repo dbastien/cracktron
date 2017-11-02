@@ -20,7 +20,7 @@ public class ComponentMemberReference
             return this.fieldInfo.GetValue(this.targetComponent);
         }
 
-        return this.propertyInfo.GetValue(this.targetComponent);
+        return this.propertyInfo.GetValue(this.targetComponent, null);
     }
 
     public void SetValue(object value)
@@ -33,7 +33,7 @@ public class ComponentMemberReference
         }
         else
         {
-            this.propertyInfo.SetValue(this.targetComponent, value);
+            this.propertyInfo.SetValue(this.targetComponent, value, null);
         }
     }
 

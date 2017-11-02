@@ -11,43 +11,43 @@ public static class CurvePresetGenerator
     [MenuItem("Cracktron/Preset Libraries/Generate curves")] 
     public static void GenerateCurvePresets()
     {
-        var libraryNormalized = CurvePresetLibraryWrapper.CreateLibrary();
+        var lib = CurvePresetLibraryWrapper.CreateLibrary();
 
         //in & out non-piecewise
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Linear), "linear");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStep), "smoothstep");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStepC1), "smoothstep c1");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStep), "smootherstep");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStepC1), "smootherstep c1");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Linear), "linear");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStep), "smoothstep");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmoothStepC1), "smoothstep c1");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStep), "smootherstep");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SmootherStepC1), "smootherstep c1");
 
         //in & out piecewise
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticInOut), "quadratic in out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicInOut), "cubic in out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularInOut), "circular in out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseInOut), "bounce in out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticInOut), "quadratic in out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicInOut), "cubic in out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularInOut), "circular in out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseInOut), "bounce in out");
 
         //in
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularIn), "circular in");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseIn), "bounce in");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticIn), "quadratic in");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicIn), "cubic in");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularIn), "circular in");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseIn), "bounce in");
         
         //out
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularOut), "circular out");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseOut), "bounce out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.QuadraticOut), "quadratic out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CubicOut), "cubic out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.CircularOut), "circular out");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.BounceEaseOut), "bounce out");
 
         //centered (t(.5)=1) waves
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SinHalf), "sine half");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Square), "square");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Triangle), "triangle");
-        CurvePresetLibraryWrapper.Add(libraryNormalized, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Sawtooth), "sawtooth");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.SinHalf), "sine half");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Square), "square");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Triangle), "triangle");
+        CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Sawtooth), "sawtooth");
          
-        AssetDatabase.CreateAsset(libraryNormalized, "Assets" + EngineConstants.NormalizedCurvesPath);
+        AssetDatabase.CreateAsset(lib, "Assets" + EngineConstants.NormalizedCurvesPath);
 
-        var libraryUnnormalized = Object.Instantiate(libraryNormalized);
-        AssetDatabase.CreateAsset(libraryUnnormalized, "Assets" + EngineConstants.CurvesPath);
+        var libUnnormalized = Object.Instantiate(lib);
+        AssetDatabase.CreateAsset(libUnnormalized, "Assets" + EngineConstants.CurvesPath);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
