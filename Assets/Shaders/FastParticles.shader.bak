@@ -74,6 +74,9 @@ Shader "Cracktron/Fast Particles"
                 //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
+
+                //may be set from script so generate both paths
+                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
                 
                 float4 _Color;
                 UNITY_DECLARE_TEX2D(_MainTex);
@@ -90,7 +93,11 @@ Shader "Cracktron/Fast Particles"
                 {
                     float4 pos : SV_POSITION;
 
-					float2 tex : TEXCOORD0;
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        float3 tex : TEXCOORD0;
+                    #else
+                        float2 tex : TEXCOORD0;
+                    #endif
                 };
 
                 v2f vert(a2v v)
@@ -99,6 +106,12 @@ Shader "Cracktron/Fast Particles"
                     UNITY_INITIALIZE_OUTPUT(v2f, o);
 
                     o.tex.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
+
+                    //fade away objects closer to the camera
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        o.tex.z = ComputeNearPlaneFadeLinear(v.vertex);
+                    #endif
+
                     o.pos = UnityObjectToClipPos(v.vertex);
 
                     return o;
@@ -111,6 +124,10 @@ Shader "Cracktron/Fast Particles"
                     #if defined(_ALPHATEST_ON)
                         //note execution continues but all writes are disabled
                         clip(color.a - _Cutoff);
+                    #endif
+
+                    #if defined(_NEAR_PLANE_FADE_ON)
+                        color.rgb *= IN.tex.z;
                     #endif
 
                     return color;

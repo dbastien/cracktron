@@ -13,7 +13,7 @@
 #define TAU_DIV2_RCP 0.318309886183791
 #define GOLDENRATIO  1.618033988749895
 #define SQRTPI       1.772453850905516
-#define SQRT2        1.414213562373095
+#define SQRT2        1.414213562373095                    
 #define SQRT3        1.732050807568877
 
 #define ONE_DIV3     0.333333333333333
@@ -79,12 +79,6 @@
 // maps from [0,1] to [-1,1]
 #define Remap01Center(x) ( ((x) - 0.5) * 2.0 )
 
-// maps from [-1,1] to [0,1]
-#define RemapCenter01(x) ( ((x) + 1.0) * 0.5 )
-
-// maps from [0,1] to [-5,.5]
-#define Remap01CenterHalf(x) ( (x) - 0.5 )
-
 // https://www.wolframalpha.com/input/?i=Plot%5Bt*t*(3-2*t),+0..1%5D
 #define SmoothStep01(x) ( (x) * (x) * (3.0 - 2.0 * (x)) )
 
@@ -99,6 +93,7 @@
 // https://www.wolframalpha.com/input/?i=Plot%5Bt+*+t+*+t,+0..1%5D
 #define CubicInEase01(x) ( pow3((x)) )
 
+// https://www.wolframalpha.com/input/?i=Plot%5B(t-1)%5E3+%2B+1,+0..1%5D
 #define CubicOutEase01(x) ( pow3((x)-1.0) + 1.0 )
 
 inline float PerpDot(float2 v1, float2 v2)

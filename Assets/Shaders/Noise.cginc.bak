@@ -1,4 +1,4 @@
-#ifndef NOISE
+ #ifndef NOISE
 #define NOISE
 
 #include "./FastMath.cginc"

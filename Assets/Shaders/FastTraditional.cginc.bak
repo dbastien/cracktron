@@ -6,8 +6,9 @@
 #include "./TextureMacro.cginc"
 
 //todo: reassess these
-#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || _USERIMLIGHTING_ON || (_FORCEPERPIXEL_ON && (_SHADE4_ON)))
-#define USES_MAIN_UV (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
+#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || (_FORCEPERPIXEL_ON && (_SHADE4_ON || _USERIMLIGHTING_ON)))
+#define PIXEL_SHADER_USES_NORMAL (!_USEBUMPMAP_ON && (_FORCEPERPIXEL_ON || _SPECULARHIGHLIGHTS_ON))
+#define USES_TEX_XY (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 //todo: share world view dir
 
@@ -17,9 +18,11 @@ UNITY_DECLARE_TEX2D(_OcclusionMap);
 
 UNITY_DECLARE_TEX2D(_BumpMap);
 
-float _Gloss;
 float _Specular;
 UNITY_DECLARE_TEX2D(_SpecularMap);
+
+float _Gloss;
+UNITY_DECLARE_TEX2D(_GlossMap);
 
 UNITY_DECLARE_TEXCUBE(_CubeMap);
 float _ReflectionScale;
@@ -38,15 +41,11 @@ struct a2v
     float4 vertex : POSITION;
     float3 normal : NORMAL;
 
-    #if defined(_USEBUMPMAP_ON)
-        float4 tangent : TANGENT;
-    #endif
-
     #if defined(_USEVERTEXCOLOR_ON)
         float4 color : COLOR;
     #endif
 
-    #if USES_MAIN_UV
+    #if USES_TEX_XY
         float2 mainUV : TEXCOORD0;
     #endif
 
@@ -65,35 +64,43 @@ struct v2f
         float4 color : COLOR;
     #endif
 
-    float3 normal : NORMAL;
-
-    #if defined(_USEBUMPMAP_ON)
-        float3 tangent : TEXCOORD0;
-        float3 bitangent : TEXCOORD1;
+    #if PIXEL_SHADER_USES_NORMAL
+        float3 worldNormal : NORMAL;
     #endif
 
-    #if USES_MAIN_UV
-        float2 mainUV : TEXCOORD2;
+    #if USES_TEX_XY
+        float3 texXYFadeZ : TEXCOORD0;
     #endif
 
     #if LIGHTMAP_ON
-        float2 lmap : TEXCOORD3;
+        float2 lmap : TEXCOORD1;
     #else
-        float3 vertexLighting : TEXCOORD3;
+        float3 vertexLighting : TEXCOORD1;
     #endif
 
     #if PIXEL_SHADER_USES_WORLDPOS
-        float3 worldPos: TEXCOORD4;
+        float3 worldPos: TEXCOORD2;
     #endif
 
     #if defined(_USEREFLECTIONS_ON)
-        float3 worldReflection : TEXCOORD5;
+        float3 worldReflection : TEXCOORD3;
     #endif
 
-    LIGHTING_COORDS(6, 7)
-    UNITY_FOG_COORDS(9)
+    LIGHTING_COORDS(4, 5)
+    UNITY_FOG_COORDS(6)
     UNITY_VERTEX_OUTPUT_STEREO
 };
+
+#if defined(_USERIMLIGHTING_ON)
+    inline float3 RimLight(float3 worldNormal, float3 worldPos)
+    {
+        //TODO: optimize whole function
+        float rim = 1.0 - dot_sat(worldNormal, UnityWorldSpaceViewDir(worldPos));
+
+        //boost to the dot product to allow for a greater max effect - .25 is the boost factor
+        return smoothstep(0.25, 1.0, mad(rim, _RimPower, 0.25)) * _RimColor.rgb;
+    }
+#endif
 
 v2f vert(a2v v)
 {
@@ -112,7 +119,7 @@ v2f vert(a2v v)
         #endif
     #endif
 
-    #if defined(_SPECULARHIGHLIGHTS_ON) || defined(_SHADE4_ON) || defined(_USEREFLECTIONS_ON) || PIXEL_SHADER_USES_WORLDPOS
+    #if defined(_SPECULARHIGHLIGHTS_ON) || defined(_SHADE4_ON) || defined(_USEREFLECTIONS_ON) || defined(_USERIMLIGHTING_ON)
         float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
     #endif
 
@@ -120,11 +127,12 @@ v2f vert(a2v v)
         o.worldPos = worldPos;
     #endif
 
-    #if USES_MAIN_UV
-        o.mainUV.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
-    #endif    
+    #if USES_TEX_XY
+        o.texXYFadeZ.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
+    #endif
 
-    o.normal = UnityObjectToWorldNormal(v.normal);
+    //todo: not always needed
+    float3 worldNormal = UnityObjectToWorldNormal(v.normal);
 
     #if defined(LIGHTMAP_ON)
         o.lmap.xy = mad(v.lightMapUV.xy, unity_LightmapST.xy, unity_LightmapST.zw);
@@ -132,31 +140,34 @@ v2f vert(a2v v)
         #if !defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
             //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
             //not much quality benefit for the cost
-            o.vertexLighting += ShadeSH9Fast(float4(o.normal, 1.0));
+            o.vertexLighting += FastShadeSH9(float4(worldNormal, 1.0));
         #endif
 
         #if !defined(_FORCEPERPIXEL_ON)
             #if defined(_USEDIFFUSE_ON)
-                o.vertexLighting += DiffuseLambertian(o.normal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                o.vertexLighting += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
 
             #if defined(_SHADE4_ON)
-                o.vertexLighting += Shade4PointLightsFast(worldPos, o.normal);
-            #endif 
+                o.vertexLighting += FastShade4PointLights(worldPos, worldNormal);
+            #endif
+
+            #if defined(_USERIMLIGHTING_ON)
+                o.vertexLighting += RimLight(worldNormal, worldPos);
+            #endif
             //todo: if no pixel work being performed, could premul alpha here
         #endif
     #endif
-   
+
+    #if PIXEL_SHADER_USES_NORMAL
+        o.worldNormal = worldNormal;
+    #endif
+    
     #if defined(_USEREFLECTIONS_ON)
         float3 worldViewDir = _WorldSpaceCameraPos - worldPos;
         //incident vector need not be normalized
-        o.worldReflection = reflect(-worldViewDir, o.normal);
-    #endif
-
-    #if defined(_USEBUMPMAP_ON)
-        o.tangent = normalize(mul(unity_ObjectToWorld, float4(v.tangent.xyz, 0.0)).xyz);
-        o.bitangent = normalize(cross(o.normal, o.tangent) * v.tangent.w);
-    #endif
+        o.worldReflection = reflect(-worldViewDir, worldNormal);
+   #endif
 
     //transfer shadow and lightmap info
     TRANSFER_VERTEX_TO_FRAGMENT(o);
@@ -168,13 +179,13 @@ v2f vert(a2v v)
 fixed4 frag(v2f IN) : SV_Target
 {
     #if defined(_USEMAINTEX_ON)
-        float4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.mainUV.xy);
+        float4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.texXYFadeZ.xy);
     #else
         float4 color = 1.0;
     #endif
 
     #if defined(_USEOCCLUSIONMAP_ON)
-        color *= UNITY_SAMPLE_TEX2D(_OcclusionMap, IN.mainUV.xy);
+        color *= UNITY_SAMPLE_TEX2D(_OcclusionMap, IN.texXYFadeZ.xy);
     #endif
 
     #if defined(_USEVERTEXCOLOR_ON)
@@ -202,52 +213,51 @@ fixed4 frag(v2f IN) : SV_Target
         float3 diffuseContrib = IN.vertexLighting;
         float3 specContrib = 0;
 
-        //linearly interpolating normals will not produce a normal
-        float3 modelWorldNormal = normalize(IN.normal);
-        float3 worldNormal = modelWorldNormal;
-
         #if defined(_USEBUMPMAP_ON)
-            float3x3 tangentToWorld = float3x3(IN.tangent, IN.bitangent, worldNormal);
             //unpack can be expensive if normal map is dxt5
-            float3 objectNormal = UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.mainUV.xy));
-            worldNormal = normalize(mul(objectNormal, tangentToWorld));
-        #endif
+            float3 worldNormal = UnityObjectToWorldNormal(UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.texXYFadeZ.xy)));
+        #elif PIXEL_SHADER_USES_NORMAL
+            //linearly interpolating normals will not produce a normal
+            float3 worldNormal = normalize(IN.worldNormal);
+        #endif 
 
         #if defined(_FORCEPERPIXEL_ON)               
             #if defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
                 //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
-                //not much quality benefit for the cost otherwise
-                diffuseContrib += ShadeSH9Fast(float4(worldNormal, 1.0));
+                //not much quality benefit for the cost
+                diffuseContrib += FastShadeSH9(float4(worldNormal, 1.0));
             #endif
         
             #if defined(_USEDIFFUSE_ON)
-                diffuseContrib += DiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
+                diffuseContrib += FastLightingDiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
             #endif
 
             #if defined(_SHADE4_ON)
-                diffuseContrib += Shade4PointLightsFast(IN.worldPos, worldNormal);
+                diffuseContrib += FastShade4PointLights(IN.worldPos, worldNormal);
             #endif
-        #endif
 
-        color = PreMultiplyAlphaFast(color * float4(diffuseContrib,1));
-
-        #if defined(_USERIMLIGHTING_ON)
-            color.rgb += RimLight(IN.worldPos, modelWorldNormal, _RimPower, _RimColor);
+            #if defined(_USERIMLIGHTING_ON)
+                diffuseContrib += RimLight(worldNormal, IN.worldPos);
+            #endif         
         #endif
 
         #if defined(_SPECULARHIGHLIGHTS_ON)
             float gloss = _Gloss;
-            float3 specularColor = float3(1, 1, 1);
-
-            #if defined(_USESPECULARMAP_ON)
-                float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, IN.mainUV.xy).r;
-                gloss *= specularMapSample.a;
-                specularColor *= specularMapSample.rgb;
+            #if defined(_USEGLOSSMAP_ON)
+                gloss *= UNITY_SAMPLE_TEX2D(_GlossMap, IN.texXYFadeZ.xy).r;
             #endif
-           
-            specContrib += SpecularSchlick(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);
-        #endif
 
+            float specular = _Specular;
+            #if defined(_USESPECULARMAP_ON)
+                specular *= UNITY_SAMPLE_TEX2D(_SpecularMap, IN.texXYFadeZ.xy).r;
+            #endif
+
+            #if defined(_SPECULARHIGHLIGHTS_ON)
+                specContrib += FastLightingSpecularSchlick(worldNormal, UnityWorldSpaceViewDir(IN.worldPos), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, specular, gloss, _SpecColor);
+            #endif
+        #endif   
+
+        color = FastPreMultiplyAlpha(color * float4(diffuseContrib,1));
         color.rgb += specContrib;
         color.rgb *= lightAttenuation;
     #endif
@@ -263,7 +273,7 @@ fixed4 frag(v2f IN) : SV_Target
     #endif
 
     #if defined(_USEEMISSIONMAP_ON)
-        color.rgb += UNITY_SAMPLE_TEX2D(_EmissionMap, IN.mainUV.xy);
+        color.rgb += UNITY_SAMPLE_TEX2D(_EmissionMap, IN.texXYFadeZ.xy);
     #endif
 
     #if defined(_USEEMISSIONCOLOR_ON)
