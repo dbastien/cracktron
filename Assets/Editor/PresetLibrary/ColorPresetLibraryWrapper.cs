@@ -33,9 +33,9 @@ public static class ColorPresetLibraryWrapper
         ColorPresetLibraryWrapper.DrawMethod.Invoke(library, new object[] { rect, index });
     }
 
-    public static AnimationCurve GetPreset(ScriptableObject library, int index)
+    public static Color GetPreset(ScriptableObject library, int index)
     {
-        return (AnimationCurve)ColorPresetLibraryWrapper.GetPresetMethod.Invoke(library, new object[] { index });
+        return (Color)ColorPresetLibraryWrapper.GetPresetMethod.Invoke(library, new object[] { index });
     }
 
     public static void Remove(ScriptableObject library, int index)

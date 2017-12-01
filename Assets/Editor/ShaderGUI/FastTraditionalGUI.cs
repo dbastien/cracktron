@@ -23,6 +23,7 @@ public class FastTraditionalGUI : ShaderGUI
     protected MaterialProperty useAdditionalLightingData;
     protected MaterialProperty perPixelLighting;
 
+    //specular lighting
     protected MaterialProperty specularLightingEnabled;
     protected MaterialProperty specularColor;
     protected MaterialProperty specular;
@@ -32,14 +33,17 @@ public class FastTraditionalGUI : ShaderGUI
 
     protected MaterialProperty normalMap;
 
+    //reflections
     protected MaterialProperty reflectionsEnabled;
     protected MaterialProperty cubeMap;
     protected MaterialProperty reflectionScale;
 
+    //rim lighting
     protected MaterialProperty rimLightingEnabled;
     protected MaterialProperty rimPower;
-    protected MaterialProperty rimColor;
+    protected MaterialProperty rimColor;    
 
+    //emission
     protected MaterialProperty emissionColorEnabled;
     protected MaterialProperty emissionColor;
     protected MaterialProperty emissionMap;
@@ -48,10 +52,16 @@ public class FastTraditionalGUI : ShaderGUI
     protected MaterialProperty useTextureOffset;
     protected MaterialProperty textureScaleAndOffset;
 
+    //shadows
+    protected MaterialProperty normalOffsetShadowsEnabled;
+    protected MaterialProperty transparentShadowsEnabled;
+
+    //alpha
     protected MaterialProperty alphaTestEnabled;
     protected MaterialProperty alphaCutoff;
     protected MaterialProperty alphaPremultiplyEnabled;
 
+    //rasterizer state
     protected MaterialProperty srcBlend;
     protected MaterialProperty dstBlend;
     protected MaterialProperty blendOp;
@@ -60,9 +70,6 @@ public class FastTraditionalGUI : ShaderGUI
     protected MaterialProperty zTest;
     protected MaterialProperty zWrite;
     protected MaterialProperty colorWriteMask;
-
-    protected MaterialProperty normalOffsetShadowsEnabled;
-    protected MaterialProperty transparentShadowsEnabled;
 
     public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
     {
@@ -103,6 +110,97 @@ public class FastTraditionalGUI : ShaderGUI
         }
     }
 
+    protected virtual void ShowLightingGUI(MaterialEditor matEditor, Material mat)
+    {
+        ShaderGUIUtils.BeginHeader("Lighting");
+        {
+            matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
+            matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
+            matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
+            EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
+            {
+                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
+            }
+            EditorGUI.EndDisabledGroup();
+
+            //specular lighting
+            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled))
+            {
+                matEditor.TexturePropertySingleLine(Styles.specularMap, this.specularMap);
+                matEditor.ShaderProperty(this.gloss, Styles.gloss);
+                matEditor.ShaderProperty(this.specular, Styles.specular);                    
+            }
+            ShaderGUIUtils.EndHeader();
+
+            matEditor.TexturePropertySingleLine(Styles.normalMap, this.normalMap);
+
+            //rim lighting
+            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled))
+            {
+                matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
+                matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
+            }
+            ShaderGUIUtils.EndHeader();           
+
+            //reflections
+            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled))
+            {
+                matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
+                matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
+            }
+            ShaderGUIUtils.EndHeader();
+
+            CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(
+                matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
+        }
+        ShaderGUIUtils.EndHeader();
+        ShaderGUIUtils.HeaderSeparator();
+    }
+
+    protected virtual void ShowShadowsGUI(MaterialEditor matEditor, Material mat)
+    {
+        //shadows
+        ShaderGUIUtils.BeginHeader("Shadows");
+        {
+            matEditor.ShaderProperty(this.normalOffsetShadowsEnabled, Styles.normalOffsetShadowsEnabled);
+            matEditor.ShaderProperty(this.transparentShadowsEnabled, Styles.transparentShadowsEnabled);
+        }
+        ShaderGUIUtils.EndHeader();
+        ShaderGUIUtils.HeaderSeparator();   
+    }
+
+    protected virtual void ShowBlendGUI(MaterialEditor matEditor, Material mat, BlendMode mode)
+    {
+        //alpha
+        if (mode != BlendMode.Cutout && mode != BlendMode.Advanced)
+        {
+            return;
+        }
+        ShaderGUIUtils.BeginHeader("Alpha Blending");
+        {
+            if (mode == BlendMode.Advanced)
+            {
+                matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);
+                matEditor.ShaderProperty(this.alphaPremultiplyEnabled, Styles.alphaPremultiplyEnabled.text);
+            }
+
+            if (
+                    (mode == BlendMode.Cutout) ||
+                    ((mode == BlendMode.Advanced) && (this.alphaTestEnabled.floatValue >= 0f))
+                )
+            {
+                matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
+            }
+
+            //rasterizer state
+            matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
+            matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
+            matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
+        }
+        ShaderGUIUtils.EndHeader();
+        ShaderGUIUtils.HeaderSeparator();
+    }
+
     protected virtual void ShowMainGUI(MaterialEditor matEditor)
     {
         this.ShowBlendModeGUI(matEditor);
@@ -122,57 +220,7 @@ public class FastTraditionalGUI : ShaderGUI
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();
 
-        ShaderGUIUtils.BeginHeader("Lighting");
-        {
-            matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
-            matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
-            matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
-            EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
-            {
-                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
-            }
-            EditorGUI.EndDisabledGroup();
-
-            ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled);
-            {
-                if (this.specularLightingEnabled.floatValue > 0f)
-                {
-                    matEditor.ShaderProperty(this.specularColor, Styles.specularColor);
-
-                    //consider a special slider + tex control
-                    matEditor.TexturePropertySingleLine(Styles.specular, this.specularMap, this.specular);
-                    matEditor.TexturePropertySingleLine(Styles.gloss, this.glossMap, this.gloss);
-                }
-            }
-            ShaderGUIUtils.EndHeader();
-
-            matEditor.TexturePropertySingleLine(Styles.normalMap, this.normalMap);
-
-            ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled);
-            {
-                if (this.rimLightingEnabled.floatValue > 0f)
-                {
-                    matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
-                    matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
-                }
-            }
-            ShaderGUIUtils.EndHeader();
-
-            ShaderGUIUtils.BeginHeaderProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled);
-            {
-                if (this.reflectionsEnabled.floatValue > 0f)
-                {
-                    matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
-                    matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
-                }
-            }
-            ShaderGUIUtils.EndHeader();
-
-            CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(
-                matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
+        ShowLightingGUI(matEditor, mat);
 
         ShaderGUIUtils.BeginHeader("Global");
         {
@@ -181,41 +229,10 @@ public class FastTraditionalGUI : ShaderGUI
         }
         ShaderGUIUtils.EndHeader();
         ShaderGUIUtils.HeaderSeparator();
-
-        ShaderGUIUtils.BeginHeader("Shadows");
-        {
-            matEditor.ShaderProperty(this.normalOffsetShadowsEnabled, Styles.normalOffsetShadowsEnabled);
-            matEditor.ShaderProperty(this.transparentShadowsEnabled, Styles.transparentShadowsEnabled);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
         
+        ShowShadowsGUI(matEditor, mat);
 
-        if (mode == BlendMode.Cutout || mode == BlendMode.Advanced)
-        {
-            ShaderGUIUtils.BeginHeader("Alpha Blending");
-            {
-                if (mode == BlendMode.Advanced)
-                {
-                    matEditor.ShaderProperty(this.alphaTestEnabled, Styles.alphaTestEnabled.text);
-                    matEditor.ShaderProperty(this.alphaPremultiplyEnabled, Styles.alphaPremultiplyEnabled.text);
-                }
-
-                if (
-                        (mode == BlendMode.Cutout) ||
-                        ((mode == BlendMode.Advanced) && (this.alphaTestEnabled.floatValue >= 0f))
-                    )
-                {
-                    matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
-                }
-
-                matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
-                matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
-                matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
-            }
-            ShaderGUIUtils.EndHeader();
-            ShaderGUIUtils.HeaderSeparator();
-        }
+        ShowBlendGUI(matEditor, mat, mode);
     }
 
     public override void AssignNewShaderToMaterial(Material mat, Shader oldShader, Shader newShader)
@@ -379,10 +396,9 @@ public class FastTraditionalGUI : ShaderGUI
     {
         bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
         bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-        bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
         bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
 
-        return (usesBumpMap || usesSpecMap || usesGlossMap || usesEmissionMap);
+        return (usesBumpMap || usesSpecMap || usesEmissionMap);
     }
 
     protected virtual void SetMaterialAutoPropertiesAndKeywords(Material mat)
@@ -394,12 +410,10 @@ public class FastTraditionalGUI : ShaderGUI
 
         bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
         bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-        bool usesGlossMap = mat.GetTexture("_GlossMap") != null;
         bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
 
         mat.SetKeyword("_USEBUMPMAP_ON", usesBumpMap);
         mat.SetKeyword("_USESPECULARMAP_ON", usesSpecMap);
-        mat.SetKeyword("_USEGLOSSMAP_ON", usesGlossMap);
         mat.SetKeyword("_USEEMISSIONMAP_ON", usesEmissionMap);
 
         if (usesBumpMap)
@@ -431,37 +445,40 @@ public class FastTraditionalGUI : ShaderGUI
         this.useAdditionalLightingData = ShaderGUI.FindProperty("_Shade4", props);
         this.perPixelLighting = ShaderGUI.FindProperty("_ForcePerPixel", props);
 
+        //specular lighting
         this.specularLightingEnabled = ShaderGUI.FindProperty("_SpecularHighlights", props);
-        this.specularColor = ShaderGUI.FindProperty("_SpecColor", props);
         this.specular = ShaderGUI.FindProperty("_Specular", props);
+        this.gloss = ShaderGUI.FindProperty("_Gloss", props);        
         this.specularMap = ShaderGUI.FindProperty("_SpecularMap", props);
-
-        this.gloss = ShaderGUI.FindProperty("_Gloss", props);
-        this.glossMap = ShaderGUI.FindProperty("_GlossMap", props); 
-
         this.normalMap = ShaderGUI.FindProperty("_BumpMap", props);
 
+        //reflections
         this.reflectionsEnabled = ShaderGUI.FindProperty("_UseReflections", props);
         this.cubeMap = ShaderGUI.FindProperty("_CubeMap", props);
         this.reflectionScale = ShaderGUI.FindProperty("_ReflectionScale", props);
 
+        //rim lighting
         this.rimLightingEnabled = ShaderGUI.FindProperty("_UseRimLighting", props);
         this.rimPower = ShaderGUI.FindProperty("_RimPower", props);
-        this.rimColor = ShaderGUI.FindProperty("_RimColor", props);
+        this.rimColor = ShaderGUI.FindProperty("_RimColor", props);        
 
+        //emission
         this.emissionColorEnabled = ShaderGUI.FindProperty("_UseEmissionColor", props);
         this.emissionColor = ShaderGUI.FindProperty("_EmissionColor", props);
         this.emissionMap = ShaderGUI.FindProperty("_EmissionMap", props);
 
         this.textureScaleAndOffset = ShaderGUI.FindProperty("_TextureScaleOffset", props);
 
+        //shadows
         this.normalOffsetShadowsEnabled = ShaderGUI.FindProperty("_UseNormalOffsetShadows", props);
         this.transparentShadowsEnabled = ShaderGUI.FindProperty("_UseSemiTransparentShadows", props);
 
+        //alpha
         this.alphaTestEnabled = ShaderGUI.FindProperty("_AlphaTest", props);
         this.alphaCutoff = ShaderGUI.FindProperty("_Cutoff", props);
         this.alphaPremultiplyEnabled = ShaderGUI.FindProperty("_AlphaPremultiply", props);
 
+        //rasterizer state
         this.srcBlend = ShaderGUI.FindProperty("_SrcBlend", props);
         this.dstBlend = ShaderGUI.FindProperty("_DstBlend", props);
         this.blendOp = ShaderGUI.FindProperty("_BlendOp", props);
@@ -485,32 +502,36 @@ public class FastTraditionalGUI : ShaderGUI
         public static GUIContent main = new GUIContent("Albedo", "Albedo (RGB) and Transparency (A)");
         public static GUIContent alphaCutoffText = new GUIContent("Alpha Cutoff", "Threshold for alpha cutoff");
 
-        public static GUIContent occlusionMap = new GUIContent("Occlusion Map", "Additional texture to be overlayed on the main texture");
+        public static GUIContent occlusionMap = new GUIContent("Occlusion", "Additional texture to be overlaid on the main texture");
 
         public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
         public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");
         public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights that don't get a fwdadd pass");
         public static GUIContent perPixelLighting = new GUIContent("Per-Pixel diffuse", "Do diffuse lighting per-pixel instead of per-vertex - using a bump map will force this on");
 
+        //specular lighting
         public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
+        public static GUIContent specularMap = new GUIContent("Color (RGB) Gloss (A)", "Color can also store intensity");
         public static GUIContent specularColor = new GUIContent(" Color", "Tint to apply to specular highlights");
-        public static GUIContent specular = new GUIContent("Power", "Specular Power - using a map will turn on per-pixel lighting");
-        public static GUIContent gloss = new GUIContent("Gloss", "Specular Scale - using a map will turn on per-pixel lighting");
-
+        public static GUIContent specular = new GUIContent("Power", "Exponential strength of specular - using a map will turn on per-pixel lighting");
+        public static GUIContent gloss = new GUIContent("Gloss", "Linear strength of specular - using a map will turn on per-pixel lighting");
         public static GUIContent normalMap = new GUIContent("Normal Map", "Normal Map - will turn on per-pixel lighting");
 
+        //reflections
         public static GUIContent reflectionsEnabled = new GUIContent("Reflections", "Cube map based reflections");
         public static GUIContent cubeMap = new GUIContent("Cube Map", "Cube map lookup for reflections");
-        public static GUIContent reflectionScale = new GUIContent("Scale", "Reflection strength");
-
+        public static GUIContent reflectionScale = new GUIContent("Scale", "Reflection strength");       
+        
+        //rim lighting
         public static GUIContent rimLightingEnabled = new GUIContent("Rim Lighting", "Side lighting");
-        public static GUIContent rimPower = new GUIContent("Power", "Power of rim lighting");
+        public static GUIContent rimPower = new GUIContent("Strength", "Strength of rim lighting");
         public static GUIContent rimColor = new GUIContent("Color", "Color of rim lighting");
 
+        //emission
         public static GUIContent emission = new GUIContent("Emission", "Emission (RGB)");
 
         public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");
-        
+
         //shadows
         //http://c0de517e.blogspot.com/2011/05/shadowmap-bias-notes.html
         public static GUIContent normalOffsetShadowsEnabled = new GUIContent("Normal Offset Shadows", "Offset along normal before projecting into shadow space");           
@@ -521,6 +542,7 @@ public class FastTraditionalGUI : ShaderGUI
         public static GUIContent alphaCutoff = new GUIContent("Alpha Cutoff", "Pixels with alpha below this value will be rejected");
         public static GUIContent alphaPremultiplyEnabled = new GUIContent("Premultiply Alpha", "Premultiply RGB by alpha");
 
+        //rasterizer state
         public static GUIContent srcBlend = new GUIContent("Source Blend", "Blend factor for transparency, etc.");
         public static GUIContent dstBlend = new GUIContent("Destination Blend", "Blend factor for transparency, etc.");
         public static GUIContent blendOp = new GUIContent("Blend Operation", "Blend operation for transparency, etc.");

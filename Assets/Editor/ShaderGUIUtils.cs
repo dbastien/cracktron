@@ -27,6 +27,12 @@ public static class ShaderGUIUtils
         labelRect = new Rect(num, position.y, thumbRect.x + EditorGUIUtility.labelWidth - num, position.height);
     }
 
+    public static bool BeginHeaderAutoProperty(MaterialEditor matEditor, string headerText, MaterialProperty prop)
+    {
+        BeginHeaderProperty(matEditor, headerText, prop);
+        return (prop.floatValue > 0f);
+    }
+
     public static void BeginHeaderProperty(MaterialEditor matEditor, string headerText, MaterialProperty prop)
     {
         matEditor.ShaderProperty(prop, GUIContent.none);
