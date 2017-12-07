@@ -6,8 +6,8 @@
 // constants
 // 32 bit float is 6 digits of safe precision, 64 is 15
 #define TAU          6.283185307179586
-#define TAU_DIV2     3.141592653589793                    
-#define TAU_DIV4     1.570796326794897                    
+#define TAU_DIV2     3.141592653589793
+#define TAU_DIV4     1.570796326794897
 #define TAU_DIV8     0.785398163397448
 #define TAU_RCP      0.159154943091895
 #define TAU_DIV2_RCP 0.318309886183791
@@ -17,6 +17,9 @@
 #define SQRT3        1.732050807568877
 
 #define ONE_DIV3     0.333333333333333
+#define ONE_DIV6     0.666666666666667
+#define ONE_DIV7     0.142857142857143
+#define ONE_DIV9     0.111111111111111
 
 //limits
 #define U64_MAX 18446744073709551615

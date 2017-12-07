@@ -165,10 +165,10 @@ public static class CustomMaterialEditorUtils
 
         Vector4 scaleOffsetVector = scaleOffsetProp.vectorValue;
 
-        Vector2 textureScale = new Vector2(scaleOffsetVector.x, scaleOffsetVector.y);
+        var textureScale = new Vector2(scaleOffsetVector.x, scaleOffsetVector.y);
         textureScale = EditorGUILayout.Vector2Field(Styles.scale, textureScale, new GUILayoutOption[0]);
 
-        Vector2 textureOffset = new Vector2(scaleOffsetVector.z, scaleOffsetVector.w);
+        var textureOffset = new Vector2(scaleOffsetVector.z, scaleOffsetVector.w);
         textureOffset = EditorGUILayout.Vector2Field(Styles.offset, textureOffset, new GUILayoutOption[0]);
 
         if (EditorGUI.EndChangeCheck())

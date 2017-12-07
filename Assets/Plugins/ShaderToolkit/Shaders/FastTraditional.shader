@@ -20,18 +20,14 @@ Shader "Cracktron/Fast Traditional"
         [Toggle] _Shade4("Use additional lighting data? (Expensive!)", Float) = 0
 
         [Toggle] _ForcePerPixel("Light per-pixel (always on if a map is set)", Float) = 0
-        
-        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 1)
+
         [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(0.01, 1000.0)) = 50.0
+        _Gloss("Gloss (Specular Scale)", Range(0.1, 10.0)) = 1.0       
         [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
         [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
 
-        _Gloss("Gloss (Specular Scale)", Range(0.1, 10.0)) = 1.0
-        [Toggle] _UseGlossMap("Use Gloss Map? (per-pixel)", Float) = 0
-        [NoScaleOffset]_GlossMap("Gloss Map", 2D) = "white" {}
-
         [Toggle] _UseBumpMap("Normal Map Enabled? (per-pixel)", Float) = 0
-        [NoScaleOffset][Normal] _BumpMap("Normal Map", 2D) = "bump" {}
+        [NoScaleOffset][Normal]_BumpMap("Normal Map", 2D) = "bump" {}
 
         [Toggle] _UseReflections("Reflections Enabled?", Float) = 0
         [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
@@ -121,9 +117,6 @@ Shader "Cracktron/Fast Traditional"
                 //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
-
-                //may be set from script so generate both paths
-                #pragma multi_compile __ _NEAR_PLANE_FADE_ON
 
                 #include "FastTraditional.cginc"
             ENDCG
