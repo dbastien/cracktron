@@ -196,7 +196,7 @@ fixed4 frag(v2f IN) : SV_Target
         float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
 
         #if defined(SHADOWS_SCREEN)
-            diffuseContrib = min(lightColor, lightAttenuation * 2.0);
+            diffuseContrib = min(diffuseContrib, lightAttenuation * 2.0);
         #endif
     #else
         float3 diffuseContrib = IN.vertexLighting;
@@ -240,9 +240,9 @@ fixed4 frag(v2f IN) : SV_Target
             float3 specularColor = float3(1, 1, 1);
 
             #if defined(_USESPECULARMAP_ON)
-                float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, IN.mainUV.xy).r;
+                float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, IN.mainUV.xy);
                 gloss *= specularMapSample.a;
-                specularColor *= specularMapSample.rgb;
+                specularColor *= specularMapSample.rrr;
             #endif
            
             specContrib += SpecularSchlick(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);

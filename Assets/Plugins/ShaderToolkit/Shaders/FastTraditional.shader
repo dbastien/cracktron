@@ -104,7 +104,7 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
                 #pragma shader_feature _FORCEPERPIXEL_ON
-                #pragma shader_feature _USEGLOSSMAP_ON
+                #pragma shader_feature _USESPECULARMAP_ON
                 #pragma shader_feature _SHADE4_ON
                 #pragma shader_feature _USEREFLECTIONS_ON
                 #pragma shader_feature _USECUSTOMCUBEMAP_ON               
@@ -152,7 +152,7 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
                 #pragma shader_feature _FORCEPERPIXEL_ON
-                #pragma shader_feature _USEGLOSSMAP_ON
+                #pragma shader_feature _USESPECULARMAP_ON
                 #pragma shader_feature _ALPHATEST_ON
                 #pragma shader_feature _ALPHAPREMULTIPLY_ON               
 
@@ -169,6 +169,8 @@ Shader "Cracktron/Fast Traditional"
             Name "ShadowCaster"
             Tags{ "LightMode" = "ShadowCaster" }
             Blend [_SrcBlend] One
+            ZWrite On
+            ZTest LEqual
 
             CGPROGRAM
                 #pragma vertex shadowcast_vert

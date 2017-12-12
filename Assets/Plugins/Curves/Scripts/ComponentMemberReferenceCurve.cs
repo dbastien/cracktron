@@ -20,25 +20,6 @@ public class ComponentMemberReferenceCurve : MonoBehaviour
         this.Curve.preWrapMode = WrapMode.PingPong;
         this.Curve.postWrapMode = WrapMode.PingPong;
     }
-
-    void Awake()
-    {
-    }
-
-    void OnEnable()
-    {
-        
-    }
-
-    void Start()
-    {
-        
-    }
-    
-    void OnDisable()
-    {
-        
-    }
     
     void Update() 
     {

@@ -83,7 +83,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
     [DidReloadScripts]
     private static void LoadPresets()
     {
-        var path = Application.dataPath + EngineConstants.NormalizedCurvesPath;
+        var path = Application.dataPath + CurveConstants.NormalizedCurvesPath;
         var objs = UnityEditorInternal.InternalEditorUtility.LoadSerializedFileAndForget(path);
 
         NormalizedAnimationCurveDrawer.presets = objs[0] as ScriptableObject;

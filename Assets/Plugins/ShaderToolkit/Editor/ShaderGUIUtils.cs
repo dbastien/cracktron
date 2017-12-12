@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Helper class for custom shader editors
@@ -25,6 +26,22 @@ public static class ShaderGUIUtils
         thumbRect.width = 32f;
         var num = thumbRect.x + 30f;
         labelRect = new Rect(num, position.y, thumbRect.x + EditorGUIUtility.labelWidth - num, position.height);
+    }
+
+    public static void HeaderSection(string headerText, Action func)
+    {
+        ShaderGUIUtils.BeginHeader(headerText);
+        func();
+        ShaderGUIUtils.EndHeader();
+    }
+
+    public static void HeaderAutoSection(MaterialEditor matEditor, string headerText, MaterialProperty prop, Action func)
+    {
+        if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, headerText, prop))
+        {
+            func();
+        }
+        ShaderGUIUtils.EndHeader();
     }
 
     public static bool BeginHeaderAutoProperty(MaterialEditor matEditor, string headerText, MaterialProperty prop)

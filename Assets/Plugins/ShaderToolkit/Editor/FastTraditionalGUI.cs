@@ -94,7 +94,7 @@ public class FastTraditionalGUI : ShaderGUI
             this.ShowMainGUI(matEditor);
             this.ShowOutputConfigurationGUI(matEditor);
 
-            if ((BlendMode)this.blendMode.floatValue == BlendMode.Advanced)
+            //if ((BlendMode)this.blendMode.floatValue == BlendMode.Advanced)
             {
                 matEditor.RenderQueueField();
             }
@@ -112,11 +112,12 @@ public class FastTraditionalGUI : ShaderGUI
 
     protected virtual void ShowLightingGUI(MaterialEditor matEditor, Material mat)
     {
-        ShaderGUIUtils.BeginHeader("Lighting");
+        ShaderGUIUtils.HeaderSection("Lighting", ()=>
         {
             matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
             matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
             matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
+
             EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
             {
                 matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
@@ -124,49 +125,42 @@ public class FastTraditionalGUI : ShaderGUI
             EditorGUI.EndDisabledGroup();
 
             //specular lighting
-            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled))
+            ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled, ()=>
             {
                 matEditor.TexturePropertySingleLine(Styles.specularMap, this.specularMap);
                 matEditor.ShaderProperty(this.gloss, Styles.gloss);
                 matEditor.ShaderProperty(this.specular, Styles.specular);                    
-            }
-            ShaderGUIUtils.EndHeader();
+            });
 
+            //matEditor.ShaderProperty(this.normalMap, Styles.normalMap);           
             matEditor.TexturePropertySingleLine(Styles.normalMap, this.normalMap);
 
             //rim lighting
-            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled))
+            ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.rimLightingEnabled.text, this.rimLightingEnabled, ()=>
             {
                 matEditor.ShaderProperty(this.rimPower, Styles.rimPower);
                 matEditor.ShaderProperty(this.rimColor, Styles.rimColor);
-            }
-            ShaderGUIUtils.EndHeader();           
+            });
 
             //reflections
-            if (ShaderGUIUtils.BeginHeaderAutoProperty(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled))
+            ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.reflectionsEnabled.text, this.reflectionsEnabled, ()=>
             {
                 matEditor.TexturePropertySingleLine(Styles.cubeMap, this.cubeMap);
                 matEditor.ShaderProperty(this.reflectionScale, Styles.reflectionScale);
-            }
-            ShaderGUIUtils.EndHeader();
+            });
 
             CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(
                 matEditor, Styles.emission, this.emissionMap, this.emissionColorEnabled, this.emissionColor);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
+        });
     }
 
     protected virtual void ShowShadowsGUI(MaterialEditor matEditor, Material mat)
     {
-        //shadows
-        ShaderGUIUtils.BeginHeader("Shadows");
+        ShaderGUIUtils.HeaderSection("Shadows", ()=>       
         {
             matEditor.ShaderProperty(this.normalOffsetShadowsEnabled, Styles.normalOffsetShadowsEnabled);
             matEditor.ShaderProperty(this.transparentShadowsEnabled, Styles.transparentShadowsEnabled);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();   
+        });
     }
 
     protected virtual void ShowBlendGUI(MaterialEditor matEditor, Material mat, BlendMode mode)
@@ -176,7 +170,8 @@ public class FastTraditionalGUI : ShaderGUI
         {
             return;
         }
-        ShaderGUIUtils.BeginHeader("Alpha Blending");
+
+        ShaderGUIUtils.HeaderSection("Alpha Blending", ()=>       
         {
             if (mode == BlendMode.Advanced)
             {
@@ -184,10 +179,11 @@ public class FastTraditionalGUI : ShaderGUI
                 matEditor.ShaderProperty(this.alphaPremultiplyEnabled, Styles.alphaPremultiplyEnabled.text);
             }
 
-            if (
-                    (mode == BlendMode.Cutout) ||
-                    ((mode == BlendMode.Advanced) && (this.alphaTestEnabled.floatValue >= 0f))
-                )
+            //todo: simplify check
+            bool usesAlphaCutoff = (mode == BlendMode.Cutout) ||
+                                   ((mode == BlendMode.Advanced) && (this.alphaTestEnabled.floatValue >= 0f));
+
+            if (usesAlphaCutoff)
             {
                 matEditor.ShaderProperty(this.alphaCutoff, Styles.alphaCutoff);
             }
@@ -196,9 +192,7 @@ public class FastTraditionalGUI : ShaderGUI
             matEditor.ShaderProperty(this.srcBlend, Styles.srcBlend);
             matEditor.ShaderProperty(this.dstBlend, Styles.dstBlend);
             matEditor.ShaderProperty(this.blendOp, Styles.blendOp);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
+        });
     }
 
     protected virtual void ShowMainGUI(MaterialEditor matEditor)
@@ -208,7 +202,7 @@ public class FastTraditionalGUI : ShaderGUI
         var mode = (BlendMode)this.blendMode.floatValue;
         var mat = matEditor.target as Material;
 
-        ShaderGUIUtils.BeginHeader("Base Texture and Color");
+        ShaderGUIUtils.HeaderSection("Base Texture and Color", ()=>
         {
             matEditor.ShaderProperty(this.vertexColorEnabled, Styles.vertexColorEnabled);
 
@@ -216,22 +210,16 @@ public class FastTraditionalGUI : ShaderGUI
                 matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
 
             matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
+        });
 
         ShowLightingGUI(matEditor, mat);
 
-        ShaderGUIUtils.BeginHeader("Global");
+        ShaderGUIUtils.HeaderSection("Global", ()=>
         {
-            CustomMaterialEditorUtils.TextureScaleOffsetVector4Property(
-                matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
-        }
-        ShaderGUIUtils.EndHeader();
-        ShaderGUIUtils.HeaderSeparator();
+            CustomMaterialEditorUtils.TextureScaleOffsetVector4Property(matEditor, Styles.textureScaleAndOffset, this.textureScaleAndOffset);
+        });
         
         ShowShadowsGUI(matEditor, mat);
-
         ShowBlendGUI(matEditor, mat, mode);
     }
 
@@ -243,60 +231,71 @@ public class FastTraditionalGUI : ShaderGUI
             mat.SetColor("_EmissionColor", mat.GetColor("_Emission"));
         }
 
+        //try and grab things with non-unity standard naming
+        if (mat.HasProperty("_NormalMap"))
+        {
+            mat.SetTexture("_BumpMap", mat.GetTexture("_NormalMap"));
+        }
+
         base.AssignNewShaderToMaterial(mat, oldShader, newShader);
 
-        if (oldShader == null)
+        //shared scale and offset
+        //pull them from the main texture on the source material if available
+
+        //base.AssignNewShaderToMaterial gets weird as I use a globally applicable
+        //_TextureScaleOffset, so do this here
+        if (mat.HasProperty("_MainTex"))
         {
-            return;
+            var s = mat.GetTextureScale("_MainTex");
+            var o = mat.GetTextureOffset("_MainTex");
+
+            Vector4 so = new Vector4(s.x, s.y, o.x, o.y);
+            Debug.Log(so);
+            mat.SetVector("_TextureScaleOffset", so);
         }
 
         var blendMode = BlendMode.Opaque;
 
-        bool standard = oldShader.name.Contains("Standard");
-        bool legacy = oldShader.name.Contains("Legacy Shaders/");
-        bool mobile = oldShader.name.Contains("Mobile/");
-
-        bool transparent = oldShader.name.Contains("Transparent/");
-        bool cutout = oldShader.name.Contains("Transparent/Cutout/");
-        bool unlit = oldShader.name.Contains("Unlit");
-        bool directionalLightOnly = oldShader.name.Contains("DirectionalLight");
-        bool vertexLit = oldShader.name.Contains("VertexLit");
-        bool spec = !oldShader.name.Contains("Diffuse");
-
-        //FastConfigurable uses shared scale and offset
-        //pull them from the main texture on the source material if available
-        if (mat.HasProperty("_MainTex_ST"))
+        if (oldShader != null)
         {
-            var scaleOffset = mat.GetVector("_MainTex_ST");
-            mat.SetVector("_TextureScaleOffset", scaleOffset);
-        }
+            bool standard = oldShader.name.Contains("Standard");
+            bool legacy = oldShader.name.Contains("Legacy Shaders/");
+            bool mobile = oldShader.name.Contains("Mobile/");
 
-        if (standard)
-        {
-            //TODO: toggle on albedo if map or color set
-            this.SetMaterialLighting(mat, true, true, mat.TryGetToggle("_SpecularHighlights", true), true, true);
-        } 
-        else if (mobile || legacy)
-        {
-            if (cutout)
-            {
-                blendMode = BlendMode.Cutout;
-            }
-            else if (transparent)
-            {
-                blendMode = BlendMode.Transparent;
-            }
+            bool transparent = oldShader.name.Contains("Transparent/");
+            bool cutout = oldShader.name.Contains("Transparent/Cutout/");
+            bool unlit = oldShader.name.Contains("Unlit");
+            bool directionalLightOnly = oldShader.name.Contains("DirectionalLight");
+            bool vertexLit = oldShader.name.Contains("VertexLit");
+            bool spec = !oldShader.name.Contains("Diffuse");
 
-            if (unlit)
+            if (standard)
             {
-                this.SetMaterialLighting(mat, false, false, false, false, false);
-            }
-            else
+                //TODO: toggle on albedo if map or color set
+                this.SetMaterialLighting(mat, true, true, mat.TryGetToggle("_SpecularHighlights", true), true, true);
+            } 
+            else if (mobile || legacy)
             {
-                //TODO: need to handle way more cases
-                this.SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, vertexLit);
-            }
-        }
+                if (cutout)
+                {
+                    blendMode = BlendMode.Cutout;
+                }
+                else if (transparent)
+                {
+                    blendMode = BlendMode.Transparent;
+                }
+
+                if (unlit)
+                {
+                    this.SetMaterialLighting(mat, false, false, false, false, false);
+                }
+                else
+                {
+                    //TODO: need to handle way more cases
+                    this.SetMaterialLighting(mat, true, true, spec, !directionalLightOnly, !vertexLit);
+                }
+            }            
+        }     
 
         this.SetMaterialBlendMode(mat, blendMode);
         this.SetMaterialAutoPropertiesAndKeywords(mat);
@@ -323,14 +322,13 @@ public class FastTraditionalGUI : ShaderGUI
         var mode = (BlendMode)this.blendMode.floatValue;
         if (mode == BlendMode.Advanced)
         {
-            ShaderGUIUtils.BeginHeader("Output Configuration");
+            ShaderGUIUtils.HeaderSection("Output Configuration", ()=>
             {
                 matEditor.ShaderProperty(this.cullMode, Styles.cullMode);
                 matEditor.ShaderProperty(this.zTest, Styles.zTest);
                 matEditor.ShaderProperty(this.zWrite, Styles.zWrite);
                 matEditor.ShaderProperty(this.colorWriteMask, Styles.colorWriteMask);
-            }
-            ShaderGUIUtils.EndHeader();
+            });
         }
 
         EditorGUILayout.Separator();
@@ -338,12 +336,12 @@ public class FastTraditionalGUI : ShaderGUI
 
     protected virtual void SetMaterialLighting(Material mat, bool ambient, bool diffuse, bool specular, bool additional, bool perPixel)
     {
-        mat.SetFloat("_UseAmbient", ambient ? 1f : 0f);
-        mat.SetFloat("_UseDiffuse", diffuse ? 1f : 0f);
-        mat.SetFloat("_SpecularHighlights", specular ? 1f : 0f);
-        mat.SetFloat("_Shade4", additional ? 1f : 0f);
+        mat.SetToggle("_UseAmbient", ambient);
+        mat.SetToggle("_UseDiffuse", diffuse);
+        mat.SetToggle("_SpecularHighlights", specular);
+        mat.SetToggle("_Shade4", additional);
 
-        mat.SetFloat("_ForcePerPixel", perPixel ? 1f : 0f);
+        mat.SetToggle("_ForcePerPixel", perPixel);
     }
 
     protected virtual void SetMaterialBlendMode(Material mat, BlendMode blendMode)
@@ -394,31 +392,23 @@ public class FastTraditionalGUI : ShaderGUI
 
     protected virtual bool MaterialNeedsPerPixel(Material mat)
     {
-        bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
-        bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-        bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
-
-        return (usesBumpMap || usesSpecMap || usesEmissionMap);
+        return mat.HasTexture("_BumpMap") || mat.HasTexture("_SpecularMap") || mat.HasTexture("_EmissionMap");
     }
 
     protected virtual void SetMaterialAutoPropertiesAndKeywords(Material mat)
     {
-        mat.SetKeyword("_USEMAINTEX_ON", mat.GetTexture("_MainTex") != null);
-        mat.SetKeyword("_USEOCCLUSIONMAP_ON", mat.GetTexture("_OcclusionMap") != null);
+        mat.SetKeyword("_USEMAINTEX_ON", mat.HasTexture("_MainTex"));
+        mat.SetKeyword("_USEOCCLUSIONMAP_ON", mat.HasTexture("_OcclusionMap"));
 
-        mat.SetKeyword("_USECUSTOMCUBEMAP_ON", mat.GetTexture("_CubeMap") != null);
+        mat.SetKeyword("_USECUSTOMCUBEMAP_ON", mat.HasTexture("_CubeMap"));
 
-        bool usesBumpMap = mat.GetTexture("_BumpMap") != null;
-        bool usesSpecMap = mat.GetTexture("_SpecularMap") != null;
-        bool usesEmissionMap = mat.GetTexture("_EmissionMap") != null;
+        mat.SetKeyword("_USEBUMPMAP_ON", mat.HasTexture("_BumpMap"));
+        mat.SetKeyword("_USESPECULARMAP_ON", mat.HasTexture("_SpecularMap"));
+        mat.SetKeyword("_USEEMISSIONMAP_ON", mat.HasTexture("_EmissionMap"));
 
-        mat.SetKeyword("_USEBUMPMAP_ON", usesBumpMap);
-        mat.SetKeyword("_USESPECULARMAP_ON", usesSpecMap);
-        mat.SetKeyword("_USEEMISSIONMAP_ON", usesEmissionMap);
-
-        if (usesBumpMap)
+        if (MaterialNeedsPerPixel(mat))
         {
-            mat.SetFloat("_ForcePerPixel", 1f);
+            mat.SetToggle("_ForcePerPixel", true);
         }
 
         var texScaleOffset = mat.GetVector("_TextureScaleOffset");

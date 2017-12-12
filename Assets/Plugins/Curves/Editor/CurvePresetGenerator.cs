@@ -44,10 +44,10 @@ public static class CurvePresetGenerator
         CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Triangle), "triangle");
         CurvePresetLibraryWrapper.Add(lib, CurvePresetGenerator.CreateCurve(InterpolationNormalized.Sawtooth), "sawtooth");
          
-        AssetDatabase.CreateAsset(lib, "Assets" + EngineConstants.NormalizedCurvesPath);
+        AssetDatabase.CreateAsset(lib, "Assets" + CurveConstants.NormalizedCurvesPath);
 
         var libUnnormalized = Object.Instantiate(lib);
-        AssetDatabase.CreateAsset(libUnnormalized, "Assets" + EngineConstants.CurvesPath);
+        AssetDatabase.CreateAsset(libUnnormalized, "Assets" + CurveConstants.CurvesPath);
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();

@@ -2,6 +2,7 @@
 #define NOISE
 
 #include "./FastMath.cginc"
+#include "./ImageProcessing.cginc"
 
 UNITY_DECLARE_TEX2D(_RandomTex);
 

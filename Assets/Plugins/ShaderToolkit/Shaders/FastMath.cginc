@@ -5,6 +5,8 @@
 
 // constants
 // 32 bit float is 6 digits of safe precision, 64 is 15
+
+//irrationals
 #define TAU          6.283185307179586
 #define TAU_DIV2     3.141592653589793
 #define TAU_DIV4     1.570796326794897
@@ -17,7 +19,7 @@
 #define SQRT3        1.732050807568877
 
 #define ONE_DIV3     0.333333333333333
-#define ONE_DIV6     0.666666666666667
+#define ONE_DIV6     0.166666666666667
 #define ONE_DIV7     0.142857142857143
 #define ONE_DIV9     0.111111111111111
 
@@ -107,18 +109,6 @@
 inline float PerpDot(float2 v1, float2 v2)
 {
 	return dot(v1, -v2.yx);
-}
- 
-inline float Bilinear(float v_00, float v_10, float v_01, float v_11, float2 t)
-{
-    //actually compiles down better than most more confusing forms
-    return ((v_00 * (1-t.x) + v_10 * t.x) * (1-t.y)) +
-           ((v_01 * (1-t.x) + v_11 * t.x) * t.y);
-}
-
-inline float Bilinear(float4 v, float2 t)
-{
-    return Bilinear(v.x, v.y, v.z, v.w, t);
 }
 
 #endif //FAST_MATH
