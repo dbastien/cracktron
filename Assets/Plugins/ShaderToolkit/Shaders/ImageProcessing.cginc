@@ -4,31 +4,6 @@
 
 #include "./FastMath.cginc"
 
-float4 LinearSamplingGaussian3x3(Texture2D tex, SamplerState samp, float2 uv, float2 texelSize)
-{
-    //does a 9 tap gaussian with only 4 samples by taking advantage of hardware filtering
-
-    //filter weighting:
-    //1 2 1
-    //2 4 2
-    //1 2 1
-
-    float2 offset = texelSize * 0.5;
-
-    float2 ul = float2(-offset.x, -offset.y);
-    float2 ur = float2( offset.x, -offset.y);
-    float2 bl = float2(-offset.x,  offset.y);
-    float2 br = float2( offset.x,  offset.y);
-
-    float4 col;
-    col  = tex.Sample(samp, uv + ul);
-    col += tex.Sample(samp, uv + ur);
-    col += tex.Sample(samp, uv + bl);
-    col += tex.Sample(samp, uv + br);
-    col *= 0.25;
-
-    return col;
-}
 
 inline float3 Saturation(float3 col, float amount)
 {
