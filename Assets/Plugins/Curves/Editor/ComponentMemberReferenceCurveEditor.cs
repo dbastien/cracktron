@@ -17,7 +17,7 @@ public class ComponentMemberReferenceCurveEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        var targetCurve = this.target as ComponentMemberReferenceCurve;
+//        var targetCurve = this.target as ComponentMemberReferenceCurve;
 
         var curveProperty = this.serializedObject.FindProperty("Curve");
 

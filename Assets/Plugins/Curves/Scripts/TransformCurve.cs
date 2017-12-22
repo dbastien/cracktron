@@ -12,11 +12,13 @@ public class TransformCurve : MonoBehaviour
 
     [NormalizedAnimationCurve] public AnimationCurve Curve;
 
-    public bool RelativeMode;
 
-    //curve start is offset in relative mode
     public Vector3 CurveStart;
     public Vector3 CurveEnd;
+
+    public bool RelativeMode;
+    public Vector3 CurveOffset;
+
 
     [FloatIncremental(.1f)] public float LengthScale = 1.0f;
 
@@ -45,17 +47,24 @@ public class TransformCurve : MonoBehaviour
     {
         this.UpdateTarget();
 
-        var currentPos = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
-        
-        this.CurveStart = currentPos;
+        var currentPos = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);       
 
-        if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.CurveEnd))
+        if (!RelativeMode)
         {
-            this.CurveEnd += this.CurveStart;
+            this.CurveStart = currentPos;        
+            if (TransformCurve.DefaultEndOffsets.TryGetValue(this.CurveTargetName, out this.CurveEnd))
+            {
+                this.CurveEnd += this.CurveStart;
+            }
+            else
+            {
+                this.CurveEnd = this.CurveStart + Vector3.up;
+            }
         }
         else
         {
-            this.CurveEnd = this.CurveStart + Vector3.up;
+            this.CurveStart = Vector3.zero;
+            this.CurveEnd = Vector3.zero;
         }
     }
 
@@ -66,9 +75,8 @@ public class TransformCurve : MonoBehaviour
         if (RelativeMode)
         {
             var currentPos = (Vector3)typeof(Transform).GetProperty(this.CurveTargetName).GetValue(this.transform, null);
-            var offset = this.CurveStart;
             this.CurveStart = currentPos;
-            this.CurveEnd = currentPos + offset;        
+            this.CurveEnd = currentPos + this.CurveOffset;
         }
     }
 

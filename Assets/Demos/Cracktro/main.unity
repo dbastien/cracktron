@@ -501,9 +501,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &289656826
@@ -938,9 +939,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &391498445
@@ -1103,9 +1105,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: -30, y: 0, z: 0}
   LengthScale: 1
   CurveTargetName: forward
 --- !u!1 &493622004
@@ -1154,9 +1157,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 30, y: 0, z: 0}
   LengthScale: 1
   CurveTargetName: forward
 --- !u!108 &493622006
@@ -1879,9 +1883,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 1
   CurveStart: {x: 0, y: 0, z: 15}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 0, z: 12}
   LengthScale: 3.33
   CurveTargetName: position
 --- !u!23 &578477996
@@ -2265,11 +2270,12 @@ MonoBehaviour:
     m_PreInfinity: 1
     m_PostInfinity: 1
     m_RotationOrder: 0
-  RelativeMode: 1
-  CurveStart: {x: 0, y: 360, z: 0}
+  CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 360, z: 0}
   LengthScale: 1.5
-  CurveTargetName: eulerAngles
+  CurveTargetName: localEulerAngles
 --- !u!1 &654965283
 GameObject:
   m_ObjectHideFlags: 0
@@ -2671,9 +2677,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 145, z: 35}
   LengthScale: 2.8
   CurveTargetName: eulerAngles
 --- !u!114 &654965289
@@ -2705,9 +2712,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: -0.1, y: 0.1, z: 0.5}
   LengthScale: 0.8
   CurveTargetName: localScale
 --- !u!1001 &704560283
@@ -5256,9 +5264,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 1
   CurveStart: {x: 0, y: 0, z: 15}
-  CurveEnd: {x: 0, y: 0, z: 0}
+  CurveEnd: {x: 0, y: 0, z: 3}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 0, z: 12}
   LengthScale: 3.33
   CurveTargetName: position
 --- !u!23 &747591434
@@ -5673,9 +5682,10 @@ MonoBehaviour:
     m_PreInfinity: 1
     m_PostInfinity: 1
     m_RotationOrder: 0
-  RelativeMode: 1
-  CurveStart: {x: 0, y: 360, z: 0}
+  CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 360, z: 0}
   LengthScale: 1.5
   CurveTargetName: eulerAngles
 --- !u!1 &787354360
@@ -6027,9 +6037,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &787354363
@@ -6480,9 +6491,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &968894075
@@ -7001,9 +7013,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &1305812314
@@ -10797,9 +10810,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 1
+  CurveOffset: {x: 0, y: 6, z: 0}
   LengthScale: 2.1
   CurveTargetName: position
 --- !u!23 &1433160620
@@ -11913,9 +11927,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 0
+  CurveOffset: {x: 0, y: 0, z: 0}
   LengthScale: 1
   CurveTargetName: position
 --- !u!4 &1917303272
@@ -12351,9 +12366,10 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 0
-  RelativeMode: 0
   CurveStart: {x: 0, y: 0, z: 0}
   CurveEnd: {x: 0, y: 0, z: 0}
+  RelativeMode: 0
+  CurveOffset: {x: 0, y: 0, z: 0}
   LengthScale: 2
   CurveTargetName: position
 --- !u!96 &2130195374

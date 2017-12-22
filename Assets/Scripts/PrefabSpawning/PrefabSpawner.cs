@@ -19,7 +19,7 @@ public class PrefabSpawner : MonoBehaviour
         {
             var pos = positionProvider.Next();
 
-            var go = Instantiate(Prefab,
+            /*var go =*/ Instantiate(Prefab,
                                  transform.position + pos * 10,
                                  Quaternion.identity,
                                  transform);

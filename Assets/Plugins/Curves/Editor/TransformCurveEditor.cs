@@ -63,7 +63,7 @@ public class TransformCurveEditor : Editor
 
                 if (targetCurve.RelativeMode)
                 {
-                    targetCurve.CurveStart = EditorGUILayout.Vector3Field("offset", targetCurve.CurveStart);
+                    targetCurve.CurveOffset = EditorGUILayout.Vector3Field("offset", targetCurve.CurveOffset);
                 }
                 else
                 {
