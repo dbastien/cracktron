@@ -12,7 +12,7 @@ public class GaussianBlurShaderGeneratorWindow : EditorWindow
 	protected bool singlePass = true;
 	protected string result = string.Empty;	
 
-	[MenuItem("ShaderSourcery/Gaussian Blur Shader Generator")]
+	[MenuItem("Cracktron/Gaussian Blur Shader Generator")]
 	public static void Init()
 	{
 		var window = EditorWindow.GetWindow<GaussianBlurShaderGeneratorWindow>();
