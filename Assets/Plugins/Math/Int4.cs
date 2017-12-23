@@ -62,15 +62,8 @@ public struct Int4 : IEquatable<Int4>, IFormattable
     }
 
     #region conversion
-    public static explicit operator Vector4(Int4 v)
-    {
-        return new Vector4(v.x, v.y, v.z, v.w);
-    }
-
-    public static explicit operator Vector3(Int4 v)
-    {
-        return new Vector3(v.x, v.y, v.w);
-    }
+    public static explicit operator Vector4(Int4 v) { return new Vector4(v.x, v.y, v.z, v.w); }
+    public static explicit operator Vector3(Int4 v) { return new Vector3(v.x, v.y, v.w); }
     #endregion
 
     #region math operations
@@ -142,51 +135,30 @@ public struct Int4 : IEquatable<Int4>, IFormattable
     #endregion math operations
 
     #region math operators
-    public static Int4 operator +(Int4 l, Int4 r)
-    {
-        return new Int4(l.x + r.x, l.y + r.y, l.z + r.z, l.w + r.w);
-    }
+    public static Int4 operator -(Int4 v) { return new Int4(-v.x, -v.y, -v.z, -v.w); }
 
-    public static Int4 operator -(Int4 l, Int4 r)
-    {
-        return new Int4(l.x - r.x, l.y - r.y, l.z - r.z, l.w - r.w);
-    }
+    public static Int4 operator +(Int4 l, Int4 r) { return new Int4(l.x+r.x, l.y+r.y, l.z+r.z, l.w+r.w); }
+    public static Int4 operator -(Int4 l, Int4 r) { return new Int4(l.x-r.x, l.y-r.y, l.z-r.z, l.w-r.w); }
+    public static Int4 operator *(Int4 v, int d) { return new Int4(v.x*d, v.y*d, v.z*d, v.w*d); }
+    public static Int4 operator *(int d, Int4 v) { return new Int4(v.x*d, v.y*d, v.z*d, v.w*d); }
+    public static Int4 operator /(Int4 v, int d) { return new Int4(v.x/d, v.y/d, v.z/d, v.w/d); }
+    public static Int4 operator /(int d, Int4 v) { return new Int4(d/v.x, d/v.y, d/v.z, d/v.w); }
 
-    public static Int4 operator -(Int4 v)
-    {
-        return new Int4(-v.x, -v.y, -v.z, -v.w);
-    }
-
-    public static Int4 operator *(Int4 v, int d)
-    {
-        return new Int4(v.x * d, v.y * d, v.z * d, v.w * d);
-    }
-
-    public static Int4 operator *(int d, Int4 v)
-    {
-        return new Int4(v.x * d, v.y * d, v.z * d, v.w * d);
-    }
-
-    public static Int4 operator /(Int4 v, int d)
-    {
-        return new Int4(v.x / d, v.y / d, v.z / d, v.w / d);
-    }
+    public static Vector4 operator +(Vector4 l, Int4 r) { return new Vector4(l.x+r.x, l.y+r.y, l.z+r.z, l.w+r.w); }
+    public static Vector4 operator +(Int4 l, Vector4 r) { return new Vector4(l.x+r.x, l.y+r.y, l.z+r.z, l.w+r.w); }
+    public static Vector4 operator -(Vector4 l, Int4 r) { return new Vector4(l.x-r.x, l.y-r.y, l.z-r.z, l.w-r.w); }
+    public static Vector4 operator -(Int4 l, Vector4 r) { return new Vector4(l.x-r.x, l.y-r.y, l.z-r.z, l.w-r.w); }
+    public static Vector4 operator *(Int4 v, float f) { return new Vector4(v.x*f, v.y*f, v.z*f, v.w*f); }
+    public static Vector4 operator *(float f, Int4 v) { return new Vector4(v.x*f, v.y*f, v.z*f, v.w*f); }
     #endregion math operators
 
     #region comparison
+    public static bool operator ==(Int4 l, Int4 r) { return l.Equals(r); }
+    public static bool operator !=(Int4 l, Int4 r) { return !l.Equals(r); }
+
     public bool Equals(Int4 other)
     {
         return this.x.Equals(other.x) && this.y.Equals(other.y) && this.z.Equals(other.z) && this.w.Equals(other.w);
-    }
-
-    public static bool operator ==(Int4 l, Int4 r)
-    {
-        return l.Equals(r);
-    }
-
-    public static bool operator !=(Int4 l, Int4 r)
-    {
-        return !l.Equals(r);
     }
 
     public override bool Equals(object value)

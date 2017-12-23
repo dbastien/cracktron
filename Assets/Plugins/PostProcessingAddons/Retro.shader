@@ -1,10 +1,15 @@
-Shader "Hidden/Custom/CRT"
+Shader "Hidden/Custom/Retro"
 {
     HLSLINCLUDE
+        #pragma multi_compile __ _USECOLORQUANT_ON
+
         #include "../PostProcessing/Shaders/StdLib.hlsl"
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;
+
+        float4 _Resolution;
+        float4 _ColorQuantizationBuckets;
 
         float ScanlineSmoothStep(float dist, float size)
         {
@@ -24,22 +29,19 @@ Shader "Hidden/Custom/CRT"
         
         float4 Frag(VaryingsDefault i) : SV_Target
         {
-            static const int ColorPerChannelBucketCount = 6;
+            float2 pr = i.texcoord * _Resolution.xy;
+            float2 ps = i.texcoord * _MainTex_TexelSize.zw;
 
-            float2 MonitorRes = float2(160.0, 120.0);
-            float2 p = i.texcoord * MonitorRes;
+            float2 dist = abs(pr - (floor(pr) + 0.5));
 
-            float2 dist = abs(p - (floor(p) + 0.5));
+            float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, floor(pr)/_Resolution.xy);
 
-            float2 dx = float2(_MainTex_TexelSize.x, 0.0);
-            float2 dy = float2(0.0, _MainTex_TexelSize.y);
-
-            float4 c_00 = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, ((int2)p)/MonitorRes);
-
-            c_00 = round(c_00 * (ColorPerChannelBucketCount - 1)) / (ColorPerChannelBucketCount - 1);
+            #if defined(_USECOLORQUANT_ON)
+                col.rgb = round(col * (_ColorQuantizationBuckets.rgb - 1)) / (_ColorQuantizationBuckets.rgb - 1);
+            #endif
 
             float sl = ScanlinePow(dist.y, 3, 0.5);
-            return c_00*sl;
+            return col * sl;
         }    
     ENDHLSL
 

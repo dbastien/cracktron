@@ -49,32 +49,15 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     }
 
     #region conversion
-    public static explicit operator Vector2(Int2 v)
-    {
-        return new Vector2(v.x, v.y);
-    }
+    public static explicit operator Int2(Vector2 v) { return new Int2((int)v.x, (int)v.y); }
+    public static explicit operator Vector2(Int2 v) { return new Vector2(v.x, v.y); }
     #endregion
 
     #region math operations
-    public float magnitude
-    {
-        get { return this.Magnitude(this); }
-    }
-
-    public int sqrMagnitude
-    {
-        get { return this.SqrMagnitude(this); }
-    }
-
-    public int dotOne
-    {
-        get { return Int2.DotOne(this); }
-    }
-
-    public float Magnitude(Int2 v)
-    {
-        return Mathf.Sqrt(this.SqrMagnitude(v));
-    }
+    public float magnitude { get { return this.Magnitude(this); } }
+    public int sqrMagnitude { get { return this.SqrMagnitude(this); } }
+    public int dotOne { get { return Int2.DotOne(this); } }
+    public float Magnitude(Int2 v) { return Mathf.Sqrt(this.SqrMagnitude(v)); }
 
     public int SqrMagnitude(Int2 v)
     {
@@ -94,8 +77,8 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     public static int DotOne(Int2 v)
     {
         return v.x * v.y;
-    }
 
+    }
     public static int PerpDot(Int2 l, Int2 r)
     {
         return l.x * r.y - l.y * r.x;
@@ -124,51 +107,30 @@ public struct Int2 : IEquatable<Int2>, IFormattable
     #endregion math operations
 
     #region math operators
-    public static Int2 operator +(Int2 l, Int2 r)
-    {
-        return new Int2(l.x + r.x, l.y + r.y);
-    }
+    public static Int2 operator -(Int2 v) { return new Int2(-v.x, -v.y); }
 
-    public static Int2 operator -(Int2 l, Int2 r)
-    {
-        return new Int2(l.x - r.x, l.y - r.y);
-    }
+    public static Int2 operator +(Int2 l, Int2 r) { return new Int2(l.x+r.x, l.y+r.y); }
+    public static Int2 operator -(Int2 l, Int2 r) { return new Int2(l.x-r.x, l.y-r.y); }
+    public static Int2 operator *(Int2 v, int d) { return new Int2(v.x*d, v.y*d); }
+    public static Int2 operator *(int d, Int2 v) { return new Int2(v.x*d, v.y*d); }
+    public static Int2 operator /(Int2 v, int d) { return new Int2(v.x/d, v.y/d); }
+    public static Int2 operator /(int d, Int2 v) { return new Int2(d/v.x, d/v.y); }
 
-    public static Int2 operator -(Int2 v)
-    {
-        return new Int2(-v.x, -v.y);
-    }
-
-    public static Int2 operator *(Int2 v, int d)
-    {
-        return new Int2(v.x * d, v.y * d);
-    }
-
-    public static Int2 operator *(int d, Int2 v)
-    {
-        return new Int2(v.x * d, v.y * d);
-    }
-
-    public static Int2 operator /(Int2 v, int d)
-    {
-        return new Int2(v.x / d, v.y / d);
-    }
+    public static Vector2 operator +(Vector2 l, Int2 r) { return new Vector2(l.x+r.x, l.y+r.y); }
+    public static Vector2 operator +(Int2 l, Vector2 r) { return new Vector2(l.x+r.x, l.y+r.y); }
+    public static Vector2 operator -(Vector2 l, Int2 r) { return new Vector2(l.x-r.x, l.y-r.y); }
+    public static Vector2 operator -(Int2 l, Vector2 r) { return new Vector2(l.x-r.x, l.y-r.y); }
+    public static Vector2 operator *(Int2 v, float f) { return new Vector2(v.x*f, v.y*f); }
+    public static Vector2 operator *(float f, Int2 v) { return new Vector2(v.x*f, v.y*f); }
     #endregion math operators
 
     #region comparison
+    public static bool operator ==(Int2 l, Int2 r) { return l.Equals(r); }
+    public static bool operator !=(Int2 l, Int2 r) { return !l.Equals(r); }
+
     public bool Equals(Int2 other)
     {
         return this.x.Equals(other.x) && this.y.Equals(other.y);
-    }
-
-    public static bool operator ==(Int2 l, Int2 r)
-    {
-        return l.Equals(r);
-    }
-
-    public static bool operator !=(Int2 l, Int2 r)
-    {
-        return !l.Equals(r);
     }
 
     public override bool Equals(object value)

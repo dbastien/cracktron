@@ -63,37 +63,16 @@ public struct Int3 : IEquatable<Int3>, IFormattable
     }
 
     #region conversion
-    public static explicit operator Vector3(Int3 v)
-    {
-        return new Vector3(v.x, v.y, v.z);
-    }
-
-    public static explicit operator Vector2(Int3 v)
-    {
-        return new Vector2(v.x, v.y);
-    }
+    public static explicit operator Int3(Vector3 v) { return new Int3((int)v.x, (int)v.y, (int)v.z); }
+    public static explicit operator Vector3(Int3 v) { return new Vector3(v.x, v.y, v.z); }
+    public static explicit operator Vector2(Int3 v) { return new Vector2(v.x, v.y); }
     #endregion
 
     #region math operations
-    public float magnitude
-    {
-        get { return this.Magnitude(this); }
-    }
-
-    public int sqrMagnitude
-    {
-        get { return this.SqrMagnitude(this); }
-    }
-
-    public int dotOne
-    {
-        get { return Int3.DotOne(this); }
-    }
-
-    public float Magnitude(Int3 v)
-    {
-        return Mathf.Sqrt(this.SqrMagnitude(v));
-    }
+    public float magnitude { get { return this.Magnitude(this); } }
+    public int sqrMagnitude { get { return this.SqrMagnitude(this); } }
+    public int dotOne { get { return Int3.DotOne(this); } }
+    public float Magnitude(Int3 v) { return Mathf.Sqrt(this.SqrMagnitude(v)); }
 
     public int SqrMagnitude(Int3 v)
     {
@@ -167,51 +146,30 @@ public struct Int3 : IEquatable<Int3>, IFormattable
     #endregion math operations
 
     #region math operators
-    public static Int3 operator +(Int3 l, Int3 r)
-    {
-        return new Int3(l.x + r.x, l.y + r.y, l.z + r.z);
-    }
+    public static Int3 operator -(Int3 v) { return new Int3(-v.x, -v.y, -v.z); }
 
-    public static Int3 operator -(Int3 l, Int3 r)
-    {
-        return new Int3(l.x - r.x, l.y - r.y, l.z - r.z);
-    }
+    public static Int3 operator +(Int3 l, Int3 r) { return new Int3(l.x+r.x, l.y+r.y, l.z+r.z); }
+    public static Int3 operator -(Int3 l, Int3 r) { return new Int3(l.x-r.x, l.y-r.y, l.z-r.z); }
+    public static Int3 operator *(Int3 v, int d) { return new Int3(v.x*d, v.y*d, v.z*d); }
+    public static Int3 operator *(int d, Int3 v) { return new Int3(v.x*d, v.y*d, v.z*d); }
+    public static Int3 operator /(Int3 v, int d) { return new Int3(v.x/d, v.y/d, v.z/d); }
+    public static Int3 operator /(int d, Int3 v) { return new Int3(d/v.x, d/v.y, d/v.z); }
 
-    public static Int3 operator -(Int3 v)
-    {
-        return new Int3(-v.x, -v.y, -v.z);
-    }
-
-    public static Int3 operator *(Int3 v, int d)
-    {
-        return new Int3(v.x * d, v.y * d, v.z * d);
-    }
-
-    public static Int3 operator *(int d, Int3 v)
-    {
-        return new Int3(v.x * d, v.y * d, v.z * d);
-    }
-
-    public static Int3 operator /(Int3 v, int d)
-    {
-        return new Int3(v.x / d, v.y / d, v.z / d);
-    }
+    public static Vector3 operator +(Vector3 l, Int3 r) { return new Vector3(l.x+r.x, l.y+r.y, l.z+r.z); }
+    public static Vector3 operator +(Int3 l, Vector3 r) { return new Vector3(l.x+r.x, l.y+r.y, l.z+r.z); }
+    public static Vector3 operator -(Vector3 l, Int3 r) { return new Vector3(l.x-r.x, l.y-r.y, l.z-r.z); }
+    public static Vector3 operator -(Int3 l, Vector3 r) { return new Vector3(l.x-r.x, l.y-r.y, l.z-r.z); }
+    public static Vector3 operator *(Int3 v, float f) { return new Vector3(v.x*f, v.y*f, v.z*f); }
+    public static Vector3 operator *(float f, Int3 v) { return new Vector3(v.x*f, v.y*f, v.z*f); }
     #endregion math operators
 
     #region comparison
+    public static bool operator ==(Int3 l, Int3 r) { return l.Equals(r); }
+    public static bool operator !=(Int3 l, Int3 r) { return !l.Equals(r); }
+
     public bool Equals(Int3 other)
     {
         return this.x.Equals(other.x) && this.y.Equals(other.y) && this.z.Equals(other.z);
-    }
-
-    public static bool operator ==(Int3 l, Int3 r)
-    {
-        return l.Equals(r);
-    }
-
-    public static bool operator !=(Int3 l, Int3 r)
-    {
-        return !l.Equals(r);
     }
 
     public override bool Equals(object value)
