@@ -2,12 +2,16 @@ Shader "Hidden/Custom/Retro"
 {
     HLSLINCLUDE
         #pragma multi_compile __ _USECOLORQUANT_ON
+        #pragma multi_compile __ _USECRTMASK_ON
 
         #include "../PostProcessing/Shaders/StdLib.hlsl"
         #include "../ShaderToolkit/Shaders/ImageProcessing.cginc"
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;
+
+        TEXTURE2D_SAMPLER2D(_CrtMask, sampler_CrtMask);
+        float4 _CrtMask_TexelSize;
 
         float4 _Resolution;
         float4 _ColorQuantizationBuckets;
@@ -35,14 +39,19 @@ Shader "Hidden/Custom/Retro"
         float4 Frag(VaryingsDefault i) : SV_Target
         {
             float2 pr = i.texcoord * _Resolution.xy;
+            float2 puv = pr/_Resolution.xy;
             float2 ps = i.texcoord * _MainTex_TexelSize.zw;
 
             float2 dist = abs(pr - (floor(pr) + 0.5));
 
             float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, floor(pr)/_Resolution.xy);
 
+            #if defined(_USECRTMASK_ON)
+                col.rgb *= SAMPLE_TEXTURE2D(_CrtMask, sampler_CrtMask, i.texcoord*_MainTex_TexelSize.zw/_CrtMask_TexelSize.zw);
+            #endif
+
             #if defined(_USECOLORQUANT_ON)
-                col.rgb = round(col * (_ColorQuantizationBuckets.rgb - 1)) / (_ColorQuantizationBuckets.rgb - 1);
+                col.rgb = round(col.rgb * (_ColorQuantizationBuckets.rgb - 1)) / (_ColorQuantizationBuckets.rgb - 1);
             #endif
 
             col.rgb = Brightness(col.rgb, _Brightness);

@@ -11,7 +11,9 @@ public sealed class Retro : PostProcessEffectSettings
     [Tooltip("Number of vertical pixels")]
     public IntParameter ResolutionY = new IntParameter() { value = 180 };
 
-    public BoolParameter ColorQuantization = new BoolParameter() { value = true };
+    public TextureParameter CRTMask = new TextureParameter();
+
+    public BoolParameter ColorQuantization = new BoolParameter() { value = false  };
     [Range(1, 256)]
     public Int3Parameter ColorQuantizationBuckets = new Int3Parameter() { value = new Int3(5,5,5) };
     [Range(-1.0f, 1.0f)]
@@ -28,6 +30,13 @@ public sealed class RetroRenderer : PostProcessEffectRenderer<Retro>
     {
         var sheet = context.propertySheets.Get(Shader.Find("Hidden/Custom/Retro"));
         var cmd = context.command;
+
+        bool hasMask = settings.CRTMask.value != null;
+        sheet.SetKeyword("_USECRTMASK_ON", hasMask);
+        if (hasMask)
+        {
+            sheet.properties.SetTexture("_CrtMask", settings.CRTMask.value);
+        }
 
         sheet.SetKeyword("_USECOLORQUANT_ON", settings.ColorQuantization.value);
         var b = settings.ColorQuantizationBuckets.value;
