@@ -1,9 +1,17 @@
-
 #ifndef IMAGE_PROCESSING
 #define IMAGE_PROCESSING
 
 #include "./FastMath.cginc"
 
+inline float3 Brightness(float3 col, float amount)
+{
+    return col + amount;
+}
+
+inline float3 Contrast(float3 col, float amount)
+{
+    return col - amount * (col - 1.0) * col * (col - 0.5);
+}
 
 inline float3 Saturation(float3 col, float amount)
 {

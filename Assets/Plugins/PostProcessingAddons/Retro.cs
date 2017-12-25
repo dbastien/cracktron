@@ -12,11 +12,14 @@ public sealed class Retro : PostProcessEffectSettings
     public IntParameter ResolutionY = new IntParameter() { value = 180 };
 
     public BoolParameter ColorQuantization = new BoolParameter() { value = true };
-    [Range(1,256)]
+    [Range(1, 256)]
     public Int3Parameter ColorQuantizationBuckets = new Int3Parameter() { value = new Int3(5,5,5) };
-
+    [Range(-1.0f, 1.0f)]
     public FloatParameter Brightness = new FloatParameter { value = 1.0f };
+    [Range(0.0f, 2.0f)]
     public FloatParameter Contrast = new FloatParameter { value = 1.0f };
+    [Range(0.0f, 4.0f)]
+    public FloatParameter Saturation = new FloatParameter { value = 1.0f };  
 }
  
 public sealed class RetroRenderer : PostProcessEffectRenderer<Retro>
@@ -33,6 +36,10 @@ public sealed class RetroRenderer : PostProcessEffectRenderer<Retro>
         int tw = settings.ResolutionX.value;
         int th = settings.ResolutionY.value;
         sheet.properties.SetVector("_Resolution", new Vector4(tw, th, 0.0f, 0.0f));
+
+        sheet.properties.SetFloat("_Brightness", settings.Brightness);
+        sheet.properties.SetFloat("_Contrast", settings.Contrast);
+        sheet.properties.SetFloat("_Saturation", settings.Saturation);
 
         context.command.BlitFullscreenTriangle(context.source, context.destination, sheet, 0);    
     }

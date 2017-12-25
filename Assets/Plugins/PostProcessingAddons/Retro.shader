@@ -4,12 +4,17 @@ Shader "Hidden/Custom/Retro"
         #pragma multi_compile __ _USECOLORQUANT_ON
 
         #include "../PostProcessing/Shaders/StdLib.hlsl"
+        #include "../ShaderToolkit/Shaders/ImageProcessing.cginc"
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;
 
         float4 _Resolution;
         float4 _ColorQuantizationBuckets;
+
+        float _Brightness;
+        float _Contrast;
+        float _Saturation;
 
         float ScanlineSmoothStep(float dist, float size)
         {
@@ -39,6 +44,10 @@ Shader "Hidden/Custom/Retro"
             #if defined(_USECOLORQUANT_ON)
                 col.rgb = round(col * (_ColorQuantizationBuckets.rgb - 1)) / (_ColorQuantizationBuckets.rgb - 1);
             #endif
+
+            col.rgb = Brightness(col.rgb, _Brightness);
+            col.rgb = Contrast(col.rgb, _Contrast);
+            col.rgb = Saturation(col.rgb, _Saturation);
 
             float sl = ScanlinePow(dist.y, 3, 0.5);
             return col * sl;
