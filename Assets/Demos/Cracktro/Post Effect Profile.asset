@@ -15,6 +15,7 @@ MonoBehaviour:
   - {fileID: 114178235060230382}
   - {fileID: 114519563075162940}
   - {fileID: 114862411571438864}
+  - {fileID: 114541667771489400}
 --- !u!114 &114178235060230382
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -356,28 +357,28 @@ MonoBehaviour:
     value: 1
   GameResolutionX:
     overrideState: 1
-    value: 160
+    value: 320
   GameResolutionY:
     overrideState: 1
-    value: 90
+    value: 180
   CRTResolutionX:
     overrideState: 1
     value: 1280
   CRTResolutionY:
     overrideState: 1
-    value: 720
+    value: 960
   CRTBarrelDistortion:
     overrideState: 1
-    value: 0.331
+    value: 0
   CRTMask:
     overrideState: 1
-    value: {fileID: 2800000, guid: 1ccce0d8a093e284985125ba0ce7d62c, type: 3}
+    value: {fileID: 0}
   CRTMaskSizePixels:
     overrideState: 1
     value: {x: 2, y: 2}
   CRTMaskWeight:
     overrideState: 1
-    value: {r: 0.547, g: 0.522, b: 0.409, a: 1}
+    value: {r: 1, g: 1, b: 1, a: 1}
   ColorQuantization:
     overrideState: 0
     value: 0
@@ -389,13 +390,13 @@ MonoBehaviour:
       z: 6
   Brightness:
     overrideState: 1
-    value: 0.079
+    value: 0.019
   Contrast:
     overrideState: 1
-    value: 2
+    value: 1
   Saturation:
     overrideState: 1
-    value: 2.415
+    value: 1.5
 --- !u!114 &114541667771489400
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -412,17 +413,17 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   intensity:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1.5
   threshold:
-    overrideState: 0
-    value: 1
+    overrideState: 1
+    value: 0.5
   softKnee:
     overrideState: 0
-    value: 0.5
+    value: 0
   diffusion:
-    overrideState: 0
-    value: 7
+    overrideState: 1
+    value: 3
   anamorphicRatio:
     overrideState: 0
     value: 0
@@ -737,7 +738,7 @@ MonoBehaviour:
     value: {fileID: 0}
   ldrLut:
     overrideState: 1
-    value: {fileID: 2800000, guid: 719faf88a966dc1478fafe0f5b9ed0f8, type: 3}
+    value: {fileID: 2800000, guid: f1f1702bc1f60b3478a2458bac647009, type: 3}
   temperature:
     overrideState: 0
     value: 0

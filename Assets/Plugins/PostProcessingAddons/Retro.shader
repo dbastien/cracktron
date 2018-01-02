@@ -5,7 +5,9 @@ Shader "Hidden/Custom/Retro"
         #pragma multi_compile __ _USECRTMASK_ON
 
         #include "../PostProcessing/Shaders/StdLib.hlsl"
+        #include "../ShaderToolkit/Shaders/FastMath.cginc"
         #include "../ShaderToolkit/Shaders/ImageProcessing.cginc"
+
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;
@@ -41,31 +43,52 @@ Shader "Hidden/Custom/Retro"
             return saturate(s + (1.0 - s) * brightness);
         }
 
+        float Scanline(float dist, float size, float brightness)
+        {
+            return ScanlinePow(dist, size, brightness);
+        }
+
         float2 BarrelDistortion(float2 v, float amount) 
         {
             float d = dot(v, v);
             return v * (d + amount * d * d) * amount;
         }
-        
+
+        float Vignette(float2 uv, float aspect, float radius, float slope, float amount)
+        {
+            float2 uv_c = uv - 0.5;
+            uv_c *= float2(1.0/aspect, 1.0/aspect);
+            uv_c /= radius;
+            float t = dot_sat(uv_c, uv_c);
+
+            return saturate(1.0 + pow(t, slope * 0.5) * amount);
+        }
+
         float4 Frag(VaryingsDefault i) : SV_Target
         {
-            //TODO: uv space dimming
             float2 uv = i.texcoord;
             float2 uv_c = uv - 0.5;
 
-            uv += BarrelDistortion(uv_c, _CRTBarrelDistortion);
-            float2 uv_min = float2(0.0f, 0.0f);
-            float2 uv_max = float2(1.0f, 1.0f);
+            float2 barrel = BarrelDistortion(uv_c, _CRTBarrelDistortion);
+            float2 uv_barrel = uv + barrel;
+            float2 uv_min = float2(0.0, 0.0);
+            float2 uv_max = float2(1.0, 1.0);
 
-            if ( any(step(uv_max, uv)) )
-                return float4(0.0f, 0.0f, 0.0f, 0.0f);
-            if ( any(step(uv, uv_min)) )
-                return float4(0.0f, 0.0f, 0.0f, 0.0f);
+            //todo: pass up precalulated
+            float crt_aspect = _CRTResolution.x / _CRTResolution.y;
+
+            //apply vignetting
+            float dim = Vignette(uv_barrel, crt_aspect, 0.7, 2.0, -2.0);
+
+            if ( any(step(uv_max, uv_barrel)) )
+                return float4(0.0, 0.0, 0.0, 0.0);
+            if ( any(step(uv_barrel, uv_min)) )
+                return float4(0.0, 0.0, 0.0, 0.0);
 
             //"game" rendering things
-            float2 g_pr = uv * _GameResolution.xy;
-            float2 g_puv = floor(g_pr)/_GameResolution.xy;
-            float2 g_ps = uv * _MainTex_TexelSize.zw;
+            float2 g_ps = uv_barrel * _MainTex_TexelSize.zw;
+            float2 g_pr = uv_barrel * _GameResolution.xy;
+            float2 g_puv = floor(g_pr)/_GameResolution.xy; 
 
             float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, g_puv);
 
@@ -74,13 +97,12 @@ Shader "Hidden/Custom/Retro"
             #endif
 
             //CRT things
-            float2 c_pr = uv * _CRTResolution.xy;
-            float2 c_puv = floor(c_pr)/_CRTResolution.xy;
-
+            float2 c_pr = uv_barrel * _CRTResolution.xy;
+            
             #if defined(_USECRTMASK_ON)
                 float2 subPixelStep = _CRTMask_TexelSize.zw / _CRTMaskSizePixels.xy;
-                float2 maskUV = (c_pr)/subPixelStep;
-                col.rgb *= saturate(SAMPLE_TEXTURE2D(_CRTMask, sampler_CRTMask, maskUV).rgb / _CRTMaskWeight.rgb);
+                float2 maskUV = c_pr/subPixelStep;
+                col.rgb *= (saturate(SAMPLE_TEXTURE2D(_CRTMask, sampler_CRTMask, maskUV).rgb) / _CRTMaskWeight.rgb);
             #endif
 
             col.rgb = Brightness(col.rgb, _Brightness);
@@ -88,9 +110,10 @@ Shader "Hidden/Custom/Retro"
             col.rgb = Saturation(col.rgb, _Saturation);
 
             //TODO: make part of crt mask?
-            float2 dist = abs(c_pr - (floor(c_pr) + 0.5));
-            float sl = ScanlinePow(dist.y, 3, 0.5);
-            return col * sl;
+            float sl_dist = abs(frac(c_pr.y) - 0.5);
+            float sl = Scanline(sl_dist, 7.5, 0.1);
+
+            return col * dim * sl;// * dim;
         }    
     ENDHLSL
 

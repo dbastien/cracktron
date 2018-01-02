@@ -15,7 +15,7 @@ public sealed class Retro : PostProcessEffectSettings
     public IntParameter CRTResolutionX = new IntParameter() { value = 640 };
     [Tooltip("Number of vertical pixels")]
     public IntParameter CRTResolutionY = new IntParameter() { value = 360 };
-    [Range(0.0f, 2.0f)]
+    [Range(0.0f, 1.5f)]
     public FloatParameter CRTBarrelDistortion = new FloatParameter { value = 0.3f };
 
     [Tooltip("Pixel mask for CRT - i.e. aperture grill or shadow mask")]
