@@ -60,7 +60,7 @@ public class NormalizedAnimationCurveDrawer : PropertyDrawer
                     animationCurve.postWrapMode = (WrapMode)wrapMode;
                     property.animationCurveValue = animationCurve;
                 }
-                if (Event.current.type == EventType.repaint)
+                if (Event.current.type == EventType.Repaint)
                 {
                     CurvePresetLibraryWrapper.Draw(NormalizedAnimationCurveDrawer.presets, rect, p);
                 }
