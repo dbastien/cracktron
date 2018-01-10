@@ -2,17 +2,17 @@
 using UnityEngine;
 
 /// <summary>
-/// Property drawer for display of Int2
+/// Property drawer for display of Int4
 /// </summary>
-[CustomPropertyDrawer(typeof(Int2))]
-public class Int2Drawer : PropertyDrawer
+[CustomPropertyDrawer(typeof(Vector4Int))]
+public class Vector4IntDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         label = EditorGUI.BeginProperty(position, label, property);
         var contentPosition = EditorGUI.PrefixLabel(position, label);
 
-        var subLabels = new GUIContent[] { new GUIContent("x"), new GUIContent("y") };
+        var subLabels = new GUIContent[] { new GUIContent("x"), new GUIContent("y"), new GUIContent("z"), new GUIContent("w") };
 
         EditorGUI.MultiPropertyField(contentPosition, subLabels, property.FindPropertyRelative("x"));
 

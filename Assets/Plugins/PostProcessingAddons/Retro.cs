@@ -26,7 +26,7 @@ public sealed class Retro : PostProcessEffectSettings
 
     public BoolParameter ColorQuantization = new BoolParameter() { value = false  };
     [Range(1, 256)]
-    public Int3Parameter ColorQuantizationBuckets = new Int3Parameter() { value = new Int3(5,5,5) };
+    public Vector3IntParameter ColorQuantizationBuckets = new Vector3IntParameter() { value = new Vector3Int(5,5,5) };
 
     [Range(-1.0f, 1.0f)]
     public FloatParameter Brightness = new FloatParameter { value = 1.0f };
