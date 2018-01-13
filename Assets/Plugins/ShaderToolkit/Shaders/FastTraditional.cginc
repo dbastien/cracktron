@@ -5,8 +5,6 @@
 #include "./FastLighting.cginc"
 #include "./TextureMacro.cginc"
 
-//todo: reassess these
-#define PIXEL_SHADER_USES_WORLDPOS  (_SPECULARHIGHLIGHTS_ON || _USERIMLIGHTING_ON || (_FORCEPERPIXEL_ON && (_SHADE4_ON)))
 #define USES_MAIN_UV (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 //todo: share world view dir
@@ -82,9 +80,7 @@ struct v2f
         float3 vertexLighting : TEXCOORD3;
     #endif
 
-    #if PIXEL_SHADER_USES_WORLDPOS
-        float3 worldPos: TEXCOORD4;
-    #endif
+    float3 worldPos: TEXCOORD4;
 
     #if defined(_USEREFLECTIONS_ON)
         float3 worldReflection : TEXCOORD5;
@@ -112,13 +108,8 @@ v2f vert(a2v v)
         #endif
     #endif
 
-    #if defined(_SPECULARHIGHLIGHTS_ON) || defined(_SHADE4_ON) || defined(_USEREFLECTIONS_ON) || PIXEL_SHADER_USES_WORLDPOS
-        float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
-    #endif
-
-    #if PIXEL_SHADER_USES_WORLDPOS
-        o.worldPos = worldPos;
-    #endif
+    float3 worldPos = mul(unity_ObjectToWorld, v.vertex);
+    o.worldPos = worldPos;
 
     #if USES_MAIN_UV
         o.mainUV.xy = TRANSFORM_TEX_MAINTEX(v.mainUV.xy, _TextureScaleOffset);
@@ -189,8 +180,12 @@ fixed4 frag(v2f IN) : SV_Target
         clip(color.a - _Cutoff);
     #endif
         
-    float lightAttenuation = LIGHT_ATTENUATION(IN);
-    
+    #if UNITY_VERSION >= 2018
+        UNITY_LIGHT_ATTENUATION(lightAttenuation, IN, IN.worldPos);
+    #else
+        float lightAttenuation = LIGHT_ATTENUATION(IN);
+    #endif
+
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
         float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
