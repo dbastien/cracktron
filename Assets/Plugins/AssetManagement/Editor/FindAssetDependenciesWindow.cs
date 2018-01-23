@@ -11,27 +11,40 @@ public class FindAssetDependenciesWindow : EditorWindow
         w.Show();
     }
 
-    Object target;
+    private Object target;
+    private string results;
 
     public void OnGUI()
     {
+        if (target == null && Selection.objects != null)
+        {
+            target = Selection.objects[0];
+        }
+
         target = EditorGUILayout.ObjectField("Find dependencies of:", target, typeof(GameObject), true);
 
         if (GUILayout.Button("Search"))
         {
-            FindAllReferences();
+            results = string.Empty;
+
+            var roots = new Object[] { target };
+            var dependencies = EditorUtility.CollectDependencies(roots);
+
+            foreach (var o in dependencies)
+            {
+                var go = o as GameObject;
+
+                if (go)
+                {
+                    results += go.GetFullPath() + System.Environment.NewLine;
+                }
+                else
+                {                    
+                    results += o.name + System.Environment.NewLine;
+                }
+            }
         }
-    }
 
-    public void FindAllReferences()
-    {
-        var roots = new Object[] { target };
-
-        var dependencies = EditorUtility.CollectDependencies(roots);
-
-        foreach (var o in dependencies)
-        {
-            Debug.Log(o.name);
-        }
+        EditorGUILayout.SelectableLabel(results, GUILayout.ExpandHeight(true));
     }
 }

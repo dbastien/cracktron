@@ -4,11 +4,12 @@ public static class GameObjectExtensions
 { 
     public static string GetFullPath(this GameObject go)
     {
-        if (go.transform.parent == null)
+        string path = "/" + go.name;
+        while (go.transform.parent != null)
         {
-            return go.name;
+            go = go.transform.parent.gameObject;
+            path = "/" + go.name + path;
         }
-
-        return go.transform.parent.gameObject.GetFullPath() + "/" + go.name;
+        return path;
     }
 }
