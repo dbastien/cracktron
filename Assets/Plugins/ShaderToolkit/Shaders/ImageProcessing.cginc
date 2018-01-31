@@ -3,6 +3,20 @@
 
 #include "./FastMath.cginc"
 
+//darken modes
+inline float3 BlendMultiply(float3 a, float3 b) { return a * b; }
+inline float3 BlendColorBurn(float3 a, float3 b) { return 1 - (1-b)/a; }
+inline float3 BlendLinearBurn(float3 a, float3 b) { return a + b - 1; }
+
+//lighten modes
+inline float3 BlendScreen(float3 a, float3 b) { return 1 - ((1-a)*(1-b)); }
+inline float3 BlendColorDodge(float3 a, float3 b) { return b / (1-a); }
+inline float3 BlendLinearDodge(float3 a, float3 b) { return a + b; }
+
+//cancellation modes
+inline float3 BlendSubtract(float3 a, float3 b) { return b - a; }
+inline float3 BlendDivide(float3 a, float3 b) { return b / a; }
+
 inline float3 Brightness(float3 col, float amount)
 {
     return col + amount;
