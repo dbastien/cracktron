@@ -3,15 +3,20 @@
 
 #include "./FastMath.cginc"
 
+//https://www.wikiwand.com/en/Blend_modes
+inline float3 BlendSoftLight(float3 a, float3 b) { return (1-2*b)*a*a + 2*b*a; }
+
 //darken modes
 inline float3 BlendMultiply(float3 a, float3 b) { return a * b; }
 inline float3 BlendColorBurn(float3 a, float3 b) { return 1 - (1-b)/a; }
 inline float3 BlendLinearBurn(float3 a, float3 b) { return a + b - 1; }
+inline float3 BlendDarkenOnly(float3 a, float3 b) { return min(a,b); }
 
 //lighten modes
 inline float3 BlendScreen(float3 a, float3 b) { return 1 - ((1-a)*(1-b)); }
 inline float3 BlendColorDodge(float3 a, float3 b) { return b / (1-a); }
 inline float3 BlendLinearDodge(float3 a, float3 b) { return a + b; }
+inline float3 BlendLightenOnly(float3 a, float3 b) { return max(a,b); }
 
 //cancellation modes
 inline float3 BlendSubtract(float3 a, float3 b) { return b - a; }
