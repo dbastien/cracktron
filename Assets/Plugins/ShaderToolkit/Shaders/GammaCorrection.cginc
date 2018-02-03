@@ -21,6 +21,12 @@ inline float3 LinearToSRGBTaylor(float3 color)
     return color * sat(TaylorRsqrt(color));
 }
 
+// same number of operations as TaylorRsqrt but ~33% more accurate for the domain [0,1]
+inline float3 LinearToSRGBMAD(float3 color)
+{
+    return color * sat(mad(-0.96, color, 1.92));
+}
+
 inline float3 LinearToSRGBChilliant(float3 color)
 {
     // http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
