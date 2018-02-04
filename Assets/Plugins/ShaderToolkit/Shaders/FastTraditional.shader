@@ -21,8 +21,8 @@ Shader "Cracktron/Fast Traditional"
 
         [Toggle] _ForcePerPixel("Light per-pixel (always on if a map is set)", Float) = 0
 
-        [PowerSlider(5.0)]_Specular("Specular (Specular Power)", Range(0.01, 1000.0)) = 50.0
-        _Gloss("Gloss (Specular Scale)", Range(0.1, 10.0)) = 1.0       
+        [PowerSlider(3.0)]_Specular("Specular (Specular Power)", Range(1.0, 1000.0)) = 50.0
+        [PowerSlider(3.0)]_Gloss("Gloss (Specular Scale)", Range(0.001, 10.0)) = 1.0       
         [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
         [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
 

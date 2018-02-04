@@ -1,4 +1,4 @@
-﻿Shader "Cracktron\GrabPass\Invert"
+﻿Shader "Cracktron/GrabPass/Invert"
 {
     SubShader
     {

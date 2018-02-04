@@ -240,6 +240,7 @@ fixed4 frag(v2f IN) : SV_Target
                 specularColor *= specularMapSample.rrr;
             #endif
            
+            //specContrib += SpecularBlinnPhong(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);
             specContrib += SpecularSchlick(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);
         #endif
 
