@@ -16,12 +16,10 @@ public class FastTraditionalGUI : ShaderGUI
     protected MaterialProperty mainColorEnabled;
     protected MaterialProperty mainColor;
     protected MaterialProperty mainTexture;
-    protected MaterialProperty occlusionMap;
 
     protected MaterialProperty ambientLightingEnabled;
     protected MaterialProperty diffuseLightingEnabled;
     protected MaterialProperty useAdditionalLightingData;
-    protected MaterialProperty perPixelLighting;
 
     //specular lighting
     protected MaterialProperty specularLightingEnabled;
@@ -116,13 +114,7 @@ public class FastTraditionalGUI : ShaderGUI
         {
             matEditor.ShaderProperty(this.ambientLightingEnabled, Styles.ambientLightingEnabled);
             matEditor.ShaderProperty(this.diffuseLightingEnabled, Styles.diffuseLightingEnabled);
-            matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLighingData);
-
-            EditorGUI.BeginDisabledGroup(this.MaterialNeedsPerPixel(mat));
-            {
-                matEditor.ShaderProperty(this.perPixelLighting, Styles.perPixelLighting);
-            }
-            EditorGUI.EndDisabledGroup();
+            matEditor.ShaderProperty(this.useAdditionalLightingData, Styles.useAdditionalLightingData);
 
             //specular lighting
             ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.specularLightingEnabled.text, this.specularLightingEnabled, ()=>
@@ -202,14 +194,12 @@ public class FastTraditionalGUI : ShaderGUI
         var mode = (BlendMode)this.blendMode.floatValue;
         var mat = matEditor.target as Material;
 
-        ShaderGUIUtils.HeaderSection("Base Texture and Color", ()=>
+        ShaderGUIUtils.HeaderSection("Object Color", ()=>
         {
             matEditor.ShaderProperty(this.vertexColorEnabled, Styles.vertexColorEnabled);
 
             CustomMaterialEditorUtils.TextureWithToggleableColorAutoScaleOffsetSingleLine(
                 matEditor, Styles.main, this.mainTexture, this.mainColorEnabled, this.mainColor, this.textureScaleAndOffset);
-
-            matEditor.TexturePropertySingleLine(Styles.occlusionMap, this.occlusionMap);
         });
 
         ShowLightingGUI(matEditor, mat);
@@ -404,12 +394,6 @@ public class FastTraditionalGUI : ShaderGUI
 
         mat.SetKeyword("_USEBUMPMAP_ON", mat.HasTexture("_BumpMap"));
         mat.SetKeyword("_USESPECULARMAP_ON", mat.HasTexture("_SpecularMap"));
-        mat.SetKeyword("_USEEMISSIONMAP_ON", mat.HasTexture("_EmissionMap"));
-
-        if (MaterialNeedsPerPixel(mat))
-        {
-            mat.SetToggle("_ForcePerPixel", true);
-        }
 
         var texScaleOffset = mat.GetVector("_TextureScaleOffset");
         bool usesScale = (texScaleOffset.x != 1f) || (texScaleOffset.y != 1f);
@@ -428,12 +412,9 @@ public class FastTraditionalGUI : ShaderGUI
         this.mainColor = ShaderGUI.FindProperty("_Color", props);
         this.mainTexture = ShaderGUI.FindProperty("_MainTex", props);
 
-        this.occlusionMap = ShaderGUI.FindProperty("_OcclusionMap", props);
-
         this.ambientLightingEnabled = ShaderGUI.FindProperty("_UseAmbient", props);
         this.diffuseLightingEnabled = ShaderGUI.FindProperty("_UseDiffuse", props);
         this.useAdditionalLightingData = ShaderGUI.FindProperty("_Shade4", props);
-        this.perPixelLighting = ShaderGUI.FindProperty("_ForcePerPixel", props);
 
         //specular lighting
         this.specularLightingEnabled = ShaderGUI.FindProperty("_SpecularHighlights", props);
@@ -496,8 +477,7 @@ public class FastTraditionalGUI : ShaderGUI
 
         public static GUIContent ambientLightingEnabled = new GUIContent("Ambient", "Scene ambient lighting");
         public static GUIContent diffuseLightingEnabled = new GUIContent("Diffuse", "Diffuse (lambertian) lighting from directional lights");
-        public static GUIContent useAdditionalLighingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights that don't get a fwdadd pass");
-        public static GUIContent perPixelLighting = new GUIContent("Per-Pixel diffuse", "Do diffuse lighting per-pixel instead of per-vertex - using a bump map will force this on");
+        public static GUIContent useAdditionalLightingData = new GUIContent("Point and Spot", "Apply lighting from point and spot lights that don't get a fwdadd pass");
 
         //specular lighting
         public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
@@ -524,8 +504,8 @@ public class FastTraditionalGUI : ShaderGUI
 
         //shadows
         //http://c0de517e.blogspot.com/2011/05/shadowmap-bias-notes.html
-        public static GUIContent normalOffsetShadowsEnabled = new GUIContent("Normal Offset Shadows", "Offset along normal before projecting into shadow space");           
-        public static GUIContent transparentShadowsEnabled = new GUIContent("Semi-Transparent Shadows", "Enables dithered shadow transparency based on object alpha");
+        public static GUIContent normalOffsetShadowsEnabled = new GUIContent("Normal Offset", "Offset along normal before projecting into shadow space");           
+        public static GUIContent transparentShadowsEnabled = new GUIContent("Semi-Transparent", "Enables dithered shadow transparency based on object alpha");
 
         //alpha
         public static GUIContent alphaTestEnabled = new GUIContent("Alpha Test", "Enables rejection of pixels based on alpha and cutoff");

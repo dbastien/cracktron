@@ -9,17 +9,12 @@ Shader "Cracktron/Fast Traditional"
         _Color("Main Color", Color) = (1,1,1,1)		
         [Toggle] _UseMainTex("Main Texture Enabled?", Float) = 0
         [NoScaleOffset]_MainTex("Main Texture", 2D) = "red" {}
-
-        [Toggle] _UseOcclusionMap("Occlusion/Detail Texture Enabled?", Float) = 0
-        [NoScaleOffset]_OcclusionMap("Occlusion/Detail Texture", 2D) = "blue" {}
-        
+       
         [Toggle] _UseAmbient("Ambient Lighting Enabled?", Float) = 1
         [Toggle] _UseDiffuse("Diffuse Lighting Enabled?", Float) = 1
 
         [Toggle] _SpecularHighlights("Specular Lighting Enabled?", Float) = 0
         [Toggle] _Shade4("Use additional lighting data? (Expensive!)", Float) = 0
-
-        [Toggle] _ForcePerPixel("Light per-pixel (always on if a map is set)", Float) = 0
 
         [PowerSlider(3.0)]_Specular("Specular (Specular Power)", Range(1.0, 1000.0)) = 50.0
         [PowerSlider(3.0)]_Gloss("Gloss (Specular Scale)", Range(0.001, 10.0)) = 1.0       
@@ -84,26 +79,26 @@ Shader "Cracktron/Fast Traditional"
                 #pragma vertex vert
                 #pragma fragment frag
 
-                //compiles all variants needed by ForwardBase (forward rendering base) pass type. The variants deal with different lightmap types and main directional light having shadows on or off.
+                //compiles all variants needed by ForwardBase (forward rendering base) pass type. 
+                //The variants deal with different lightmap types and main directional light having shadows on or off.
                 #pragma multi_compile_fwdbase
+//                #pragma multi_compile_fwdbase_fullshadows
 
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                //#pragma enable_d3d11_debug_symbols
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
                 #pragma shader_feature _USEMAINCOLOR_ON
                 #pragma shader_feature _USEMAINTEX_ON
-                #pragma shader_feature _USEOCCLUSIONMAP_ON
                 #pragma shader_feature _USEBUMPMAP_ON
                 #pragma shader_feature _USEAMBIENT_ON
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
-                #pragma shader_feature _FORCEPERPIXEL_ON
                 #pragma shader_feature _USESPECULARMAP_ON
                 #pragma shader_feature _SHADE4_ON
                 #pragma shader_feature _USEREFLECTIONS_ON
@@ -125,7 +120,7 @@ Shader "Cracktron/Fast Traditional"
         Pass
         {
             Name "FORWARD_DELTA"
-            Tags{ "LightMode" = "ForwardAdd" }
+            Tags { "LightMode" = "ForwardAdd" }
             Blend [_SrcBlend] One
             ZWrite Off
             ZTest LEqual
@@ -134,26 +129,25 @@ Shader "Cracktron/Fast Traditional"
                 #pragma vertex vert
                 #pragma fragment frag
                 
-                #pragma multi_compile_fwdadd_fullshadows
+                #pragma multi_compile_fwdadd
+//                #pragma multi_compile_fwdadd_fullshadows
 
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                //#pragma enable_d3d11_debug_symbols
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
                 #pragma shader_feature _USEMAINCOLOR_ON
                 #pragma shader_feature _USEMAINTEX_ON
-                #pragma shader_feature _USEOCCLUSIONMAP_ON
                 #pragma shader_feature _USEBUMPMAP_ON
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
-                #pragma shader_feature _FORCEPERPIXEL_ON
                 #pragma shader_feature _USESPECULARMAP_ON
-                #pragma shader_feature _ALPHATEST_ON
+                #pragma shader_feature _ALPHATEST_ON 
                 #pragma shader_feature _ALPHAPREMULTIPLY_ON               
 
                 //scale and offset will apply to all
@@ -180,7 +174,7 @@ Shader "Cracktron/Fast Traditional"
 
                 #pragma target 5.0
                 #pragma only_renderers d3d11
-                //#pragma enable_d3d11_debug_symbols
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON

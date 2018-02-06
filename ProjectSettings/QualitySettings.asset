@@ -8,7 +8,7 @@ QualitySettings:
   m_QualitySettings:
   - serializedVersion: 2
     name: Demo
-    pixelLightCount: 8
+    pixelLightCount: 1
     shadows: 2
     shadowResolution: 3
     shadowProjection: 1

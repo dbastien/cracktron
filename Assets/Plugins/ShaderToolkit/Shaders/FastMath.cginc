@@ -71,9 +71,12 @@
 
 // taylor inverse square root in mad() form
 // mileage varies, but half the latency of rsqrt on some platforms
-// depending on domain, better approximations in the same form can be found
-// https://www.wolframalpha.com/input/?i=Plot%5B%7B(1.055+*+x%5E0.416666667+-+0.055),+(x*(1%2Fsqrt(x)))%7D,+0..1%5D
-#define TaylorRsqrt(x) ( mad(-0.85373472095314, (x), 1.79284291400159) )
+// use with extreme care outside of input domain of [0,1]
+// https://www.wolframalpha.com/input/?i=Plot%5B%7B(1%2Fsqrt(x)),+(-0.96+*+x+%2B+1.92)%7D,+-1..2%5D
+#define Taylor01Rsqrt(x) ( mad(-0.85373472095314, (x), 1.79284291400159) )
+#define Fast01Rsqrt(x) ( mad(-0.96, (x), 1.92) )
+
+#define RSQRT01_FUNC(x) ( Fast01Rsqrt((x)) )
 
 #define Remap01(x, minX, maxX) ( ((x) - (minX)) / ((maxX) - (minX)) )
 #define Remap(x, minIn, maxIn, minOut, maxOut) ( (minOut) + ((maxOut) - (minOut)) * Remap01((x), (minIn), maxIn)) )

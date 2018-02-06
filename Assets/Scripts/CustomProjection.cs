@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomProjection : MonoBehaviour
 {
-    public Camera camera;
+//    public Camera camera;
 
 	// Use this for initialization
 	void Start ()

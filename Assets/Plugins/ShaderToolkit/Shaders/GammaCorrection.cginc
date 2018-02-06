@@ -18,13 +18,13 @@
 //https://www.wolframalpha.com/input/?i=Plot%5B%7B(1.055+*+x+%5E+0.416666667+-+0.055),+(x*(1%2Fsqrt(x))),+(1.055*(x+%5E+0.416666667)-0.055)%7D,%7Bx,0,1%7D%5D
 inline float3 LinearToSRGBTaylor(float3 color)
 {
-    return color * sat(TaylorRsqrt(color));
+    return color * sat(Taylor01Rsqrt(color));
 }
 
 // same number of operations as TaylorRsqrt but ~33% more accurate for the domain [0,1]
 inline float3 LinearToSRGBMAD(float3 color)
 {
-    return color * sat(mad(-0.96, color, 1.92));
+    return color * sat(Fast01Rsqrt(color));
 }
 
 inline float3 LinearToSRGBChilliant(float3 color)

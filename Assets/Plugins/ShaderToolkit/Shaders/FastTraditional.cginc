@@ -1,3 +1,5 @@
+#include "HLSLSupport.cginc"
+#include "UnityCG.cginc"
 #include "Lighting.cginc"
 #include "AutoLight.cginc"
 
@@ -5,13 +7,12 @@
 #include "./FastLighting.cginc"
 #include "./TextureMacro.cginc"
 
-#define USES_MAIN_UV (_USEMAINTEX_ON || _USEOCCLUSIONMAP_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
+#define USES_MAIN_UV (_USEMAINTEX_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
 
 //todo: share world view dir
 
 float4 _Color;
 UNITY_DECLARE_TEX2D(_MainTex);
-UNITY_DECLARE_TEX2D(_OcclusionMap);
 
 UNITY_DECLARE_TEX2D(_BumpMap);
 
@@ -86,7 +87,7 @@ struct v2f
         float3 worldReflection : TEXCOORD5;
     #endif
 
-    LIGHTING_COORDS(6, 7)
+    UNITY_LIGHTING_COORDS(7,8)
     UNITY_FOG_COORDS(9)
     UNITY_VERTEX_OUTPUT_STEREO
 };
@@ -125,19 +126,12 @@ v2f vert(a2v v)
             //not much quality benefit for the cost
             o.vertexLighting += ShadeSH9Fast(float4(o.normal, 1.0));
         #endif
-
-        #if !defined(_FORCEPERPIXEL_ON)
-            #if defined(_USEDIFFUSE_ON)
-                o.vertexLighting += DiffuseLambertian(o.normal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-            #endif
-
-            #if defined(_SHADE4_ON)
-                o.vertexLighting += Shade4PointLightsFast(worldPos, o.normal);
-            #endif 
-            //todo: if no pixel work being performed, could premul alpha here
-        #endif
     #endif
    
+    #if defined(_SHADE4_ON) && defined(VERTEXLIGHT_ON)
+        o.vertexLighting += Shade4PointLightsFast(o.worldPos, o.normal);
+    #endif
+
     #if defined(_USEREFLECTIONS_ON)
         float3 worldViewDir = _WorldSpaceCameraPos - worldPos;
         //incident vector need not be normalized
@@ -156,21 +150,17 @@ v2f vert(a2v v)
     return o;
 }
 
-fixed4 frag(v2f IN) : SV_Target
+fixed4 frag(v2f i) : SV_Target
 {
     #if defined(_USEMAINTEX_ON)
-        float4 color = UNITY_SAMPLE_TEX2D(_MainTex, IN.mainUV.xy);
+        float4 color = UNITY_SAMPLE_TEX2D(_MainTex, i.mainUV.xy);
     #else
         float4 color = 1.0;
     #endif
 
-    #if defined(_USEOCCLUSIONMAP_ON)
-        color *= UNITY_SAMPLE_TEX2D(_OcclusionMap, IN.mainUV.xy);
-    #endif
-
     #if defined(_USEVERTEXCOLOR_ON)
         //if vertex color is on, we've already scaled it by the main color if needed in the vertex shader
-        color *= IN.color;        
+        color *= i.color;        
     #elif defined(_USEMAINCOLOR_ON)
         color *= _Color;
     #endif
@@ -180,54 +170,45 @@ fixed4 frag(v2f IN) : SV_Target
         clip(color.a - _Cutoff);
     #endif
         
-    #if UNITY_VERSION >= 2018
-        UNITY_LIGHT_ATTENUATION(lightAttenuation, IN, IN.worldPos);
-    #else
-        float lightAttenuation = LIGHT_ATTENUATION(IN);
-    #endif
+    //shadows + light attenuation
+    UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
 
     //TODO: consider UnityComputeForwardShadows
     #if defined(LIGHTMAP_ON)
-        float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
+        //float3 diffuseContrib = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lmap.xy));
 
         #if defined(SHADOWS_SCREEN)
-            diffuseContrib = min(diffuseContrib, lightAttenuation * 2.0);
+            diffuseContrib = min(diffuseContrib, atten * 2.0);
         #endif
     #else
-        float3 diffuseContrib = IN.vertexLighting;
+        float3 diffuseContrib = i.vertexLighting;
         float3 specContrib = 0;
 
         //linearly interpolating normals will not produce a normal
-        float3 modelWorldNormal = normalize(IN.normal);
+        float3 modelWorldNormal = normalize(i.normal);
         float3 worldNormal = modelWorldNormal;
 
+        float3 worldLightDir = UnityWorldSpaceLightDir(i.worldPos); 
+
         #if defined(_USEBUMPMAP_ON)
-            float3x3 tangentToWorld = float3x3(IN.tangent, IN.bitangent, worldNormal);
+            float3x3 tangentToWorld = float3x3(i.tangent, i.bitangent, worldNormal);
             //unpack can be expensive if normal map is dxt5
-            float3 objectNormal = UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, IN.mainUV.xy));
+            float3 objectNormal = UnpackNormal(UNITY_SAMPLE_TEX2D(_BumpMap, i.mainUV.xy));
             worldNormal = normalize(mul(objectNormal, tangentToWorld));
         #endif
 
-        #if defined(_FORCEPERPIXEL_ON)               
-            #if defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
-                //only do spherical harmonics in pixel shader if there's a bump map even if per-pixel is set
-                //not much quality benefit for the cost otherwise
-                diffuseContrib += ShadeSH9Fast(float4(worldNormal, 1.0));
-            #endif
-        
-            #if defined(_USEDIFFUSE_ON)
-                diffuseContrib += DiffuseLambertian(worldNormal, _WorldSpaceLightPos0.xyz, _LightColor0.rgb);
-            #endif
-
-            #if defined(_SHADE4_ON)
-                diffuseContrib += Shade4PointLightsFast(IN.worldPos, worldNormal);
-            #endif
+        #if defined(_USEBUMPMAP_ON) && defined(_USEAMBIENT_ON) && UNITY_SHOULD_SAMPLE_SH
+            diffuseContrib += ShadeSH9Fast(float4(worldNormal, 1.0));
+        #endif
+    
+        #if defined(_USEDIFFUSE_ON)
+            diffuseContrib += DiffuseLambertian(worldNormal, worldLightDir, _LightColor0.rgb);
         #endif
 
         color = PreMultiplyAlphaFast(color * float4(diffuseContrib,1));
 
         #if defined(_USERIMLIGHTING_ON)
-            color.rgb += RimLight(IN.worldPos, modelWorldNormal, _RimPower, _RimColor);
+            color.rgb += RimLight(i.worldPos, modelWorldNormal, _RimPower, _RimColor);
         #endif
 
         #if defined(_SPECULARHIGHLIGHTS_ON)
@@ -235,21 +216,22 @@ fixed4 frag(v2f IN) : SV_Target
             float3 specularColor = float3(1, 1, 1);
 
             #if defined(_USESPECULARMAP_ON)
-                float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, IN.mainUV.xy);
+                float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, i.mainUV.xy);
                 gloss *= specularMapSample.a;
                 specularColor *= specularMapSample.rrr;
             #endif
            
-            //specContrib += SpecularBlinnPhong(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);
-            specContrib += SpecularSchlick(worldNormal, normalize(UnityWorldSpaceViewDir(IN.worldPos)), _WorldSpaceLightPos0.xyz, _LightColor0.rgb, _Specular, gloss, specularColor);
+            specContrib += SpecularSchlick(worldNormal, normalize(UnityWorldSpaceViewDir(i.worldPos)),
+                                           _WorldSpaceLightPos0.xyz, _LightColor0.rgb,
+                                           _Specular, gloss, specularColor);
         #endif
 
         color.rgb += specContrib;
-        color.rgb *= lightAttenuation;
+        color.rgb *= atten;
     #endif
    
     #if defined(_USEREFLECTIONS_ON)
-        float3 worldReflection = normalize(IN.worldReflection);
+        float3 worldReflection = normalize(i.worldReflection);
 
         #if defined(_USECUSTOMCUBEMAP_ON)
             color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, worldReflection) * _ReflectionScale;
@@ -259,14 +241,14 @@ fixed4 frag(v2f IN) : SV_Target
     #endif
 
     #if defined(_USEEMISSIONMAP_ON)
-        color.rgb += UNITY_SAMPLE_TEX2D(_EmissionMap, IN.mainUV.xy);
+        color.rgb += UNITY_SAMPLE_TEX2D(_EmissionMap, i.mainUV.xy);
     #endif
 
     #if defined(_USEEMISSIONCOLOR_ON)
         color.rgb += _EmissionColor;
     #endif
 
-    UNITY_APPLY_FOG(IN.fogCoord, color);
+    UNITY_APPLY_FOG(i.fogCoord, color);
     
     return color;
 }

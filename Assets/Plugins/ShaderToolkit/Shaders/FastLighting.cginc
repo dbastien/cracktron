@@ -57,6 +57,16 @@ inline float3 ShadeSH9Fast(float4 normal)
     return res;
 }
 
+float3 Shade4PointLightsOriginal(float3 pos, float3 normal)
+{
+    return Shade4PointLights
+    (
+        unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
+        unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
+        unity_4LightAtten0, pos, normal
+    );
+}
+
 // lambertian lighting for point and spot lights
 // note that spot lights will behave as point lights, LIGHT_ATTENUATION() is key
 float3 Shade4PointLightsFast(float3 pos, float3 normal)
@@ -70,17 +80,21 @@ float3 Shade4PointLightsFast(float3 pos, float3 normal)
     float4 ndotl = (toLightX * normal.x) + (toLightY * normal.y) + (toLightZ * normal.z);
     float4 lengthSq = (toLightX * toLightX) + (toLightY * toLightY) + (toLightZ * toLightZ);
 
-    // correct NdotL
-    // use taylor multiplicative inverse square root approximation
-    ndotl = ndotl * sat(TaylorRsqrt(lengthSq));
-    ndotl = sat(ndotl * rsqrt(lengthSq));
+    //don't produce NaNs if some vertex position overlaps with the light   
+    lengthSq = max(lengthSq, 0.000001);
+
+    // correct NdotL    
+    float4 corr = rsqrt(lengthSq);
+    //ndotl = max(float4(0,0,0,0), ndotl * corr);
+    ndotl = saturate(ndotl * corr);
 
     // attenuation
     float4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1.0));
     float4 diff = ndotl * atten;
 
     // final color
-    return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
+    return (unity_LightColor[0].rgb * diff.x) + (unity_LightColor[1].rgb * diff.y) + 
+           (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
 }
 
 inline float3 DiffuseLambertian(float3 normal, float3 lightDir, float3 lightCol)
@@ -121,7 +135,6 @@ inline float3 SpecularSchlick(float3 normal, float3 viewDir,
     //float schlickTerm = rcp((specularPower/nh)-specularPower+1);    
     float schlickTerm = nh / (specularPower - (specularPower * nh) + nh);
     
-
     return (lightCol * specularColor) * schlickTerm * specularScale;
 }
 
