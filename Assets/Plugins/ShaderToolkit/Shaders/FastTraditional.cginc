@@ -144,6 +144,7 @@ v2f vert(a2v v)
     #endif
 
     //transfer shadow and lightmap info
+    //UNITY_TRANSFER_LIGHTING
     TRANSFER_VERTEX_TO_FRAGMENT(o);
 
     UNITY_TRANSFER_FOG(o, o.pos);

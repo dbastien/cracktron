@@ -50,7 +50,7 @@ inline float3 ShadeSH9Fast(float4 normal)
     float3 res = sat(SHEvalLinearL0L1Fast(normal) + SHEvalLinearL2Fast(normal));
 
     #ifdef UNITY_COLORSPACE_GAMMA
-        //res = LinearToSRGBTaylor(res);
+        //res = LinearToSRGBMAD(res);
         res = LinearToSRGBChilliant(res);
     #endif
 
@@ -86,7 +86,7 @@ float3 Shade4PointLightsFast(float3 pos, float3 normal)
     // correct NdotL    
     float4 corr = rsqrt(lengthSq);
     //ndotl = max(float4(0,0,0,0), ndotl * corr);
-    ndotl = saturate(ndotl * corr);
+    ndotl = sat(ndotl * corr);
 
     // attenuation
     float4 atten = rcp(mad(lengthSq, unity_4LightAtten0, 1.0));

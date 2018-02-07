@@ -83,11 +83,12 @@ Shader "Cracktron/Fast Traditional"
                 //The variants deal with different lightmap types and main directional light having shadows on or off.
                 #pragma multi_compile_fwdbase
 //                #pragma multi_compile_fwdbase_fullshadows
+                //todo: how to strip light probe proxy volume?
 
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
-                #pragma target 5.0
+                #pragma target 3.5
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
 
@@ -131,11 +132,12 @@ Shader "Cracktron/Fast Traditional"
                 
                 #pragma multi_compile_fwdadd
 //                #pragma multi_compile_fwdadd_fullshadows
+                //todo: how to strip light probe proxy volume?
 
                 //expands to several variants to handle different fog types
                 #pragma multi_compile_fog
 
-                #pragma target 5.0
+                #pragma target 3.5
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
 
@@ -172,7 +174,7 @@ Shader "Cracktron/Fast Traditional"
 
                 #pragma multi_compile_shadowcaster
 
-                #pragma target 5.0
+                #pragma target 3.5
                 #pragma only_renderers d3d11
                 #pragma enable_d3d11_debug_symbols
 
