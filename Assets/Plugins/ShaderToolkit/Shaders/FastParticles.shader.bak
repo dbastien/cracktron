@@ -63,9 +63,9 @@ Shader "Cracktron/Fast Particles"
 
                 #pragma multi_compile_fog
 
-                #pragma only_renderers d3d11 glcore gles
-                #pragma target 3.0
-                //#pragma enable_d3d11_debug_symbols
+                #pragma target 5.0
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEMAINCOLOR_ON

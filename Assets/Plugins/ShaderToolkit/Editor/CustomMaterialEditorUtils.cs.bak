@@ -24,7 +24,11 @@ public static class CustomMaterialEditorUtils
         controlRect.x += EditorGUIUtility.labelWidth;
         controlRect.width = EditorGUIUtility.fieldWidth;
 
-        var toggleTooltip = new GUIContent() { text = string.Empty, tooltip = "Enable/Disable color" };
+        GUIContent toggleTooltip = new GUIContent()
+        {
+            text = string.Empty,
+            tooltip = "Enable/Disable color"
+        };
 
         //label indent of -1 is the secret sauce to make it aligned with right aligned toggles that come after labels
         //ShaderProperty handles begin and end animation checks
@@ -66,7 +70,11 @@ public static class CustomMaterialEditorUtils
         MaterialProperty colorProp
     )
     {
-        var toggleTooltip = new GUIContent() { text = string.Empty, tooltip = "Enable/Disable color" };
+        GUIContent toggleTooltip = new GUIContent()
+        {
+            text = string.Empty,
+            tooltip = "Enable/Disable color"
+        };
 
         //label indent of -1 is the secret sauce to make it aligned with right aligned toggles that come after labels
         //ShaderProperty handles begin and end animation checks
@@ -80,7 +88,11 @@ public static class CustomMaterialEditorUtils
             //size it to take up the remainder of the space
             controlRect.width = lineRect.width - controlRect.x;
 
-            var tooltipOnly = new GUIContent() { text = string.Empty, tooltip = label.tooltip };
+            GUIContent tooltipOnly = new GUIContent()
+            {
+                text = string.Empty,
+                tooltip = label.tooltip
+            };
             EditorGUI.showMixedValue = colorProp.hasMixedValue;
             EditorGUI.BeginChangeCheck();
             var color = EditorGUI.ColorField(controlRect, tooltipOnly, colorProp.colorValue);
@@ -140,24 +152,26 @@ public static class CustomMaterialEditorUtils
     )
     {
         var rect = CustomMaterialEditorUtils.TextureWithToggleableColorSingleLine(matEditor, label, textureProp, colorToggleProp, colorProp);
+
         CustomMaterialEditorUtils.SetScaleOffsetKeywords(matEditor, textureProp, scaleOffsetProp);
+
         return rect;
     }
 
     public static void TextureScaleOffsetVector4Property(MaterialEditor matEditor, GUIContent label, MaterialProperty scaleOffsetProp)
     {
         EditorGUI.showMixedValue = scaleOffsetProp.hasMixedValue;
-        //EditorGUI.BeginChangeCheck();
+        EditorGUI.BeginChangeCheck();
 
         Vector4 scaleOffsetVector = scaleOffsetProp.vectorValue;
 
-        Vector2 textureScale = new Vector2(scaleOffsetVector.x, scaleOffsetVector.y);
+        var textureScale = new Vector2(scaleOffsetVector.x, scaleOffsetVector.y);
         textureScale = EditorGUILayout.Vector2Field(Styles.scale, textureScale, new GUILayoutOption[0]);
 
-        Vector2 textureOffset = new Vector2(scaleOffsetVector.z, scaleOffsetVector.w);
+        var textureOffset = new Vector2(scaleOffsetVector.z, scaleOffsetVector.w);
         textureOffset = EditorGUILayout.Vector2Field(Styles.offset, textureOffset, new GUILayoutOption[0]);
 
-        //if (EditorGUI.EndChangeCheck())
+        if (EditorGUI.EndChangeCheck())
         {
             scaleOffsetProp.vectorValue = new Vector4(textureScale.x, textureScale.y, textureOffset.x, textureOffset.y);
         }

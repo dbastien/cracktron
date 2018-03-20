@@ -83,7 +83,7 @@ float3 Shade4PointLightsFast(float3 pos, float3 normal)
     //don't produce NaNs if some vertex position overlaps with the light   
     lengthSq = max(lengthSq, 0.000001);
 
-    // correct NdotL
+    // correct NdotL    
     float4 corr = rsqrt(lengthSq);
     //ndotl = max(float4(0,0,0,0), ndotl * corr);
     ndotl = sat(ndotl * corr);
@@ -97,6 +97,11 @@ float3 Shade4PointLightsFast(float3 pos, float3 normal)
            (unity_LightColor[2].rgb * diff.z) + (unity_LightColor[3].rgb * diff.w);
 }
 
+inline float3 DiffuseLambertian(float3 normal, float3 lightDir, float3 lightCol)
+{
+    return lightCol * dot_sat(normal, lightDir);
+}
+
 inline float3 RimLight(float3 worldPos, float3 worldNormal, float rimPower, float3 rimColor)
 {
     float3 vn = normalize(UnityWorldSpaceViewDir(worldPos));
@@ -104,38 +109,34 @@ inline float3 RimLight(float3 worldPos, float3 worldNormal, float rimPower, floa
 
     //TODO: optimize whole function
     float rim = 1.0 - dot_sat(nn, vn);
+    //saturate(0.5 * (dot(worldNormal, lightDir) + 1.0));
 
     //boost to the dot product to allow for a greater max effect - .25 is the boost factor
     return rim * rimPower * rimColor;
 } 
 
-inline float3 DiffuseLambertian(float3 normal, float3 lightDir, float3 lightCol)
-{
-    return lightCol * dot_sat(normal, lightDir);
-}
-
-//Real world specular can realistically be 0.1 to > 100000
-//Do some non-linear range mapping
-float SpecularRangeRemapShaderForge(float specular) { return exp2(specular*10+1); }
-//For linear mappings, I've seen 16, 256, and 512 used as coefficients
-float SpecularRangeRemapUnity(float specular) { return specular*256.0; }
-
-inline float3 SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir,
-                                 float specular, float gloss)
+inline float3 SpecularBlinnPhong(float3 normal, float3 viewDir,
+                                 float3 lightDir, float3 lightCol,
+                                 float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);
-    return pow(nh, specular) * gloss;
+    float blinnTerm = pow(nh, specularPower);
+
+    return (lightCol * specularColor) * blinnTerm * specularScale;
 }
 
 //http://page.mi.fu-berlin.de/block/htw-lehre/wise2012_2013/bel_und_rend/skripte/schlick1994.pdf
-inline float3 SpecularSchlick(float3 normal, float3 viewDir, float3 lightDir,
-                              float specular, float gloss)
+inline float3 SpecularSchlick(float3 normal, float3 viewDir,
+                              float3 lightDir, float3 lightCol,
+                              float specularPower, float specularScale, float3 specularColor)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);
     //float schlickTerm = rcp((specularPower/nh)-specularPower+1);    
-    return (nh / (specular - (specular * nh) + nh)) * gloss;
+    float schlickTerm = nh / (specularPower - (specularPower * nh) + nh);
+    
+    return (lightCol * specularColor) * schlickTerm * specularScale;
 }
 
 #endif //FAST_LIGHTING

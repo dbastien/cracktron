@@ -3,22 +3,21 @@ Shader "Cracktron/Fast Traditional"
     Properties
     { 
         _Mode("Rendering Mode", Float) = 0
-        [Toggle] _ShowAdvanced("Show Advanced Settings", Float) = 0
 
         [Toggle] _UseVertexColor("Vertex Color Enabled?", Float) = 0
         [Toggle] _UseMainColor("Main Color Enabled?", Float) = 0
         _Color("Main Color", Color) = (1,1,1,1)		
         [Toggle] _UseMainTex("Main Texture Enabled?", Float) = 0
         [NoScaleOffset]_MainTex("Main Texture", 2D) = "red" {}
-
+       
         [Toggle] _UseAmbient("Ambient Lighting Enabled?", Float) = 1
         [Toggle] _UseDiffuse("Diffuse Lighting Enabled?", Float) = 1
 
         [Toggle] _SpecularHighlights("Specular Lighting Enabled?", Float) = 0
         [Toggle] _Shade4("Use additional lighting data? (Expensive!)", Float) = 0
 
-        _Specular("Specular", Range(0, 2.0)) = 1.0
-        _Gloss("Gloss", Range(0, 2.0)) = 1.0  
+        [PowerSlider(3.0)]_Specular("Specular (Specular Power)", Range(1.0, 1000.0)) = 50.0
+        [PowerSlider(3.0)]_Gloss("Gloss (Specular Scale)", Range(0.001, 10.0)) = 1.0       
         [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
         [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
 
@@ -29,7 +28,7 @@ Shader "Cracktron/Fast Traditional"
         [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
         [NoScaleOffset]_CubeMap("CubeMap", Cube) = "" {}
         _ReflectionScale("Reflection Scale", Range(0.01, 1.5)) = 1.0
-        
+
         [Toggle] _UseRimLighting("Rim Lighting Enabled?", Float) = 0
         [PowerSlider(.6)]_RimPower("Power", Range(0.1, 1.0)) = 0.7
         _RimColor("Color", Color) = (1,1,1,1)
@@ -75,19 +74,23 @@ Shader "Cracktron/Fast Traditional"
             //Base forward pass (directional light, emission, lightmaps, ...)		
             Name "FORWARD"
             Tags { "LightMode" = "ForwardBase" }
-            //AlphaToMask On
 
             CGPROGRAM
-                #pragma target 3.5
-                #pragma only_renderers d3d11 glcore gles
-                //#pragma enable_d3d11_debug_symbols
-
                 #pragma vertex vert
                 #pragma fragment frag
 
-                #pragma multi_compile_fwdbase nolightmap nodynlightmap
-			    #pragma multi_compile_instancing
-                //#pragma multi_compile_fog
+                //compiles all variants needed by ForwardBase (forward rendering base) pass type. 
+                //The variants deal with different lightmap types and main directional light having shadows on or off.
+                #pragma multi_compile_fwdbase
+//                #pragma multi_compile_fwdbase_fullshadows
+                //todo: how to strip light probe proxy volume?
+
+                //expands to several variants to handle different fog types
+                #pragma multi_compile_fog
+
+                #pragma target 3.5
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
@@ -99,17 +102,17 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
                 #pragma shader_feature _USESPECULARMAP_ON
                 #pragma shader_feature _SHADE4_ON
-                #pragma shader_feature _USEREFLECTIONS_ON 
-                #pragma shader_feature _USECUSTOMCUBEMAP_ON
-                #pragma shader_feature _USERIMLIGHTING_ON                
+                #pragma shader_feature _USEREFLECTIONS_ON
+                #pragma shader_feature _USECUSTOMCUBEMAP_ON               
+                #pragma shader_feature _USERIMLIGHTING_ON
                 #pragma shader_feature _USEEMISSIONCOLOR_ON
                 #pragma shader_feature _USEEMISSIONMAP_ON
                 #pragma shader_feature _ALPHATEST_ON
-                #pragma shader_feature _ALPHAPREMULTIPLY_ON
+                #pragma shader_feature _ALPHAPREMULTIPLY_ON               
+
+                //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
-
-                #define FORWARD_BASE_PASS               
 
                 #include "FastTraditional.cginc"
             ENDCG
@@ -118,23 +121,25 @@ Shader "Cracktron/Fast Traditional"
         Pass
         {
             Name "FORWARD_DELTA"
-            Tags{ "LightMode" = "ForwardAdd" }
+            Tags { "LightMode" = "ForwardAdd" }
             Blend [_SrcBlend] One
-            //AlphaToMask On
-            ZWrite Off    
+            ZWrite Off
             ZTest LEqual
 
             CGPROGRAM
-                #pragma target 3.5
-                #pragma only_renderers d3d11 glcore gles                
-                //#pragma enable_d3d11_debug_symbols
-
                 #pragma vertex vert
                 #pragma fragment frag
                 
                 #pragma multi_compile_fwdadd
-			    #pragma multi_compile_instancing                
-                //#pragma multi_compile_fog
+//                #pragma multi_compile_fwdadd_fullshadows
+                //todo: how to strip light probe proxy volume?
+
+                //expands to several variants to handle different fog types
+                #pragma multi_compile_fog
+
+                #pragma target 3.5
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
@@ -144,40 +149,42 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _USEDIFFUSE_ON
                 #pragma shader_feature _SPECULARHIGHLIGHTS_ON
                 #pragma shader_feature _USESPECULARMAP_ON
-                #pragma shader_feature _ALPHATEST_ON
-                #pragma shader_feature _ALPHAPREMULTIPLY_ON
+                #pragma shader_feature _ALPHATEST_ON 
+                #pragma shader_feature _ALPHAPREMULTIPLY_ON               
+
+                //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
 
-                #include "FastTraditional.cginc" 
+                #include "FastTraditional.cginc"
             ENDCG
-        }      
+        }
 
         Pass
         {
             Name "ShadowCaster"
             Tags{ "LightMode" = "ShadowCaster" }
             Blend [_SrcBlend] One
-            //AlphaToMask On            
             ZWrite On
             ZTest LEqual
 
             CGPROGRAM
-                #pragma target 3.5
-                #pragma only_renderers d3d11 glcore gles
-                //#pragma enable_d3d11_debug_symbols
-
                 #pragma vertex shadowcast_vert
                 #pragma fragment shadowcast_frag
 
                 #pragma multi_compile_shadowcaster
-			    #pragma multi_compile_instancing
+
+                #pragma target 3.5
+                #pragma only_renderers d3d11
+                #pragma enable_d3d11_debug_symbols
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON
                 #pragma shader_feature _USEMAINCOLOR_ON
                 #pragma shader_feature _USEMAINTEX_ON
                 #pragma shader_feature _ALPHATEST_ON
+
+                //scale and offset will apply to all
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
 

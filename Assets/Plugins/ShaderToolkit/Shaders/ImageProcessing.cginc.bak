@@ -22,14 +22,6 @@ inline float3 BlendLightenOnly(float3 a, float3 b) { return max(a,b); }
 inline float3 BlendSubtract(float3 a, float3 b) { return b - a; }
 inline float3 BlendDivide(float3 a, float3 b) { return b / a; }
 
-//perceptual luminance
-#define LUMA_SCALE (float3(0.3, 0.59, 0.11))
-
-inline float GetLuminance(float3 col)
-{
-    return dot(LUMA_SCALE, col);
-}
-
 inline float3 Brightness(float3 col, float amount)
 {
     return col + amount;
@@ -42,7 +34,10 @@ inline float3 Contrast(float3 col, float amount)
 
 inline float3 Saturation(float3 col, float amount)
 {
-    float g = dot(LUMA_SCALE, col);
+    //historical luma weighting
+    const float3 lumaScale = float3(0.3, 0.59, 0.11);
+ 
+    float g = dot(lumaScale, col);
 
     return lerp(g.rrr, col, amount);
 }
