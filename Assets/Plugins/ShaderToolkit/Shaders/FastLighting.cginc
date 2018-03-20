@@ -109,6 +109,7 @@ inline float3 RimLight(float3 worldPos, float3 worldNormal, float rimPower, floa
 
     //TODO: optimize whole function
     float rim = 1.0 - dot_sat(nn, vn);
+    //saturate(0.5 * (dot(worldNormal, lightDir) + 1.0));
 
     //boost to the dot product to allow for a greater max effect - .25 is the boost factor
     return rim * rimPower * rimColor;
