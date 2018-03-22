@@ -2,6 +2,7 @@
 #include "./TextureMacro.cginc"
 
 //TODO: BEWARE - WIP
+//http://c0de517e.blogspot.com/2011/05/shadowmap-bias-notes.html
 
 #define USES_MAIN_UV ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEMAINTEX_ON)
 #define USES_VERTEX_COLOR ((_ALPHATEST_ON || _USESEMITRANSPARENTSHADOWS_ON) && _USEVERTEXCOLOR_ON)

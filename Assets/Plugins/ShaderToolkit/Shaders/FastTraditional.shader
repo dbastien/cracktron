@@ -3,60 +3,66 @@ Shader "Cracktron/Fast Traditional"
     Properties
     { 
         _Mode("Rendering Mode", Float) = 0
-        [Toggle] _ShowAdvanced("Show Advanced Settings", Float) = 0
+        [Toggle] _ShowAdvanced("Advanced Settings", Float) = 0
 
-        [Toggle] _UseVertexColor("Vertex Color Enabled?", Float) = 0
-        [Toggle] _UseMainColor("Main Color Enabled?", Float) = 0
+        [Toggle] _UseVertexColor("Model Vertex Color", Float) = 0
+
         _Color("Main Color", Color) = (1,1,1,1)		
-        [Toggle] _UseMainTex("Main Texture Enabled?", Float) = 0
-        [NoScaleOffset]_MainTex("Main Texture", 2D) = "red" {}
-
-        [Toggle] _UseAmbient("Ambient Lighting Enabled?", Float) = 1
-        [Toggle] _UseDiffuse("Diffuse Lighting Enabled?", Float) = 1
-
-        [Toggle] _SpecularHighlights("Specular Lighting Enabled?", Float) = 0
-        [Toggle] _Shade4("Use additional lighting data? (Expensive!)", Float) = 0
-
-        _Specular("Specular", Range(0, 2.0)) = 1.0
-        _Gloss("Gloss", Range(0, 2.0)) = 1.0  
-        [Toggle] _UseSpecularMap("Use Specular Map? (per-pixel)", Float) = 0
-        [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
-
-        [Toggle] _UseBumpMap("Normal Map Enabled? (per-pixel)", Float) = 0
-        [NoScaleOffset][Normal]_BumpMap("Normal Map", 2D) = "bump" {}
-
-        [Toggle] _UseReflections("Reflections Enabled?", Float) = 0
-        [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
-        [NoScaleOffset]_CubeMap("CubeMap", Cube) = "" {}
-        _ReflectionScale("Reflection Scale", Range(0.01, 1.5)) = 1.0
+        [Toggle] _UseMainColor("Main Color Enabled?", Float) = 0
         
-        [Toggle] _UseRimLighting("Rim Lighting Enabled?", Float) = 0
+        [NoScaleOffset]_MainTex("Albedo", 2D) = "red" {}
+        [Toggle] _UseMainTex("Main Texture Enabled?", Float) = 0
+
+        [Toggle] _UseAmbient("Ambient", Float) = 1
+        [Toggle] _UseDiffuse("Diffuse", Float) = 1
+        [Toggle] _Shade4("Vertex", Float) = 0
+
+        [Toggle] _SpecularHighlights("Specular Lighting", Float) = 0
+        _Specular("Specular", Range(0, 2.0)) = 1.0
+        _Gloss("Gloss", Range(0, 2.0)) = 1.0          
+
+        [NoScaleOffset]_SpecularMap("Specular Map", 2D) = "white" {}
+        [Toggle] _UseSpecularMap("Specular Map Enabled?", Float) = 0
+
+        [NoScaleOffset][Normal]_BumpMap("Normal Map", 2D) = "bump" {}
+        [Toggle] _UseBumpMap("Normal Map Enabled?", Float) = 0
+
+        [Toggle] _UseReflections("Reflections", Float) = 0
+
+        [NoScaleOffset]_CubeMap("Cube Map", Cube) = "" {}
+        [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
+
+        _ReflectionScale("Scale", Range(0.01, 1.5)) = 1.0
+        
+        [Toggle] _UseRimLighting("Rim Lighting", Float) = 0
         [PowerSlider(.6)]_RimPower("Power", Range(0.1, 1.0)) = 0.7
         _RimColor("Color", Color) = (1,1,1,1)
 
-        [Toggle] _UseEmissionColor("Emission Color Enabled?", Float) = 0
         _EmissionColor("Emission Color", Color) = (1,1,1,1)
-        [Toggle] _UseEmissionMap("Emission Map Enabled?", Float) = 0
+        [Toggle] _UseEmissionColor("Emission Color Enabled?", Float) = 0
+
         [NoScaleOffset] _EmissionMap("Emission Map", 2D) = "blue" {}
+        [Toggle] _UseEmissionMap("Emission Map Enabled?", Float) = 0
 
-        _TextureScaleOffset("Texture Scale (XY) and Offset (ZW)", Vector) = (1, 1, 0, 0)
+        _TextureScaleOffset("Global UV", Vector) = (1, 1, 0, 0)
 
-        [Toggle] _AlphaTest("Alpha test enabled?", Float) = 0
-        _Cutoff("Alpha Cutoff", Range(-0.1, 1.0)) = -0.1
-        [Toggle] _AlphaPremultiply("Pre-multiply alpha?", Float) = 0
+        [Toggle] _AlphaTest("Alpha Test", Float) = 0
+        _Cutoff("Cutoff Threshold", Range(-0.1, 1.0)) = -0.1
+        [Toggle] _AlphaPremultiply("Pre-Multiply", Float) = 0
 
         //shadows
-        [Toggle] _UseNormalOffsetShadows("Normal offset shadows enabled?", Float) = 0
-        [Toggle] _UseSemiTransparentShadows("Semi-transparent shadows enabled?", Float) = 0        
+        [Toggle] _UseNormalOffsetShadows("Normal Offset", Float) = 0
+        [Toggle] _UseSemiTransparentShadows("Transparent", Float) = 0        
 
-        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("SrcBlend", Float) = 1 //"One"
-        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("DestBlend", Float) = 0 //"Zero"
-        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("BlendOp", Float) = 0 //"Add"
+        //alpha blending
+        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("Source", Float) = 1 //"One"
+        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("Destination", Float) = 0 //"Zero"
+        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Operation", Float) = 0 //"Add"
 
-        [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2 //"Back"
-        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 4 //"LessEqual"
-        [Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1 //"On"
-        [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("ColorWriteMask", Float) = 15 //"All"
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling Mode", Float) = 2 //"Back"
+        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("Z Test", Float) = 4 //"LessEqual"
+        [Enum(Off,0,On,1)] _ZWrite("Z Write", Float) = 1 //"On"
+        [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("Color Write Mask", Float) = 15 //"All"
     }
 
     SubShader
@@ -171,7 +177,7 @@ Shader "Cracktron/Fast Traditional"
                 #pragma fragment shadowcast_frag
 
                 #pragma multi_compile_shadowcaster
-			    #pragma multi_compile_instancing
+			                     #pragma multi_compile_instancing
 
                 //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEVERTEXCOLOR_ON

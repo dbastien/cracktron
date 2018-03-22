@@ -8,8 +8,7 @@ public static class MaterialExtensions
         if (mat.HasProperty(property))
         {
             return mat.GetTexture(property) != null;
-        }
-        
+        }        
         return false;
     }
 
@@ -29,13 +28,7 @@ public static class MaterialExtensions
 
     public static void SetKeyword(this Material mat, string keyword, bool state)
     {
-        if (state)
-        {
-            mat.EnableKeyword(keyword);
-        }
-        else
-        {
-            mat.DisableKeyword(keyword);
-        }
+        if (state) { mat.EnableKeyword(keyword); }
+        else       { mat.DisableKeyword(keyword); }
     }
 }
