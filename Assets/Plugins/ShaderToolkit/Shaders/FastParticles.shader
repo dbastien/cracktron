@@ -1,5 +1,7 @@
 Shader "Cracktron/Fast Particles"
 {
+    //TODO: BEWARE - WIP
+
     //Existing mobile alpha blended
     // Stats for Vertex shader:
     //         d3d9: 12 math
@@ -19,20 +21,25 @@ Shader "Cracktron/Fast Particles"
     Properties
     {
         _Mode("Rendering Mode", Float) = 0.0
+        [Toggle] _ShowAdvanced("Advanced Settings", Float) = 0
 
-        _Color("Main Color", Color) = (1,1,1,1)
-        [NoScaleOffset]_MainTex("Main Texture", 2D) = "red" {}
+        _Color("Main Color", Color) = (1,1,1,1)		
+        [Toggle] _UseMainColor("Main Color Enabled?", Float) = 0
 
-        _TextureScaleOffset("Texture Scale (XY) and Offset (ZW)", Vector) = (1, 1, 0, 0)
+        [NoScaleOffset]_MainTex("Albedo", 2D) = "red" {}
+        [Toggle] _UseMainTex("Main Texture Enabled?", Float) = 0
 
-        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("SrcBlend", Float) = 1 //"One"
-        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("DestBlend", Float) = 0 //"Zero"
-        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("BlendOp", Float) = 0 //"Add"
+        _TextureScaleOffset("Global UV", Vector) = (1, 1, 0, 0)
 
-        [Toggle] _AlphaTest("Alpha test enabled?", Float) = 0
-        _Cutoff("Alpha Cutoff", Range(-0.1, 1.0)) = -0.1
+       [Toggle] _AlphaTest("Alpha Test", Float) = 0
+        _Cutoff("Cutoff Threshold", Range(-0.1, 1.0)) = -0.1
+        [Toggle] _AlphaPremultiply("Pre-Multiply", Float) = 0        
 
-        [Enum(UnityEngine.Rendering.CullMode)] _Cull("Cull", Float) = 2 //"Back"
+        [Enum(UnityEngine.Rendering.BlendMode)] _SrcBlend("Source", Float) = 1 //"One"
+        [Enum(UnityEngine.Rendering.BlendMode)] _DstBlend("Destination", Float) = 0 //"Zero"
+        [Enum(UnityEngine.Rendering.BlendOp)] _BlendOp("Operation", Float) = 0 //"Add"
+
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull("Culling Mode", Float) = 2 //"Back"
         [Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 4 //"LessEqual"
         [Enum(Off,0,On,1)] _ZWrite("ZWrite", Float) = 1 //"On"
         [Enum(UnityEngine.Rendering.ColorWriteMask)] _ColorWriteMask("ColorWriteMask", Float) = 15 //"All"
@@ -54,6 +61,7 @@ Shader "Cracktron/Fast Particles"
             //Base forward pass (directional light, emission, lightmaps, ...)
             Name "FORWARD"
             Tags{ "LightMode" = "ForwardBase" }
+            //AlphaToMask On           
 
             CGPROGRAM
                 #include "TextureMacro.cginc"
@@ -61,17 +69,16 @@ Shader "Cracktron/Fast Particles"
                 #pragma vertex vert
                 #pragma fragment frag
 
-                #pragma multi_compile_fog
+                //#pragma multi_compile_fog
 
                 #pragma only_renderers d3d11 glcore gles
-                #pragma target 3.0
+                #pragma target 3.5
                 //#pragma enable_d3d11_debug_symbols
 
-                //shader features are only compiled if a material uses them
                 #pragma shader_feature _USEMAINCOLOR_ON
+                #pragma shader_feature _USEMAINTEX_ON
                 #pragma shader_feature _ALPHATEST_ON
-
-                //scale and offset will apply to all
+                #pragma shader_feature _ALPHAPREMULTIPLY_ON
                 #pragma shader_feature _MainTex_SCALE_ON
                 #pragma shader_feature _MainTex_OFFSET_ON
                 
@@ -89,7 +96,6 @@ Shader "Cracktron/Fast Particles"
                 struct v2f
                 {
                     float4 pos : SV_POSITION;
-
 					float2 tex : TEXCOORD0;
                 };
 
@@ -118,6 +124,5 @@ Shader "Cracktron/Fast Particles"
             ENDCG
         }
     }
-
-    CustomEditor "FastParticlesGUI"
+    CustomEditor "FastParticlesGUI"    
 }

@@ -8,7 +8,7 @@ public static class MaterialExtensions
         if (mat.HasProperty(property))
         {
             return mat.GetTexture(property) != null;
-        }        
+        }
         return false;
     }
 

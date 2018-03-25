@@ -5,89 +5,93 @@ using UnityEngine;
 
 public class FastTraditionalGUI : AdvancedShaderGUI
 {
-    public enum BlendMode { Opaque, Cutout, Fade, Custom, Transparent }
     protected MaterialProperty blendMode;
 
-    public override void OnGUI(MaterialEditor matEditor, MaterialProperty[] props)
-    {
-        CacheProperties(props);
-        CheckAndHandleFirstTimeApply(matEditor);
-
-        EditorGUIUtility.labelWidth = 0f;
-        EditorGUI.BeginChangeCheck();
-        {
-            this.ShowMainGUI(matEditor);
-            EditorGUILayout.Separator();    
-            this.ShowAdvancedGUI(matEditor);
-            EditorGUILayout.Separator();
-            matEditor.RenderQueueField();
-
-        }
-        if (EditorGUI.EndChangeCheck())
-        {
-            UpdateAllTargets();
-        }
-   }
-
-    protected virtual void CacheProperties(MaterialProperty[] props)
+    protected override void CacheProperties(MaterialProperty[] props)
     {
         // MaterialProperties can be animated so we do not cache them but fetch them every event to ensure animated values are updated correctly
         this.blendMode = ShaderGUI.FindProperty("_Mode", props);
         propsByName = PropertiesToDictionary(props);
     }
 
-    protected virtual void CheckAndHandleFirstTimeApply(MaterialEditor matEditor)
+    protected override void CheckAndHandleFirstTimeApply(MaterialEditor matEditor)
     {
         if (!this.firstTimeApply) { return; }
 
         // Make sure that needed setup (ie keywords/renderqueue) are set up if we're switching from an existing material.
         // Do this before any GUI code has been issued to prevent layout issues in subsequent GUILayout statements (case 780071)
-        var matTarget = matEditor.target as Material;
-        this.SetMaterialBlendMode(matTarget, (BlendMode)this.blendMode.floatValue);
-        this.SetMaterialAutoPropertiesAndKeywords(matTarget);
+        var mat = matEditor.target as Material;
+        this.SetMaterialBlendPreset(mat, (BlendPreset)this.blendMode.floatValue);
+        this.SetMaterialAutoPropertiesAndKeywords(mat);
         this.firstTimeApply = false;
     }
 
-    protected virtual void UpdateAllTargets()
+    protected override void UpdateAllTargets()
     {
         foreach (var obj in this.blendMode.targets)
         {
             var mat = obj as Material;
-            this.SetMaterialBlendMode(mat, (BlendMode)this.blendMode.floatValue);
+            this.SetMaterialBlendPreset(mat, (BlendPreset)this.blendMode.floatValue);
             this.SetMaterialAutoPropertiesAndKeywords(mat);
         }
     }
 
-    protected virtual void ShowMainGUI(MaterialEditor matEditor)
+    protected override void ShowMainGUI(MaterialEditor matEditor)
     {
-        this.ShowBlendModeGUI(matEditor);
+        this.ShowBlendTypeGUI(matEditor);
 
-        var mode = (BlendMode)this.blendMode.floatValue;
+        var mode = (BlendPreset)this.blendMode.floatValue;
         var mat = matEditor.target as Material;
 
         ShaderProp(matEditor, "_UseVertexColor");
 
-        MaterialEditorUtils.TextureColorToggleAutoSTInline(matEditor, Styles.main,
-            this.propsByName["_MainTex"], this.propsByName["_UseMainColor"], 
-            this.propsByName["_Color"], this.propsByName["_TextureScaleOffset"]);
+        MaterialEditorUtils.TextureColorToggleInline(matEditor, Styles.main, this.propsByName["_MainTex"], this.propsByName["_UseMainColor"], this.propsByName["_Color"]);
 
-        ShowLightingGUI(matEditor, mat);
+        ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.specularLightingEnabled.text, this.propsByName["_SpecularHighlights"], ()=>
+        {
+            matEditor.TexturePropertySingleLine(Styles.specularMap, this.propsByName["_SpecularMap"]);
+        });
+
+        matEditor.TexturePropertySingleLine(Styles.normalMap, this.propsByName["_BumpMap"]);
+
+        ShaderGUIUtils.HeaderAutoSection(matEditor, "Rim Lighting", this.propsByName["_UseRimLighting"], ()=>
+        {
+            ShaderProps(matEditor, "_RimPower", "_RimColor");
+        });
+
+        ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.reflectionsEnabled.text, this.propsByName["_UseReflections"], ()=>
+        {
+            matEditor.TexturePropertySingleLine(Styles.cubeMap, this.propsByName["_CubeMap"]);
+            ShaderProp(matEditor, "_ReflectionScale");
+        });
+
+        MaterialEditorUtils.TextureColorToggleInline(matEditor, Styles.emission, this.propsByName["_EmissionMap"], this.propsByName["_UseEmissionColor"], this.propsByName["_EmissionColor"]);
 
         ShaderGUIUtils.HeaderSection("Global UV", ()=>
         {
             MaterialEditorUtils.STVector4Prop(matEditor, Styles.textureScaleAndOffset, this.propsByName["_TextureScaleOffset"]);
         });
         
-        ShowBlendGUI(matEditor, mat, mode);
+        ShowBlendPresetGUI(matEditor, mat, mode);
+
+        EditorGUILayout.Separator();        
+        ShaderGUIUtils.HeaderAutoSection(matEditor, "Advanced Settings", this.propsByName["_ShowAdvanced"], ()=>
+        {
+            HeaderSectionWithProps("Lighting",             matEditor, "_UseAmbient", "_UseDiffuse", "_Shade4");
+            HeaderSectionWithProps("Specular Weights",     matEditor, "_Specular", "_Gloss");
+            HeaderSectionWithProps("Shadows",              matEditor, "_UseNormalOffsetShadows", "_UseSemiTransparentShadows");
+            HeaderSectionWithProps("Output Configuration", matEditor, "_Cull", "_ZTest", "_ZWrite", "_ColorWriteMask");
+        });
+        matEditor.RenderQueueField();
     }
 
-    protected virtual void ShowBlendModeGUI(MaterialEditor matEditor)
+    protected virtual void ShowBlendTypeGUI(MaterialEditor matEditor)
     {
         EditorGUI.showMixedValue = this.blendMode.hasMixedValue;
-        var mode = (BlendMode)this.blendMode.floatValue;
+        var mode = (BlendPreset)this.blendMode.floatValue;
 
         EditorGUI.BeginChangeCheck();
-        mode = (BlendMode)EditorGUILayout.Popup("Rendering Mode", (int)mode, Styles.blendNames);
+        mode = (BlendPreset)EditorGUILayout.Popup("Rendering Mode", (int)mode, Styles.blendNames);
         if (EditorGUI.EndChangeCheck())
         {
             matEditor.RegisterPropertyChangeUndo("Rendering Mode");
@@ -97,73 +101,23 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         EditorGUI.showMixedValue = false;
     } 
 
-    protected virtual void ShowLightingGUI(MaterialEditor matEditor, Material mat)
+    protected virtual void ShowBlendPresetGUI(MaterialEditor matEditor, Material mat, BlendPreset mode)
     {
-        ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.specularLightingEnabled.text, this.propsByName["_SpecularHighlights"], ()=>
-        {
-            matEditor.TexturePropertySingleLine(Styles.specularMap, this.propsByName["_SpecularMap"]);
-        });
-
-        //matEditor.ShaderProperty(this.normalMap, Styles.normalMap);           
-        matEditor.TexturePropertySingleLine(Styles.normalMap, this.propsByName["_BumpMap"]);
-
-        ShaderGUIUtils.HeaderAutoSection(matEditor, "Rim Lighting", this.propsByName["_UseRimLighting"], ()=>
-        {
-            ShaderProps(matEditor, "_RimPower", "_RimColor");
-        });
-        
-        ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.reflectionsEnabled.text, this.propsByName["_UseReflections"], ()=>
-        {
-            matEditor.TexturePropertySingleLine(Styles.cubeMap, this.propsByName["_CubeMap"]);
-            ShaderProp(matEditor, "_ReflectionScale");
-        });
-        
-        MaterialEditorUtils.TextureColorToggleInline(matEditor, Styles.emission, this.propsByName["_EmissionMap"], this.propsByName["_UseEmissionColor"], this.propsByName["_EmissionColor"]);
-    }
-
-    protected virtual void ShowBlendGUI(MaterialEditor matEditor, Material mat, BlendMode mode)
-    {
-        if (mode != BlendMode.Cutout && mode != BlendMode.Custom) { return; }
+        if (mode != BlendPreset.Cutout && mode != BlendPreset.Custom) { return; }
 
         ShaderGUIUtils.HeaderSection("Alpha Blending", ()=>       
         {
-            if (mode == BlendMode.Custom) { ShaderProps(matEditor, "_AlphaTest", "_AlphaPremultiply"); }
+            if (mode == BlendPreset.Custom) { ShaderProps(matEditor, "_AlphaTest", "_AlphaPremultiply"); }
 
-            if ( (mode == BlendMode.Cutout) ||
-                 ((mode == BlendMode.Custom) && (this.propsByName["_AlphaTest"].floatValue >= 0f)))
+            if ( (mode == BlendPreset.Cutout) ||
+                 ((mode == BlendPreset.Custom) && (this.propsByName["_AlphaTest"].floatValue >= 0f)))
             {
                 ShaderProp(matEditor, "_Cutoff");
             }
 
-            ShaderProps(matEditor, "_SrcBlend", "_DstBlend", "_BlendOp");
+            if (mode == BlendPreset.Custom) { ShaderProps(matEditor, "_SrcBlend", "_DstBlend", "_BlendOp"); }
         });
     }
-
-    protected virtual void ShowAdvancedGUI(MaterialEditor matEditor)
-    {
-        ShaderGUIUtils.HeaderAutoSection(matEditor, "Advanced Settings", this.propsByName["_ShowAdvanced"], ()=>
-        {
-            ShaderGUIUtils.HeaderSection("Lighting", ()=>
-            {
-                ShaderProps(matEditor, "_UseAmbient", "_UseDiffuse", "_Shade4");
-            });
-
-            ShaderGUIUtils.HeaderSection("Specular Weights", ()=>
-            {
-                ShaderProps(matEditor, "_Specular", "_Gloss");
-            });
-
-            ShaderGUIUtils.HeaderSection("Shadows", ()=>
-            {
-                ShaderProps(matEditor, "_UseNormalOffsetShadows", "_UseSemiTransparentShadows");
-            });
-
-            ShaderGUIUtils.HeaderSection("Output Configuration", ()=>
-            {
-                ShaderProps(matEditor, "_Cull", "_ZTest", "_ZWrite", "_ColorWriteMask");
-            });
-        }); 
-    } 
 
     public override void AssignNewShaderToMaterial(Material mat, Shader oldShader, Shader newShader)
     {
@@ -184,7 +138,7 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         }
 
         //TODO: might not get pulled in from standard?
-        var blendMode = BlendMode.Opaque;
+        var blendMode = BlendPreset.Opaque;
 
         if (oldShader != null)
         {
@@ -207,13 +161,13 @@ public class FastTraditionalGUI : AdvancedShaderGUI
                 bool vertexLit = oldShader.name.Contains("VertexLit");
                 bool spec = !oldShader.name.Contains("Diffuse");
 
-                if      (cutout)      { blendMode = BlendMode.Cutout; }
-                else if (transparent) { blendMode = BlendMode.Transparent; }
+                if      (cutout)      { blendMode = BlendPreset.Cutout; }
+                else if (transparent) { blendMode = BlendPreset.Transparent; }
                 this.SetMaterialLighting(mat, false, false, unlit ? false : spec, unlit ? false : !directionalLightOnly);
             }            
         }     
 
-        this.SetMaterialBlendMode(mat, blendMode);
+        this.SetMaterialBlendPreset(mat, blendMode);
         this.SetMaterialAutoPropertiesAndKeywords(mat);
     }
 
@@ -223,49 +177,6 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         mat.SetToggle("_UseDiffuse", diffuse);
         mat.SetToggle("_SpecularHighlights", specular);
         mat.SetToggle("_Shade4", additional);
-    }
-    
-    protected virtual void SetMaterialBlendMode(Material mat, BlendMode blendMode)
-    {
-        switch (blendMode)
-        {
-            case BlendMode.Opaque:
-                mat.SetOverrideTag("RenderType", string.Empty);
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                mat.SetInt("_ZWrite", 1);
-                mat.SetKeyword("_ALPHATEST_ON", false);
-                mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);     
-                mat.renderQueue = -1;
-                break;
-            case BlendMode.Cutout:
-                mat.SetOverrideTag("RenderType", "TransparentCutout");
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-                mat.SetInt("_ZWrite", 1);
-                mat.SetKeyword("_ALPHATEST_ON", true);
-                mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);                   
-                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
-                break;
-            case BlendMode.Fade:
-                mat.SetOverrideTag("RenderType", "Transparent");
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                mat.SetInt("_ZWrite", 0);
-                mat.SetKeyword("_ALPHATEST_ON", false);
-                mat.SetKeyword("_ALPHAPREMULTIPLY_ON", false);
-                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                break;                    
-            case BlendMode.Transparent:
-                mat.SetOverrideTag("RenderType", "Transparent");
-                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                mat.SetInt("_ZWrite", 0);
-                mat.SetKeyword("_ALPHATEST_ON", false);
-                mat.SetKeyword("_ALPHAPREMULTIPLY_ON", true);                    
-                mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
-                break;
-        }
     }
 
     protected virtual void SetMaterialAutoPropertiesAndKeywords(Material mat)
@@ -284,22 +195,14 @@ public class FastTraditionalGUI : AdvancedShaderGUI
 
     protected static class Styles
     {
-        public static readonly string[] blendNames = Enum.GetNames(typeof(BlendMode));
-
+        public static readonly string[] blendNames = Enum.GetNames(typeof(BlendPreset));
         public static GUIContent main = new GUIContent("Albedo", "Albedo(RGB) Alpha(A)");
-
-        //specular lighting
         public static GUIContent specularLightingEnabled = new GUIContent("Specular Highlights", "Specular (blinn-phong) lighting from directional lights");
         public static GUIContent specularMap = new GUIContent("Spec(R) Gloss(A)", "");
         public static GUIContent normalMap = new GUIContent("Normal Map", "Normal Map - will turn on per-pixel lighting");
-
-        //reflections
         public static GUIContent reflectionsEnabled = new GUIContent("Reflections", "Cube map based reflections");
         public static GUIContent cubeMap = new GUIContent("Cube Map", "Cube map lookup for reflections");
-
-        //emission
         public static GUIContent emission = new GUIContent("Emission", "Emission (RGB)");
-
         public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");
     }
 }
