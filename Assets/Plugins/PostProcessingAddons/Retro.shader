@@ -4,10 +4,9 @@ Shader "Hidden/Custom/Retro"
         #pragma multi_compile __ _USECOLORQUANT_ON
         #pragma multi_compile __ _USECRTMASK_ON
 
-        #include "../PostProcessing/Shaders/StdLib.hlsl"
+        #include "PostProcessing/Shaders/StdLib.hlsl"
         #include "../ShaderToolkit/Shaders/FastMath.cginc"
         #include "../ShaderToolkit/Shaders/ImageProcessing.cginc"
-
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;

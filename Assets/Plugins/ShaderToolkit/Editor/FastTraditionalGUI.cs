@@ -17,9 +17,11 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         EditorGUI.BeginChangeCheck();
         {
             this.ShowMainGUI(matEditor);
-            EditorGUILayout.Separator();        
+            EditorGUILayout.Separator();    
             this.ShowAdvancedGUI(matEditor);
+            EditorGUILayout.Separator();
             matEditor.RenderQueueField();
+
         }
         if (EditorGUI.EndChangeCheck())
         {
