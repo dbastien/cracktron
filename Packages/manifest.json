@@ -4,9 +4,9 @@
     "com.unity.analytics": "exclude",
     "com.unity.standardevents": "exclude",
     "com.unity.purchasing": "exclude",
-    "com.unity.postprocessing": "2.0.2-preview",
-    "com.unity.shadergraph": "1.1.1-preview",
+    "com.unity.postprocessing": "2.0.3-preview",
+    "com.unity.shadergraph": "1.1.2-preview",
     "com.unity.textmeshpro": "1.2.1",
-    "com.unity.render-pipelines.core": "1.1.1-preview"
+    "com.unity.render-pipelines.core": "1.1.2-preview"
   }
 }
