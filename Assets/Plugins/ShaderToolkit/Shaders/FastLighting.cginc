@@ -128,6 +128,13 @@ inline float3 SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir,
     return pow(nh, specular) * gloss;
 }
 
+inline float3 SpecularPhong(float3 normal, float3 viewDir, float3 lightDir,
+                            float specular, float gloss)
+{
+    float p = dot_sat(-viewDir, reflect(lightDir, normal));
+    return pow(p, specular) * gloss;
+}
+
 //http://page.mi.fu-berlin.de/block/htw-lehre/wise2012_2013/bel_und_rend/skripte/schlick1994.pdf
 inline float3 SpecularSchlick(float3 normal, float3 viewDir, float3 lightDir,
                               float specular, float gloss)

@@ -6,7 +6,8 @@
     "com.unity.purchasing": "exclude",
     "com.unity.postprocessing": "2.0.3-preview",
     "com.unity.shadergraph": "1.1.2-preview",
-    "com.unity.textmeshpro": "1.2.1",
-    "com.unity.render-pipelines.core": "1.1.2-preview"
+    "com.unity.textmeshpro": "1.2.2",
+    "com.unity.render-pipelines.core": "1.1.2-preview",
+    "com.unity.probuilder": "3.0.3"
   }
 }
