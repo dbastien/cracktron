@@ -31,6 +31,9 @@ Shader "Cracktron/Fast Traditional"
 
         [NoScaleOffset]_CubeMap("Cube Map", Cube) = "" {}
         [Toggle] _UseCustomCubeMap("Use Custom Cube Map?", Float) = 1
+
+        [NoScaleOffset]_ReflectionMap("Reflection Map", 2D) = "" {}
+        [Toggle] _UseReflectionMap("Use Reflection Map?", Float) = 1
         
         _ReflectionScale("Scale", Range(0.01, 1.5)) = 1.0
         
@@ -104,6 +107,7 @@ Shader "Cracktron/Fast Traditional"
                 #pragma shader_feature _USESPECULARMAP_ON
                 #pragma shader_feature _SHADE4_ON
                 #pragma shader_feature _USEREFLECTIONS_ON 
+                #pragma shader_feature _USEREFLECTIONMAP_ON                 
                 #pragma shader_feature _USECUSTOMCUBEMAP_ON
                 #pragma shader_feature _USERIMLIGHTING_ON                
                 #pragma shader_feature _USEEMISSIONCOLOR_ON

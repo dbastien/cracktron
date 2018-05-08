@@ -5,7 +5,7 @@
 #include "./FastLighting.cginc"
 #include "./TextureMacro.cginc"
 
-#define USES_MAIN_UV (_USEMAINTEX_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON)
+#define USES_MAIN_UV (_USEMAINTEX_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _USEREFLECTIONMAP_ON)
 
 //todo: share world view dir
 
@@ -19,6 +19,7 @@ float _Specular;
 UNITY_DECLARE_TEX2D(_SpecularMap);
 
 UNITY_DECLARE_TEXCUBE(_CubeMap);
+UNITY_DECLARE_TEX2D(_ReflectionMap);
 float _ReflectionScale;
 
 float _RimPower;
@@ -213,10 +214,17 @@ fixed4 frag(v2f i) : SV_Target
         float3 worldReflection = normalize(i.worldReflection);
 
         #if defined(_USECUSTOMCUBEMAP_ON)
-            color.rgb += UNITY_SAMPLE_TEXCUBE(_CubeMap, worldReflection) * _ReflectionScale;
+            float3 reflectionColor = UNITY_SAMPLE_TEXCUBE(_CubeMap, worldReflection);
         #else
-            color.rgb += UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, worldReflection) * _ReflectionScale;
+            float3 reflectionColor = UNITY_SAMPLE_TEXCUBE(unity_SpecCube0, worldReflection);
         #endif
+
+        #if defined(_USEREFLECTIONMAP_ON)
+            reflectionColor *= UNITY_SAMPLE_TEX2D(_ReflectionMap, i.mainUV.xy);
+        #endif
+
+        reflectionColor *= _ReflectionScale;
+        color.rgb += reflectionColor;
     #endif
 
     #if defined(_USEEMISSIONMAP_ON)

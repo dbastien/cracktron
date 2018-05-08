@@ -120,8 +120,8 @@ float SpecularRangeRemapShaderForge(float specular) { return exp2(specular*10+1)
 //For linear mappings, I've seen 16, 256, and 512 used as coefficients
 float SpecularRangeRemapUnity(float specular) { return specular*256.0; }
 
-inline float3 SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir,
-                                 float specular, float gloss)
+inline float SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir,
+                                float specular, float gloss)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);

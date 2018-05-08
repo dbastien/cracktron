@@ -1,12 +1,12 @@
 Shader "Hidden/Custom/Blur"
 {
     HLSLINCLUDE
-        #include "../PostProcessing/Shaders/StdLib.hlsl"
+        #include "PostProcessing/Shaders/StdLib.hlsl"
 
         TEXTURE2D_SAMPLER2D(_MainTex, sampler_MainTex);
         float4 _MainTex_TexelSize;
 
-        float4 GaussianLinear8(TEXTURE2D_ARGS(tex, samp), float2 uv, float2 d)
+        float4 GaussianLinear8(TEXTURE2D_ARGS(tex, samp), float2 uv, float2 d) 
         {
 //            static const int taps = 8;
 //            float weight[taps] = {0.04462541, 0.08833525, 0.08476666, 0.07870257, 0.070701, 0.06145185, 0.05167937, 0.04205059};
@@ -27,13 +27,13 @@ Shader "Hidden/Custom/Blur"
         }
 
         float4 FragH(VaryingsDefault i) : SV_Target
-        {		
+        {
             return GaussianLinear8(TEXTURE2D_PARAM(_MainTex, sampler_MainTex), i.texcoord, float2(_MainTex_TexelSize.x, 0.0));
         }
         float4 FragV(VaryingsDefault i) : SV_Target
-        {		
+        {
             return GaussianLinear8(TEXTURE2D_PARAM(_MainTex, sampler_MainTex), i.texcoord, float2(0.0, _MainTex_TexelSize.y));
-        }        
+        }
     ENDHLSL
 
     SubShader

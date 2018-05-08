@@ -115,4 +115,17 @@ inline float PerpDot(float2 v1, float2 v2)
 	return dot(v1, -v2.yx);
 }
 
+// Interleaved gradient function from CoD AW.
+// http://www.iryoku.com/next-generation-post-processing-in-call-of-duty-advanced-warfare
+inline float InterleavedGradient(float2 uv)
+{
+	const float3 magic = float3(0.06711056, 0.00583715, 52.9829189);
+	return frac(magic.z * frac(dot(uv, magic.xy)));
+}
+
+inline float OrderedDither(float2 uv, float2 texelSize)
+{
+	return InterleavedGradient(uv / texelSize) / 255;
+}
+ 
 #endif //FAST_MATH
