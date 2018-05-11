@@ -12,6 +12,8 @@ public class TextureManagementWindow : EditorWindow
     // is not closed. If the attribute is omitted then the state is still serialized/deserialized.
     [SerializeField] TreeViewState TreeViewState;
 
+    [SerializeField] MultiColumnHeaderState MultiColumnHeaderState;   
+
     //The TreeView is not serializable, so it should be reconstructed from the tree data.
     TextureManagementTreeView TreeView;
 
@@ -21,6 +23,7 @@ public class TextureManagementWindow : EditorWindow
         var w = EditorWindow.GetWindow<TextureManagementWindow>();
         w.Show();
     }
+
     void OnGUI()
     {
         TreeView.OnGUI(new Rect(0, 0, position.width, position.height));
@@ -33,9 +36,6 @@ public class TextureManagementWindow : EditorWindow
         {
             TreeViewState = new TreeViewState();
         }
-
-//        var c = new MultiColumnHeaderState.Column();
-//        var mchs = new MultiColumnHeaderState();
 
         TreeView = new TextureManagementTreeView(TreeViewState);
     }
