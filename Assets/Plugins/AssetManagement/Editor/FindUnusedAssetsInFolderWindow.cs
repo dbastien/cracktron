@@ -5,14 +5,14 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-public class FindShaderAndMaterialReferencesWindow : EditorWindow
+public class FindUnusedAssetsInFolderWindow : EditorWindow
 {
     const string ProgressBarTitle = "Searching for References";
 
     [MenuItem("Assets/Management/Find Shader and Material References")]
     public static void ShowWindow()
     {
-        var w = EditorWindow.GetWindow<FindShaderAndMaterialReferencesWindow>();
+        var w = EditorWindow.GetWindow<FindUnusedAssetsInFolderWindow>();
         w.Show();
     }
 

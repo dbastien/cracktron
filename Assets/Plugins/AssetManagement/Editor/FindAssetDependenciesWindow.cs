@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FindAssetDependenciesWindow : EditorWindow
 {
+    const string ProgressBarTitle = "Searching for Dependencies";
+
     [MenuItem("Assets/Management/Find Dependencies")]
     public static void ShowWindow()
     {
@@ -29,19 +31,14 @@ public class FindAssetDependenciesWindow : EditorWindow
 
             var roots = new Object[] { target };
             var dependencies = EditorUtility.CollectDependencies(roots);
+            Selection.objects = dependencies;
 
-            foreach (var o in dependencies)
+            for (var i = 0; i < dependencies.Length; ++i)
             {
+                var o = dependencies[i];
                 var go = o as GameObject;
 
-                if (go)
-                {
-                    results += go.GetFullPath() + System.Environment.NewLine;
-                }
-                else
-                {                    
-                    results += o.name + System.Environment.NewLine;
-                }
+                results += (go ? go.GetFullPath() : o.name) + System.Environment.NewLine;
             }
         }
 

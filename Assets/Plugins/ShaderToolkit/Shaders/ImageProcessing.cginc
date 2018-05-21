@@ -22,13 +22,14 @@ inline float3 BlendLightenOnly(float3 a, float3 b) { return max(a,b); }
 inline float3 BlendSubtract(float3 a, float3 b) { return b - a; }
 inline float3 BlendDivide(float3 a, float3 b) { return b / a; }
 
-//perceptual luminance
-#define LUMA_SCALE (float3(0.3, 0.59, 0.11))
+//https://en.wikipedia.org/wiki/Rec._709
+#define LUMA_SCALE_BT709 (float3(0.2126, 0.7152, 0.0722))
 
-inline float GetLuminance(float3 col)
-{
-    return dot(LUMA_SCALE, col);
-}
+//https://en.wikipedia.org/wiki/Rec._601
+#define LUMA_SCALE_BT601 (float3(0.299, 0.587, 0.114))
+
+#define LUMA_SCALE_THIRDS (float3(ONE_DIV3, ONE_DIV3, ONE_DIV3))
+#define LUMA_SCALE LUMA_SCALE_BT709
 
 inline float3 Brightness(float3 col, float amount)
 {

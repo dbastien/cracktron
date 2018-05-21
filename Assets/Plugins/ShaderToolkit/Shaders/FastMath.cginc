@@ -3,8 +3,7 @@
 
 // macros used in lieu of functions often for multiple type support - float, float2, etc.
 
-// constants
-// 32 bit float is 6 digits of safe precision, 64 is 15
+// constants - 32 bit float is 6 digits of safe precision, 64 is 15
 
 //irrationals
 #define TAU          6.283185307179586
@@ -49,14 +48,7 @@
 #define F32_MAX     3.402823466e+38F
 #define F32_MIN     1.175494351e–38F
 #define F32_EPSILON 1.192092896e–07F
-#define F32_DIG     6 
-
-
-// TODO: defines for fullp and minp so they can be set per platform
-//       half is float on desktop, etc.
-//       min16float always behaves as expected,
-//       but not all desktop GPUs support and perf is crippled to 1/64th rate on others
-//       half would be safe, however for mobile ogl es3+ targets half will be float as well
+#define F32_DIG     6
 
 // shorthand
 #define sat(x)         ( saturate((x)) )

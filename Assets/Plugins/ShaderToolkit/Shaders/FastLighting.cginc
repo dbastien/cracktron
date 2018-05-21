@@ -115,34 +115,26 @@ inline float3 DiffuseLambertian(float3 normal, float3 lightDir, float3 lightCol)
 }
 
 //Real world specular can realistically be 0.1 to > 100000
-//Do some non-linear range mapping
+//Do a fast spherical gaussian non-linear range mapping
 float SpecularRangeRemapShaderForge(float specular) { return exp2(specular*10+1); }
+
 //For linear mappings, I've seen 16, 256, and 512 used as coefficients
 float SpecularRangeRemapUnity(float specular) { return specular*256.0; }
 
-inline float SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir,
-                                float specular, float gloss)
+inline float SpecularBlinnPhong(float3 normal, float3 viewDir, float3 lightDir, float specular)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);
-    return pow(nh, specular) * gloss;
-}
-
-inline float3 SpecularPhong(float3 normal, float3 viewDir, float3 lightDir,
-                            float specular, float gloss)
-{
-    float p = dot_sat(-viewDir, reflect(lightDir, normal));
-    return pow(p, specular) * gloss;
+    return pow(nh, specular);
 }
 
 //http://page.mi.fu-berlin.de/block/htw-lehre/wise2012_2013/bel_und_rend/skripte/schlick1994.pdf
-inline float3 SpecularSchlick(float3 normal, float3 viewDir, float3 lightDir,
-                              float specular, float gloss)
+inline float SpecularSchlick(float3 normal, float3 viewDir, float3 lightDir, float specular)
 {
     float3 h = normalize(lightDir + viewDir);
     float nh = dot_sat(normal, h);
     //float schlickTerm = rcp((specularPower/nh)-specularPower+1);    
-    return (nh / (specular - (specular * nh) + nh)) * gloss;
+    return (nh / (specular - (specular * nh) + nh));
 }
 
 #endif //FAST_LIGHTING

@@ -5,7 +5,7 @@
 #include "./FastLighting.cginc"
 #include "./TextureMacro.cginc"
 
-#define USES_MAIN_UV (_USEMAINTEX_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USEGLOSSMAP_ON || _USESPECULARMAP_ON || _USEREFLECTIONMAP_ON)
+#define USES_MAIN_UV (_USEMAINTEX_ON || _USEEMISSIONMAP_ON || _USEBUMPMAP_ON || _USESPECULARMAP_ON || _USEREFLECTIONMAP_ON)
 
 //todo: share world view dir
 
@@ -190,21 +190,21 @@ fixed4 frag(v2f i) : SV_Target
     #endif
 
     #if defined(_SPECULARHIGHLIGHTS_ON)
+        float3 gloss = float3(_Gloss, _Gloss, _Gloss);
         float specular = _Specular;
-        float gloss = _Gloss;
 
         #if defined(_USESPECULARMAP_ON)
             float4 specularMapSample = UNITY_SAMPLE_TEX2D(_SpecularMap, i.mainUV.xy);
-            specular *= specularMapSample.r;
-            gloss *= specularMapSample.a;
+            gloss *= specularMapSample.rgb;
+            specular *= specularMapSample.a;
         #endif
 
-        gloss = SpecularRangeRemapShaderForge(gloss);
+        specular = SpecularRangeRemapShaderForge(specular);
         
         float specTerm = SpecularBlinnPhong(worldNormal, normalize(UnityWorldSpaceViewDir(i.worldPos)),
-                                            _WorldSpaceLightPos0.xyz, gloss, specular); 
+                                            _WorldSpaceLightPos0.xyz, specular); 
 
-        specContrib += specTerm * _LightColor0.rgb;
+        specContrib = specTerm * gloss * _LightColor0.rgb;
     #endif
 
     color.rgb += specContrib;

@@ -62,6 +62,7 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         ShaderGUIUtils.HeaderAutoSection(matEditor, Styles.reflectionsEnabled.text, this.propsByName["_UseReflections"], ()=>
         {
             matEditor.TexturePropertySingleLine(Styles.cubeMap, this.propsByName["_CubeMap"]);
+            matEditor.TexturePropertySingleLine(Styles.reflectionMap, this.propsByName["_ReflectionMap"]);            
             ShaderProp(matEditor, "_ReflectionScale");
         });
 
@@ -186,7 +187,9 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         mat.SetKeyword("_USECUSTOMCUBEMAP_ON", mat.HasTexture("_CubeMap"));
         mat.SetKeyword("_USEBUMPMAP_ON", mat.HasTexture("_BumpMap"));
         mat.SetKeyword("_USESPECULARMAP_ON", mat.HasTexture("_SpecularMap"));
-        mat.SetKeyword("_USEEMISSIONMAP_ON", mat.HasTexture("_EmissionMap"));       
+        mat.SetKeyword("_USEEMISSIONMAP_ON", mat.HasTexture("_EmissionMap"));
+        mat.SetKeyword("_USEREFLECTIONMAP_ON", mat.HasTexture("_ReflectionMap"));
+
 
         var texScaleOffset = mat.GetVector("_TextureScaleOffset");
         mat.SetKeyword("_MainTex_SCALE_ON", (texScaleOffset.x != 1f) || (texScaleOffset.y != 1f));
@@ -201,6 +204,8 @@ public class FastTraditionalGUI : AdvancedShaderGUI
         public static GUIContent specularMap = new GUIContent("Spec(R) Gloss(A)", "");
         public static GUIContent normalMap = new GUIContent("Normal Map", "Normal Map - will turn on per-pixel lighting");
         public static GUIContent reflectionsEnabled = new GUIContent("Reflections", "Cube map based reflections");
+        public static GUIContent reflectionMap = new GUIContent("Reflection Map", "Map with reflection weighting");
+
         public static GUIContent cubeMap = new GUIContent("Cube Map", "Cube map lookup for reflections");
         public static GUIContent emission = new GUIContent("Emission", "Emission (RGB)");
         public static GUIContent textureScaleAndOffset = new GUIContent("Texture Scale and Offset", "Applies to all textures");

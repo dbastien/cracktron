@@ -21,15 +21,24 @@ public class TextureManagementWindow : EditorWindow
     public static void ShowWindow()
     {
         var w = EditorWindow.GetWindow<TextureManagementWindow>();
+        w.Rebuild();
         w.Show();
     }
 
     void OnGUI()
     {
-        TreeView.OnGUI(new Rect(0, 0, position.width, position.height));
+        if (TreeView != null)
+        {
+            TreeView.OnGUI(new Rect(0, 0, position.width, position.height));
+        }
     }    
 
     void OnEnable()
+    {
+        Rebuild();
+    }
+
+    void Rebuild()
     {
         // Check if there is a serialized view state (that survived assembly reloading)
         if (TreeViewState == null)
